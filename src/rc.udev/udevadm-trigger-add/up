@@ -1,0 +1,12 @@
+##################################################################################
+# This service triggers udev add events to scan for devices, load the appropriate
+# kernel modules, configure the devices, and populate /dev with device nodes.
+##################################################################################
+
+foreground { echo "Starting oneshot service:  udevadm-trigger-add" }
+# We want to use add events
+foreground { echo "Triggering udev events:  /sbin/udevadm trigger --action=add" }
+# Call udevtrigger and udevsettle to do the device configuration
+if { udevadm trigger --type=subsystems --action=add }
+if { udevadm trigger --type=devices --action=add }
+udevadm settle --timeout=120

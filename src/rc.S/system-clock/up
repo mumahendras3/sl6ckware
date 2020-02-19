@@ -1,0 +1,60 @@
+########################################################
+# This service configures the system clock at boot time
+########################################################
+
+foreground { echo "Starting oneshot service:  system-clock" }
+# Set the tick and frequency for the system clock.
+# Default values are: TICK=10000 and FREQ=0. If there's a
+# /etc/default/adjtimex config file, source it to override
+# the default TICK and FREQ:
+ifthenelse { [ -r /etc/default/adjtimex ] }
+{
+  envfile /etc/default/adjtimex
+  multisubstitute {
+    importas -u tick TICK
+    importas -u freq FREQ
+  }
+  ifelse { adjtimex --tick $tick --frequency $freq }
+  {
+    echo "Setting the system clock rate:  /sbin/adjtimex --tick $tick --frequency $freq"
+  }
+  echo "Failed to set system clock with adjtimex, possibly invalid parameters? (TICK=${tick} FREQ=${freq})"
+}
+{
+  foreground { echo "Setting the system clock rate:  /sbin/adjtimex --tick 10000 --frequency 0" }
+  adjtimex --tick 10000 --frequency 0
+}
+# Set the system time from the hardware clock using hwclock --hctosys.
+ifelse -n { [ -x /sbin/hwclock ] }
+{
+  foreground {
+  echo "hwclock not found! Aborting...
+(ERROR) Failed to start oneshot service:  system-clock"
+  }
+  exit 1
+}
+# Check for a broken motherboard RTC clock (where ioports for rtc are
+# unknown) to prevent hwclock causing a hang:
+backtick CLOCK_OPT {
+  if -n { grep -q " : rtc" /proc/ioports }
+  printf --directisa
+}
+importas -u clock_opt CLOCK_OPT
+ifthenelse { [ /etc/adjtime -nt /etc/hardwareclock ] }
+{
+  backtick -n TIME_MODE { sed "$!d; s/LOCAL/localtime/" /etc/adjtime }
+  importas -u time_mode TIME_MODE
+  foreground { echo -n "Setting system time from the hardware clock (${time_mode}):  " }
+  hwclock $clock_opt --hctosys
+}
+{
+  backtick -n TIME_MODE { sed "$!d; s/UTC/utc/" /etc/hardwareclock }
+  importas -u time_mode TIME_MODE
+  foreground {
+    pipeline { echo -n "Setting system time from the hardware clock (${time_mode}):  " }
+    sed "s/utc/UTC/"
+  }
+  hwclock $clock_opt --${time_mode} --hctosys
+}
+# Display current time after initializing system clock
+date

@@ -1,0 +1,64 @@
+#!/bin/execlineb -P
+
+######################################################################
+# This service starts the udevd daemon after doing some sanity checks
+######################################################################
+
+foreground { echo "Starting longrun service:  udevd" }
+# Perform sanity check
+# Sanity check #1, udev requires that the kernel support tmpfs:
+ifelse -n { grep -wq tmpfs /proc/filesystems }
+{
+  foreground { echo "Sorry, but you need tmpfs support in the kernel to use udev.\n\
+(ERROR) Unable to start longrun service:  udevd"
+  }
+  exit 1
+}
+# Sanity check #2, make sure that the running kernel is new enough:
+pipeline { uname -r }  
+withstdinas -n VERSION 
+importas -u version VERSION  
+multidefine -d. $version { a b c } # version = a.b.c    
+ifelse {                                                                             
+  redirfd -w 1 /dev/null expr ( ${a}.${b} < 2.6 ) | ( ${a}.${b} = 2.6 ) & ( $c < 32 )
+}
+{
+  foreground {
+    echo "Sorry, but you need a 2.6.32+ kernel to use this udev.\n\
+Your kernel version is only ${version}.\n\                                         
+(ERROR) Unable to start longrun service:  udevd"
+  }
+  exit 1
+}
+# Sanity check #3, make sure the eudev package was not removed:
+ifelse -n { [ -x /sbin/udevd ] }
+{
+  foreground { echo "/sbin/udevd is missing!\n\
+Please install the eudev package first or reinstall it if it's already installed.\n\
+(ERROR) Unable to start longrun service:  udevd"
+  }
+  exit 1
+}
+# Create the udev runtime directory under /run (/run/udev). We will need this later for
+# notification readiness
+if { mkdir -p /run/udev }
+# Forking a background process that will handle this service's notification readiness.
+# We will use the availability of udevd's control socket in /run/udev as its readiness indicator.
+# To avoid starting inotifywait after udevd has created its control socket, we will start this
+# background process as soon as possible.
+background {
+  fdmove 1 3
+  inotifywait -qe create --include control /run/udev
+}
+# Disable hotplug helper since udevd listens to netlink:
+background {
+  if { [ -e /proc/sys/kernel/hotplug ] }
+  redirfd -w 1 /proc/sys/kernel/hotplug
+  echo ""
+}
+# We don't want unnecessary environment variables and file descriptors hanging around:
+emptyenv -p
+fdclose 3
+# Starting udevd:
+foreground { echo "Starting udevd:  /sbin/udevd" }
+udevd

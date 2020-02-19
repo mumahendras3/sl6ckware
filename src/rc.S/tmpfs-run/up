@@ -1,0 +1,17 @@
+######################################
+# This service mounts a tmpfs on /run
+######################################
+
+foreground { echo "Starting oneshot service:  tmpfs-run" }
+# Check if /run exists and is a directory
+ifelse -n { [ -d /run ] }
+{
+  foreground {
+  echo "/run doesn't exist or isn't a directory! Aborting...
+(ERROR) Unable to start oneshot service:  tmpfs-run"
+  }
+  exit 1
+}
+# Check if a tmpfs is already mounted on /run
+if -tn { grep -wq "tmpfs /run tmpfs" /proc/mounts }
+mount -v -n -t tmpfs tmpfs /run -o mode=0755,size=32M,nodev,nosuid,noexec

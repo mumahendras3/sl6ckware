@@ -1,0 +1,9 @@
+#################################################
+# This service enables all swap partitions/files
+# that are configured in /etc/fstab
+#################################################
+
+foreground { echo "Starting oneshot service:  swap" }
+swapon -va
+
+

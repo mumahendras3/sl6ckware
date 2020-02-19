@@ -1,0 +1,10 @@
+###################################################
+# This service loads the loop device kernel module
+###################################################
+
+foreground { echo "Starting oneshot service:  kmod-loop" }
+foreground { modprobe -v loop }
+# Check the exit status and print an error message for non-zero exit status
+importas -u ? ?
+ifthenelse { [ $? = 0 ] } {} { echo "(ERROR) Unable to start oneshot service:  kmod-loop" }
+exit $?

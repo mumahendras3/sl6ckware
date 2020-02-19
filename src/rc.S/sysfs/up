@@ -1,0 +1,26 @@
+####################################
+# This service mounts sysfs on /sys
+####################################
+
+foreground { echo "Starting oneshot service:  sysfs" }
+# Check if /sys exists and is a directory
+ifelse -n { [ -d /sys ] }
+{
+  foreground {
+  echo "/sys doesn't exist or isn't a directory! Aborting...
+(ERROR) Unable to start oneshot service:  sysfs"
+  }
+  exit 1
+}
+# Check if the kernel supports sysfs
+ifelse -n { grep -wq sysfs /proc/filesystems }
+{
+  foreground {
+  echo "The kernel doesn't support sysfs! Aborting...
+(ERROR) Unable to start oneshot service:  sysfs"
+  }
+  exit 1
+}
+# Check if sysfs is already mounted
+if -tn { grep -wq sysfs /proc/mounts }
+mount -v sysfs /sys -n -t sysfs

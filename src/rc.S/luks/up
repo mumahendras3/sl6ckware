@@ -1,0 +1,84 @@
+################################################################################
+# This service unlocks all LUKS encrypted devices that are found inside
+# /etc/crypttab when started and locks these devices again when stopped.
+#
+# Some notes on /etc/crypttab in Slackware:
+# Only LUKS formatted volumes are supported (except for swap)
+# crypttab follows the following format:
+# <luks_name> <device> <password> <options>
+# 
+# <luks_name>:  This is the name of your LUKS volume.
+# For example:  crypt-home
+#
+# <device>:  This is the device containing your LUKS volume.
+# For example:  /dev/sda2
+#
+# <password>:  This is either the volume password in plain text, or the name of
+# a key file.  Use 'none' to interactively enter password on boot.
+#
+# <options>:  Comma-separated list of options.  Note that there must be a
+# password field for any options to be picked up (use a password of 'none' to
+# get a password prompt at boot).  The following options are supported:
+#
+# discard -- this will cause --allow-discards to be passed to the cryptsetup
+# program while opening the LUKS volume.
+#
+# ro -- this will cause --readonly to be passed to the cryptsetup program while
+# opening the LUKS volume.
+#
+# swap -- this option cannot be used with other options.  The device given will
+# be formatted as a new encrypted volume with a random key on boot, and used as
+# swap.
+################################################################################
+
+foreground { echo "Starting oneshot service:  luks" }
+# Check if the system is configured to use LUKS
+ifelse -n { [ -s /etc/crypttab -a -x /sbin/cryptsetup ] }
+{
+  foreground {
+  echo "This system is not configured to use LUKS. Aborting...
+(ERROR) Unable to start oneshot service:  luks"
+  }
+  exit 1
+}
+# NOTE: we only support LUKS formatted volumes (except for swap)!
+pipeline { cat /etc/crypttab }
+pipeline { grep -v -e "^#" -e "^[[:space:]]*$" }
+forstdin -pd"\n\r" LUKSARRAY
+importas -u luksarray LUKSARRAY
+multidefine -Cd" \t" $luksarray { luks dev pass opts }
+ifelse { [ $opts = swap ] }
+{
+  # If any of the volumes is to be used as encrypted swap,
+  # then encrypt it using a random key and run mkswap:
+  foreground { echo "Creating encrypted swap volume '${luks}' on device '${dev}':" }
+  if { cryptsetup --cipher=aes --key-file=/dev/urandom --key-size=256 create $luks $dev }
+  mkswap /dev/mapper/${luks}
+}
+# Converting options in /etc/crypttab to appropriate cryptsetup command line options
+pipeline { echo -n $opts }
+pipeline { sed "s/ro/--readonly/; s/discard/--allow-discards/; s/,/ /" }
+withstdinas LUKSOPTS
+importas -u luksopts LUKSOPTS
+ifthenelse { [ -z $luksopts ] }
+{
+  echo "Unlocking LUKS encrypted volume '${luks}' on device '${dev}':"
+}
+{
+  echo "Unlocking LUKS encrypted volume '${luks}' on device '${dev}' with options '${luksopts}':"
+}
+ifelse { [ -z $pass -o $pass = none ] }
+{
+  # No password was given, or a password of 'none' was given
+  redirfd -r 0 /dev/tty0
+  redirfd -w 1 /dev/tty0
+  fdmove -c 2 1
+  cryptsetup $luksopts luksOpen $dev $luks
+}
+ifelse { [ -f $pass ] }
+{
+  # The password field was given a key-file filename
+  cryptsetup $luksopts --key-file=${pass} luksOpen $dev $luks
+}
+# The password was provided in plain text
+heredoc 0 $pass cryptsetup $luksopts luksOpen $dev $luks

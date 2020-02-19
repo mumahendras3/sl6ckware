@@ -1,0 +1,17 @@
+######################################
+# This service mounts procfs on /proc
+######################################
+
+foreground { echo "Starting oneshot service:  procfs" }
+# Check if /proc exists and is a directory
+ifelse -n { [ -d /proc ] }
+{
+  foreground {
+  echo "/proc doesn't exist or isn't a directory! Aborting...
+(ERROR) Unable to start oneshot service:  procfs"
+  }
+  exit 1
+}
+# Check if proc is already mounted
+if -tn { grep -wq proc /proc/mounts }
+mount -v proc /proc -n -t proc
