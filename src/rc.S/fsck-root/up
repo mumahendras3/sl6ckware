@@ -1,0 +1,83 @@
+################################################
+# This service runs fsck on the root partition #
+################################################
+
+foreground { echo "Starting oneshot service:  fsck-root" }
+ifelse { [ -r /etc/fastboot ] }
+{
+  foreground { echo "Fastboot is requested. Skipping filesystem checking..." }
+  exit 0
+}
+# Test to see if the root partition is read-only, like it ought to be.
+ifthenelse {
+  pipeline { grep -w / /proc/mounts }
+  pipeline { cut -f4 -d" " }
+  grep -wq ro
+}
+{ echo "Testing root filesystem status:  read-only filesystem" }
+{
+  # Remount the root filesystem as read-only so we can fsck it.
+  # Disable this service and remove it from remount-root service's
+  # dependencies if you don't want this behaviour
+  foreground {
+  echo "Testing root filesystem status:  read-write filesystem
+
+(WARNING) For filesystem checking to work properly on the root filesystem,
+(WARNING) it needs to be mounted as read only!
+(WARNING)
+(WARNING) Remounting the root filesystem as read only..."
+  }
+  mount -n -o remount,ro /
+}
+# If we're using F2FS for the root filesystem, don't check it as it doesn't
+# allow checking a read-only filesystem:
+ifelse { grep -q " / f2fs " /proc/mounts }
+{
+  foreground { echo "F2FS is used as the root filesystem. Skipping filesystem checking..." }
+  exit 0
+}
+# Check the root filesystem:
+foreground { echo "Checking root filesystem:" }
+backtick FORCEFSCK
+{
+  if -t { [ -r /etc/forcefsck ] }
+  printf -f
+}
+importas -u forcefsck FORCEFSCK
+foreground { fsck $forcefsck -C -a / }
+importas -u ? ?
+# An error code of 2 or higher will require a reboot.
+if -t { [ $? -ge 2 ] }
+ifthenelse { [ $? -lt 4 ] }
+{
+  # With an error code of 2 or 3, reboot the machine automatically:
+  foreground {
+  echo "***********************************
+*** The filesystem was changed. ***
+*** The system will now reboot. ***
+***********************************
+"
+  }
+}
+{
+  foreground {
+    echo "***********************************************************
+*** An error occurred during the root filesystem check. ***
+*** You will now be given a chance to log into the      ***
+*** system in single-user mode to fix the problem.      ***
+***                                                     ***
+*** If you are using the ext2 filesystem, running       ***
+*** 'e2fsck -v -y <partition>' might help.              ***
+***********************************************************
+
+Once you exit the single-user shell, the system will reboot."
+  }
+  export PS1 "(Repair filesystem) \#" sulogin
+}
+foreground { echo "Aborting all s6-rc longrun transitions..." }
+foreground { pkill s6-rc }
+foreground { echo "Unmounting file systems..." }
+foreground { umount -a -r }
+foreground { mount -n -o remount,ro / }
+foreground { echo "Rebooting system..." }
+s6-linux-init-hpr -fr
