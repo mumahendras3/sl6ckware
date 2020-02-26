@@ -17,8 +17,6 @@ ifthenelse {
 { echo "Testing root filesystem status:  read-only filesystem" }
 {
   # Remount the root filesystem as read-only so we can fsck it.
-  # Disable this service and remove it from remount-root service's
-  # dependencies if you don't want this behaviour
   foreground {
   echo "Testing root filesystem status:  read-write filesystem
 
