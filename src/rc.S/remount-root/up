@@ -1,0 +1,11 @@
+#####################################################################
+# This service remounts the root filesystem with read-write enabled #
+#####################################################################
+
+foreground { echo "Starting oneshot service:  remount-root" }
+foreground { echo "Remounting root device with read-write enabled." }
+foreground { mount -w -v -n -o remount / }
+# Check the exit status and print an error message for non-zero exit status
+importas -u ? ?
+ifthenelse { [ $? = 0 ] } {} { echo "(ERROR) Unable to start oneshot service:  remount-root" }
+exit $?
