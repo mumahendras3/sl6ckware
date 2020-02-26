@@ -72,12 +72,11 @@ ifthenelse { [ $? -lt 4 ] }
 
 Once you exit the single-user shell, the system will reboot."
   }
-  export PS1 "(Repair filesystem) \#" sulogin
+  export PS1 "(Repair filesystem) \#" sulogin /dev/tty0
 }
 foreground { echo "Aborting all s6-rc longrun transitions..." }
 foreground { pkill s6-rc }
 foreground { echo "Unmounting file systems..." }
 foreground { umount -a -r }
-foreground { mount -n -o remount,ro / }
 foreground { echo "Rebooting system..." }
 s6-linux-init-hpr -fr
