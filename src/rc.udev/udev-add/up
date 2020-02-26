@@ -3,9 +3,9 @@
 # kernel modules, configure the devices, and populate /dev with device nodes.
 ##################################################################################
 
-foreground { echo "Starting oneshot service:  udevadm-trigger-add" }
+foreground { echo "Starting oneshot service:  udev-add" }
 # We want to use add events
-foreground { echo "Triggering udev events:  /sbin/udevadm trigger --action=add" }
+foreground { echo "Triggering udev events:  udevadm trigger --action=add" }
 # Call udevtrigger and udevsettle to do the device configuration
 if { udevadm trigger --type=subsystems --action=add }
 if { udevadm trigger --type=devices --action=add }
