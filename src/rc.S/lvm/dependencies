@@ -1,2 +1,2 @@
-kmod-dm-mod
-udevadm-trigger-add
+modprobe-dm-mod
+udev-add

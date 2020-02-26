@@ -1,14 +1,14 @@
-############################################################################
-# This service initializes the Logical Volume Manager (LVM) by scanning for
-# available volume groups (VG) and activating all them.
-############################################################################
+#############################################################################
+# This service initializes the Logical Volume Manager (LVM) by scanning for #
+# available volume groups (VG) and activating all them.                     #
+#############################################################################
 
 foreground { echo "Starting oneshot service:  lvm" }
 # Check if the system is configured to use LVM
 ifelse -n { [ -r /etc/lvmtab -o -d /etc/lvm/backup ] }
 {
   foreground {
-  echo "No /etc/lvmtab or /etc/lvm/backup found! Aborting...
+  echo "This system is not configured to use LVM! Aborting...
 (ERROR) Unable to start oneshot service:  lvm"
   }
   exit 1

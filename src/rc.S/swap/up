@@ -1,9 +1,11 @@
-#################################################
-# This service enables all swap partitions/files
-# that are configured in /etc/fstab
-#################################################
+##################################################
+# This service enables all swap partitions/files #
+# that are configured in /etc/fstab              #
+##################################################
 
 foreground { echo "Starting oneshot service:  swap" }
-swapon -va
-
-
+foreground { swapon -va }
+# Check the exit status and print an error message for non-zero exit status
+importas -u ? ?
+ifthenelse { [ $? = 0 ] } {} { echo "(ERROR) Unable to start oneshot service:  swap" }
+exit $?

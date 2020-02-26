@@ -1,6 +1,6 @@
-################################################
-# This service runs fsck on the root partition #
-################################################
+#################################################
+# This service runs fsck on the root filesystem #
+#################################################
 
 foreground { echo "Starting oneshot service:  fsck-root" }
 ifelse { [ -r /etc/fastboot ] }

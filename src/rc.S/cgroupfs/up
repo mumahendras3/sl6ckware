@@ -1,6 +1,6 @@
-############################################################################
-# This service mounts Control Groups filesystem interface on /sys/fs/cgroup
-############################################################################
+#############################################################################
+# This service mounts Control Groups filesystem interface on /sys/fs/cgroup #
+#############################################################################
 
 foreground { echo "Starting oneshot service:  cgroupfs" }
 # Check if the kernel supports cgroupfs
@@ -20,7 +20,10 @@ ifelse -n { [ -d /sys/fs/cgroup ] }
 }
 # See linux-*/Documentation/cgroups/cgroups.txt (section 1.6)
 # Check if we have some tools to autodetect the available cgroup controllers
-ifelse -n { [ -x /bin/cut -a -x /bin/tail ] }
+backtick -n -D "" CHECK { redirfd -w 2 /dev/null which cut tail }
+importas -u check CHECK
+multidefine -d"\n" $check { cut tail }
+ifelse -n { [ -x $cut -a -x $tail ] }
 {
   # We can't use autodetection so fall back mounting them all together
   mount -t cgroup cgroup /sys/fs/cgroup

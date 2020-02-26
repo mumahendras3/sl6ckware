@@ -1,6 +1,6 @@
-########################################################
-# This service configures the system clock at boot time
-########################################################
+#########################################################
+# This service configures the system clock at boot time #
+#########################################################
 
 foreground { echo "Starting oneshot service:  system-clock" }
 # Set the tick and frequency for the system clock.
@@ -16,16 +16,19 @@ ifthenelse { [ -r /etc/default/adjtimex ] }
   }
   ifelse { adjtimex --tick $tick --frequency $freq }
   {
-    echo "Setting the system clock rate:  /sbin/adjtimex --tick $tick --frequency $freq"
+    echo "Setting the system clock rate:  adjtimex --tick $tick --frequency $freq"
   }
   echo "Failed to set system clock with adjtimex, possibly invalid parameters? (TICK=${tick} FREQ=${freq})"
 }
 {
-  foreground { echo "Setting the system clock rate:  /sbin/adjtimex --tick 10000 --frequency 0" }
+  foreground { echo "Setting the system clock rate:  adjtimex --tick 10000 --frequency 0" }
   adjtimex --tick 10000 --frequency 0
 }
 # Set the system time from the hardware clock using hwclock --hctosys.
-ifelse -n { [ -x /sbin/hwclock ] }
+# But first, check if hwclock exists.
+backtick -n -D "" HWCLOCK { redirfd -w 2 /dev/null which hwclock }
+importas -u hwclock HWCLOCK
+ifelse -n { [ -x $hwclock ] }
 {
   foreground {
   echo "hwclock not found! Aborting...
