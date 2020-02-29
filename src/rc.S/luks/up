@@ -33,13 +33,13 @@
 
 foreground { echo "Starting oneshot service:  luks" }
 # Check if the system is configured to use LUKS
-backtick -n -D "" CRYPTSETUP { redirfd -w 2 /dev/null which cryptsetup }
+backtick -n CRYPTSETUP { redirfd -w 2 /dev/null which cryptsetup }
 importas -u cryptsetup CRYPTSETUP
 ifelse -n { [ -s /etc/crypttab -a -x $cryptsetup ] }
 {
   foreground {
   echo "This system is not configured to use LUKS! Aborting...
-(ERROR) Unable to start oneshot service:  luks"
+(ERROR) Failed to start oneshot service:  luks"
   }
   exit 1
 }
