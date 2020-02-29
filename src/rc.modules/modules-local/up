@@ -1,0 +1,13 @@
+###########################################################################
+# This service runs a local (sysadmin-version) of rc.modules if it exists #
+###########################################################################
+
+foreground { echo "Starting oneshot service:  modules-local" }
+ifelse -n { [ -x /etc/rc.d/rc.modules.local ] }
+{
+  foreground {
+  echo "No /etc/rc.d/rc.modules.local found or it's not executable! Aborting...
+(ERROR) Failed to start oneshot service:  modules-local"
+  }
+}
+/etc/rc.d/rc.modules.local
