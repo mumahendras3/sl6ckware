@@ -5,7 +5,7 @@
 foreground { echo "Starting oneshot service:  fsck-root" }
 ifelse { [ -r /etc/fastboot ] }
 {
-  foreground { echo "Fastboot is requested. Skipping filesystem checking..." }
+  foreground { echo "Fastboot is requested. Skipping root filesystem checking..." }
   exit 0
 }
 # Test to see if the root partition is read-only, like it ought to be.
