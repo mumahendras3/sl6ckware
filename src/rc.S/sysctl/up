@@ -2,6 +2,7 @@
 # This service configures kernel parameters #
 #############################################
 
+foreground { echo "Starting oneshot service:  sysctl" }
 backtick -n SYSCTL { redirfd -w 2 /dev/null which sysctl }
 importas -u sysctl SYSCTL
 ifelse -n { [ -x $sysctl ] }
