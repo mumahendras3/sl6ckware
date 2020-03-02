@@ -4,10 +4,7 @@
 
 foreground { echo "Starting oneshot service:  fsck-root" }
 ifelse { [ -r /etc/fastboot ] }
-{
-  foreground { echo "Fastboot is requested. Skipping root filesystem checking..." }
-  exit 0
-}
+{ echo "Fastboot is requested. Skipping root filesystem checking..." }
 # Test to see if the root partition is read-only, like it ought to be.
 ifthenelse {
   pipeline { grep -w / /proc/mounts }
@@ -30,15 +27,12 @@ ifthenelse {
 # If we're using F2FS for the root filesystem, don't check it as it doesn't
 # allow checking a read-only filesystem:
 ifelse { grep -q " / f2fs " /proc/mounts }
-{
-  foreground { echo "F2FS is used as the root filesystem. Skipping filesystem checking..." }
-  exit 0
-}
+{ echo "F2FS is used as the root filesystem. Skipping root filesystem checking..." }
 # Check the root filesystem:
 foreground { echo "Checking root filesystem:" }
 backtick FORCEFSCK
 {
-  if -t { [ -r /etc/forcefsck ] }
+  if { [ -r /etc/forcefsck ] }
   printf -f
 }
 importas -u forcefsck FORCEFSCK
