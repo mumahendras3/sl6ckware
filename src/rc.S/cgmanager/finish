@@ -1,0 +1,4 @@
+#!/bin/execlineb -P
+
+# Cleanup some leftover files
+rm -rf /run/cgmanager /sys/fs/cgroup/cgmanager

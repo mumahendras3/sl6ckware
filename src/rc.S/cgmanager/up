@@ -8,4 +8,4 @@
 backtick -in CGMANAGER { which cgmanager }
 importas -u cgmanager CGMANAGER
 foreground { echo "Starting cgmanager:  ${cgmanager}" }
-emptyenv $cgmanager
+s6-notifyoncheck -c "cgm ping" emptyenv $cgmanager
