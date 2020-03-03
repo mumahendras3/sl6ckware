@@ -8,7 +8,7 @@
 
 foreground { echo "Starting oneshot service:  mount-local" }
 foreground { echo "Mounting non-root local filesystems:" }
-ifelse { redirfd -w 1 /dev/null findmnt devpts }
+ifelse { grep -wq devpts /proc/mounts }
 {
   # This pipe after the mount command is just to convert the new
   # mount verbose output back to the old format that contained
