@@ -12,6 +12,11 @@ ifelse -n { [ -d /run ] }
   }
   exit 1
 }
-# Check if a tmpfs is already mounted on /run
-if -nt { grep -wq "tmpfs /run tmpfs" /proc/mounts }
-mount -v -n -t tmpfs tmpfs /run -o mode=0755,size=32M,nodev,nosuid,noexec
+foreground {
+  # Check if a tmpfs is already mounted on /run
+  if -nt { grep -wq "tmpfs /run tmpfs" /proc/mounts }
+  mount -v -n -t tmpfs tmpfs /run -o mode=0755,size=32M,nodev,nosuid,noexec
+}
+# Bind mount /run to /var/run
+if -tn { mountpoint -q /var/run }
+mount -vo bind /run /var/run
