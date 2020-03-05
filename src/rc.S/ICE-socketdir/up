@@ -1,0 +1,9 @@
+##############################################################
+# Create .ICE-unix socket directory in /tmp with the correct #
+# permissions and ownership as required by the Xorg server   #
+##############################################################
+
+foreground { echo "Starting oneshot service:  ICE-socketdir" }
+if -t { [ ! -d /tmp/.ICE-unix ] }
+if { mkdir /tmp/.ICE-unix }
+chmod 1777 /tmp/.ICE-unix

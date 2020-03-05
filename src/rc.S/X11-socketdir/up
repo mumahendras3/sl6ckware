@@ -1,0 +1,9 @@
+##############################################################
+# Create .X11-unix socket directory in /tmp with the correct #
+# permissions and ownership as required by the Xorg server   #
+##############################################################
+
+foreground { echo "Starting oneshot service:  X11-socketdir" }
+if -t { [ ! -d /tmp/.X11-unix ] }
+if { mkdir /tmp/.X11-unix }
+chmod 1777 /tmp/.X11-unix
