@@ -1,0 +1,17 @@
+###################################################
+# Use /etc/random-seed to initialize /dev/urandom #
+###################################################
+
+foreground { echo "Starting oneshot service:  random-seed" }
+ifelse { [ ! -f /etc/random-seed ] }
+{
+  foreground { echo "Feeding /dev/urandom with entropies..." }
+  foreground { sleep 10s }
+  # Feeding some additional entropy from /var/lib/pkgtools/packages/* contents
+  redirfd -w 1 /dev/urandom
+  elglob file /var/lib/pkgtools/packages/*
+  cat $file
+}
+foreground { echo "Using /etc/random-seed to initialize /dev/urandom..." }
+redirfd -w 1 /dev/urandom
+cat /etc/random-seed

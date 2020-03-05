@@ -1,0 +1,22 @@
+###############################################################
+# Carry an entropy pool between reboots to improve randomness #
+# by saving random seed from /dev/urandom in /etc/random-seed #
+###############################################################
+
+foreground { echo "Stopping oneshot service:  random-seed" }
+foreground { echo "Saving random seed from /dev/urandom in /etc/random-seed..." }
+# Use the pool size from /proc, or 4096 bits
+ifthenelse { [ -r /proc/sys/kernel/random/poolsize ] }
+{
+  backtick POOLSIZE { cat /proc/sys/kernel/random/poolsize }
+  importas -u poolsize POOLSIZE
+  backtick BS { expr $poolsize / 8 }
+  importas -u bs BS
+  dd if=/dev/urandom of=/etc/random-seed count=1 bs=${bs}
+}
+{ dd if=/dev/urandom of=/etc/random-seed count=1 bs=512 }
+# Check the exit status and print an error message for non-zero exit status
+importas -u ? ?
+ifelse { [ $? = 0 ] } { chmod 600 /etc/random-seed }
+foreground { echo "(ERROR) Unable to stop oneshot service:  random-seed" }
+exit $?

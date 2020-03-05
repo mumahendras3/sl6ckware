@@ -1,0 +1,8 @@
+############################
+# Create a fresh utmp file #
+############################
+
+foreground { echo "Starting oneshot service:  utmp" }
+if { touch /var/run/utmp }
+if { chown root:utmp /var/run/utmp }
+chmod 664 /var/run/utmp
