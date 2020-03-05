@@ -7,9 +7,8 @@ ifelse { [ -r /etc/fastboot ] }
 { echo "Fastboot is requested. Skipping root filesystem checking..." }
 # Test to see if the root partition is read-only, like it ought to be.
 ifthenelse {
-  pipeline { grep -w / /proc/mounts }
-  pipeline { cut -f4 -d" " }
-  grep -wq ro
+  redirfd -w 1 /dev/null
+  findmnt -nr -M / -O ro
 }
 { echo "Testing root filesystem status:  read-only filesystem" }
 {
