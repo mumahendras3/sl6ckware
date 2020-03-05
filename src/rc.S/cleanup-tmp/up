@@ -1,0 +1,14 @@
+#########################################################
+# Clean up some temporary files and directories in /tmp #
+# and its subdirectories                                #
+#########################################################
+
+foreground { echo "Starting oneshot service:  cleanup-tmp" }
+multisubstitute {
+  elglob -0 file1 /tmp/.Xauth*
+  elglob -0 file2 /tmp/kde-[a-zA-Z]*
+  elglob -0 file3 /tmp/ksocket-[a-zA-Z]*
+  elglob -0 file4 /tmp/hsperfdata_[a-zA-Z]*
+  elglob -0 file5 /tmp/plugtmp*
+}
+rm -rf $file1 $file2 $file3 $file4 $file5

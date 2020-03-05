@@ -1,0 +1,4 @@
+# Comment out remount-root and uncomment mount-local
+# if you use separate partition for /tmp
+remount-root
+#mount-local
