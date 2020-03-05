@@ -1,11 +1,11 @@
-########################################################
-# This service configures the system time at boot time #
-########################################################
+#######################################################################
+# Set the system time from the hardware clock using hwclock --hctosys #
+#######################################################################
 
 foreground { echo "Starting oneshot service:  system-time" }
 # Set the system time from the hardware clock using hwclock --hctosys.
 # But first, check if hwclock exists.
-backtick -n -D "" HWCLOCK { redirfd -w 2 /dev/null which hwclock }
+backtick -n HWCLOCK { which hwclock }
 importas -u hwclock HWCLOCK
 ifelse -n { [ -x $hwclock ] }
 {

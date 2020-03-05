@@ -1,6 +1,5 @@
 #################################################################################
-# This service unlocks all LUKS encrypted devices that are found inside         #
-# /etc/crypttab when started and locks these devices again when stopped.        #
+# Unlock all LUKS encrypted devices that are found inside /etc/crypttab.        #
 #                                                                               #
 # Some notes on /etc/crypttab in Slackware:                                     #
 # Only LUKS formatted volumes are supported (except for swap)                   #
@@ -33,7 +32,7 @@
 
 foreground { echo "Starting oneshot service:  luks" }
 # Check if the system is configured to use LUKS
-backtick -n CRYPTSETUP { redirfd -w 2 /dev/null which cryptsetup }
+backtick -n CRYPTSETUP { which cryptsetup }
 importas -u cryptsetup CRYPTSETUP
 ifelse -n { [ -s /etc/crypttab -a -x $cryptsetup ] }
 {
