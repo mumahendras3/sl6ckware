@@ -6,7 +6,6 @@ foreground { echo "Starting oneshot service:  random-seed" }
 ifelse { [ ! -f /etc/random-seed ] }
 {
   foreground { echo "Feeding /dev/urandom with entropies..." }
-  foreground { sleep 10s }
   # Feeding some additional entropy from /var/lib/pkgtools/packages/* contents
   redirfd -w 1 /dev/urandom
   elglob file /var/lib/pkgtools/packages/*
