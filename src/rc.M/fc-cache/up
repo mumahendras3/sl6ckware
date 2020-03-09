@@ -1,0 +1,10 @@
+#############################
+# Update the X font indexes #
+#############################
+
+foreground { echo "Starting oneshot service:  fc-cache" }
+backtick -ni FC-CACHE { which fc-cache }
+importas -u fc-cache FC-CACHE
+if { [ -x $fc-cache ] }
+foreground { echo "Updating X font indexes:  $fc-cache -f" }
+$fc-cache -f
