@@ -1,0 +1,7 @@
+##################################################
+# Add any system defined additional device nodes #
+##################################################
+
+foreground { echo "Starting oneshot service:  system-nodes" }
+elglob -0 node /lib/udev/devices/*
+cp --preserve=all --recursive --update $node /dev

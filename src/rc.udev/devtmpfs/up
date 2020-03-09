@@ -1,0 +1,9 @@
+##########################
+# Mount devtmpfs on /dev #
+##########################
+
+foreground { echo "Starting oneshot service:  devtmpfs" }
+if -tn { mountpoint -q /dev }
+ifelse { grep -wq devtmpfs /proc/filesystems }
+{ mount -n -t devtmpfs -o size=8M devtmpfs /dev }
+mount -n -o mode=0755 -t tmpfs -o size=8M tmpfs /dev

@@ -1,0 +1,7 @@
+###################################################
+# Add any locally defined additional device nodes #
+###################################################
+
+foreground { echo "Starting oneshot service:  local-nodes" }
+elglob -0 node /etc/udev/devices/*
+cp --preserve=all --recursive --update $node /dev
