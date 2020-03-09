@@ -4,7 +4,7 @@
 
 foreground { echo "Starting oneshot service:  sysfs" }
 # Check if sysfs is already mounted
-if -nt { grep -wq "sysfs /sys sysfs" /proc/mounts }
+if -nt { mountpoint -q /sys }
 # Check if /sys exists and is a directory
 ifelse -n { [ -d /sys ] }
 {

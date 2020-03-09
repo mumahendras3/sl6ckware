@@ -4,7 +4,7 @@
 
 foreground { echo "Starting oneshot service:  tmpfs-run" }
 # Check if a tmpfs is already mounted on /run
-if -nt { grep -wq "tmpfs /run tmpfs" /proc/mounts }
+if -nt { mountpoint -q /run }
 # Check if /run exists and is a directory
 ifelse -n { [ -d /run ] }
 {
