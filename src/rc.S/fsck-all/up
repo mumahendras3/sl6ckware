@@ -1,6 +1,6 @@
-################################################
-# This service checks all non-root filesystems #
-################################################
+######################################################
+# Check all non-root filesystems found in /etc/fstab #
+######################################################
 
 foreground { echo "Starting oneshot service:  fsck-all" }
 ifelse { [ -r /etc/fastboot ] }

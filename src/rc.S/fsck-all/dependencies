@@ -1,0 +1,3 @@
+# Uncomment the following if you use LVM or/and LUKS
+#lvm
+#luks
