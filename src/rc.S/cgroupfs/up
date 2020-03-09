@@ -20,7 +20,7 @@ ifelse -n { [ -d /sys/fs/cgroup ] }
 }
 # See linux-*/Documentation/cgroups/cgroups.txt (section 1.6)
 # Check if we have some tools to autodetect the available cgroup controllers
-backtick CHECK { which cut tail }
+backtick -i CHECK { which cut tail }
 importas -u check CHECK
 multidefine -d"\n" $check { cut tail }
 ifelse -n { [ -x $cut -a -x $tail ] }
@@ -33,7 +33,7 @@ if { mount -t tmpfs -o mode=0755,size=8M cgroup_root /sys/fs/cgroup }
 # Autodetect available controllers and mount them in subfolders
 pipeline { cut -f1 /proc/cgroups }
 pipeline { tail -n +2 }
-forstdin -p -n CONTROLLER
+forstdin -pd"\n" CONTROLLER
 importas -u controller CONTROLLER
 if { mkdir /sys/fs/cgroup/${controller} }
 mount -t cgroup -o $controller $controller /sys/fs/cgroup/${controller}
