@@ -1,2 +1,3 @@
-modprobe-dm-mod
-udev-add
+devtmpfs
+# If you use LVM on top of LUKS, uncomment the following.
+#luks
