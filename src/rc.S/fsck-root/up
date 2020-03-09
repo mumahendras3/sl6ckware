@@ -1,10 +1,14 @@
-#################################################
-# This service runs fsck on the root filesystem #
-#################################################
+###################################
+# Run fsck on the root filesystem #
+###################################
 
 foreground { echo "Starting oneshot service:  fsck-root" }
 ifelse { [ -r /etc/fastboot ] }
 { echo "Fastboot is requested. Skipping root filesystem checking..." }
+# If we're using F2FS for the root filesystem, don't check it as it doesn't
+# allow checking a read-only filesystem:
+ifelse { grep -q " / f2fs " /proc/mounts }
+{ echo "F2FS is used as the root filesystem. Skipping root filesystem checking..." }
 # Test to see if the root partition is read-only, like it ought to be.
 ifthenelse {
   redirfd -w 1 /dev/null
@@ -23,10 +27,6 @@ ifthenelse {
   }
   mount -n -o remount,ro /
 }
-# If we're using F2FS for the root filesystem, don't check it as it doesn't
-# allow checking a read-only filesystem:
-ifelse { grep -q " / f2fs " /proc/mounts }
-{ echo "F2FS is used as the root filesystem. Skipping root filesystem checking..." }
 # Check the root filesystem:
 foreground { echo "Checking root filesystem:" }
 backtick FORCEFSCK
