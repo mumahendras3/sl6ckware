@@ -1,0 +1,14 @@
+#!/bin/execlineb -P
+
+#####################################
+# Start the system-wide dbus-daemon #
+#####################################
+
+foreground { echo "Starting longrun service:  messagebus" }
+backtick -i CHECK { which dbus-uuidgen dbus-daemon }
+importas -u check CHECK
+multidefine -d"\n" $check { dbus-uuidgen dbus-daemon }
+if { [ -x $dbus-uuidgen -a -x $dbus-daemon ] }
+foreground { echo "Starting system message bus:  ${dbus-uuidgen} --ensure ; ${dbus-daemon} --system" }
+if { $dbus-uuidgen --ensure }
+emptyenv $dbus-daemon --system --nofork --nopidfile --print-pid=3 --syslog-only
