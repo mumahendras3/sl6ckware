@@ -1,0 +1,16 @@
+#!/bin/execlineb -P
+
+####################################
+# Start the haveged entropy daemon #
+####################################
+
+foreground { echo "Starting longrun service:  haveged" }
+backtick -ni HAVEGED { which haveged }
+export HAVEGED_OPTS "-w 1024 -v 1 -F"
+multisubstitute {
+  importas -u haveged HAVEGED
+  importas -u haveged_opts HAVEGED_OPTS
+}
+if { [ -x $haveged ] }
+foreground { echo "Starting haveged entropy daemon:  ${haveged}" }
+emptyenv $haveged $haveged_opts
