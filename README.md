@@ -9,3 +9,13 @@
 - rc.serial
 - rc.M
 - rc.K
+- rc.pcmcia
+- rc.inet1
+
+### Create the -log service
+- haveged
+- udevd
+- cgmanager
+- klogd
+- syslogd
+- udevd
