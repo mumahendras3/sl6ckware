@@ -1,8 +1,10 @@
-#####################################
-# This service mounts sysfs on /sys #
-#####################################
+#######################
+# Mount sysfs on /sys #
+#######################
 
 foreground { echo "Starting oneshot service:  sysfs" }
+# Check if sysfs is already mounted
+if -nt { grep -wq "sysfs /sys sysfs" /proc/mounts }
 # Check if /sys exists and is a directory
 ifelse -n { [ -d /sys ] }
 {
@@ -21,6 +23,4 @@ ifelse -n { grep -wq sysfs /proc/filesystems }
   }
   exit 1
 }
-# Check if sysfs is already mounted
-if -tn { grep -wq "sysfs /sys sysfs" /proc/mounts }
 mount -v sysfs /sys -n -t sysfs

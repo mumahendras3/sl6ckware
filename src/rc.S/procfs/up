@@ -1,8 +1,10 @@
-#######################################
-# This service mounts procfs on /proc #
-#######################################
+#########################
+# Mount procfs on /proc #
+#########################
 
 foreground { echo "Starting oneshot service:  procfs" }
+# Check if /proc is already mounted
+if -nt { mountpoint -q /proc }
 # Check if /proc exists and is a directory
 ifelse -n { [ -d /proc ] }
 {
@@ -12,6 +14,4 @@ ifelse -n { [ -d /proc ] }
   }
   exit 1
 }
-# Check if /proc is already mounted
-if -nt { mountpoint -q /proc }
 mount -v proc /proc -n -t proc
