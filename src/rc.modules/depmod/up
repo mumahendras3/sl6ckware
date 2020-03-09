@@ -1,16 +1,20 @@
-##################################################################
-# This service runs depmod to generate modules.dep and map files #
-##################################################################
+####################################################
+# Run depmod to generate modules.dep and map files #
+####################################################
 
 foreground { echo "Starting oneshot service:  depmod" }
-# Determine the version of the running kernel:
-backtick -n RELEASE { uname -r }
-importas -u release RELEASE
-# Update kernel module dependencies:
+backtick -ni DEPMOD { which depmod }
+# Determine the version of the running kernel
+backtick -ni RELEASE { uname -r }
+multisubstitute {
+  importas -u release RELEASE
+  importas -u depmod DEPMOD
+}
+# Update kernel module dependencies
 ifelse { [ -e /lib/modules/${release}/modules.dep ] }
 {
-  foreground { echo "Updating module dependency list for ${release}:  depmod --quick" }
-  depmod --quick
+  foreground { echo "Updating module dependency list for ${release}:  ${depmod} --quick" }
+  $depmod --quick
 }
-foreground { echo "Creating module dependency list for ${release}:  depmod --all" }
-depmod --all
+foreground { echo "Creating module dependency list for ${release}:  ${depmod} --all" }
+$depmod --all
