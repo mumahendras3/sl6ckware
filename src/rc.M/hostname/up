@@ -1,0 +1,17 @@
+#############################
+# Set the system's hostname #
+#############################
+
+foreground { echo "Starting oneshot service:  hostname" }
+ifelse { [ ! -r /etc/HOSTNAME ] }
+{
+  # fall back on this old default:
+  background {
+    redirfd -w 1 /etc/HOSTNAME
+    echo "darkstar.example.net"
+  }
+  hostname darkstar.example.net
+}
+backtick -n HOSTNAME { cat /etc/HOSTNAME }
+importas -u hostname HOSTNAME
+hostname $hostname

@@ -1,0 +1,14 @@
+##################################################
+# Use the setterm utility to set the terminal    #
+# attributes (primarily used for screen blanking #
+# and power management)                          #
+##################################################
+
+foreground { echo "Starting oneshot service:  setterm" }
+backtick -n SETTERM { which setterm }
+importas -u setterm SETTERM
+# Screen blanks after 15 minutes idle time, and powers down in one hour
+# if the kernel supports APM or ACPI power management (default setting)
+$setterm -blank 15 -powersave powerdown -powerdown 60
+# Screen does not blank or use power management features
+#$setterm -blank 0 -powersave off -powerdown 0
