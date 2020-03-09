@@ -1,0 +1,16 @@
+#!/bin/execlineb -P
+
+###################################
+# Start the kernel logging daemon #
+###################################
+
+foreground { echo "Starting longrun service:  klogd" }
+export KLOGD_OPTIONS "-c 3 -x"
+backtick -ni KLOGD { which klogd }
+multisubstitute
+{
+  importas -u klogd KLOGD
+  importas -D "" -u klogd_options KLOGD_OPTIONS
+}
+foreground { echo "Starting klogd:  ${klogd} -n ${klogd_options}" }
+emptyenv $klogd -n $klogd_options
