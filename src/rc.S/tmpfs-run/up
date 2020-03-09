@@ -1,6 +1,6 @@
-#######################################
-# This service mounts a tmpfs on /run #
-#######################################
+#########################
+# Mount a tmpfs on /run #
+#########################
 
 foreground { echo "Starting oneshot service:  tmpfs-run" }
 # Check if /run exists and is a directory
