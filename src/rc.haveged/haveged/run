@@ -12,5 +12,5 @@ multisubstitute {
   importas -u haveged_opts HAVEGED_OPTS
 }
 if { [ -x $haveged ] }
-foreground { echo "Starting haveged entropy daemon:  ${haveged}" }
+foreground { echo "Starting haveged entropy daemon:  ${haveged} ${haveged_opts}" }
 emptyenv $haveged $haveged_opts
