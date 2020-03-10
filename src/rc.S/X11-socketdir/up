@@ -5,5 +5,4 @@
 
 foreground { echo "Starting oneshot service:  X11-socketdir" }
 if -t { [ ! -d /tmp/.X11-unix ] }
-if { mkdir /tmp/.X11-unix }
-chmod 1777 /tmp/.X11-unix
+mkdir -m1777 /tmp/.X11-unix

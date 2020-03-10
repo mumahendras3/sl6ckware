@@ -10,5 +10,8 @@ multisubstitute {
   elglob -0 file3 /tmp/ksocket-[a-zA-Z]*
   elglob -0 file4 /tmp/hsperfdata_[a-zA-Z]*
   elglob -0 file5 /tmp/plugtmp*
+  elglob -0 file6 /tmp/.X*lock
+  elglob -0 file7 /tmp/.X11-unix/*
+  elglob -0 file8 /tmp/hunt*
 }
-rm -rf $file1 $file2 $file3 $file4 $file5
+rm -rf $file1 $file2 $file3 $file4 $file5 $file6 $file7 $file8
