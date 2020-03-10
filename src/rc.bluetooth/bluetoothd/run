@@ -1,0 +1,28 @@
+#!/bin/execlineb -P
+
+##############################
+# Start the bluetooth daemon #
+##############################
+
+foreground { echo "Starting longrun service:  bluetoothd" }
+ifelse { [ ! -d /sys/class/bluetooth ] }
+{
+  foreground {
+    echo "This system doesn't support bluetooth!
+(ERROR) Failed to start longrun service:  bluetoothd"
+  }
+  exit 1
+}
+backtick -ni BLUETOOTHD { which bluetoothd }
+# bluetoothd is ready after calling rfkill_init() function, which will
+# open /dev/rfkill and read from it. We will wait for ACCESS event on
+# /dev/rfkill to happen and use it as bluetoothd readiness indicator.
+# It's not ideal but better than no readiness notification at all.
+background {
+  fdmove 1 3
+  inotifywait -qe access /dev/rfkill
+}
+fdclose 3
+importas -u bluetoothd BLUETOOTHD
+foreground { echo "Starting bluetoothd:  ${bluetoothd}" }
+emptyenv $bluetoothd
