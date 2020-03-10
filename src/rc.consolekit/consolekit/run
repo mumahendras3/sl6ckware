@@ -6,11 +6,12 @@
 
 foreground { echo "Starting longrun service:  consolekit" }
 backtick -ni CONSOLE-KIT-DAEMON { which console-kit-daemon }
-# Using the appearance of ConsoleKit directory in /var/run console-kit-daemon
-# readiness indicator
+# ConsoleKit renamed database~ to database in /var/run/ConsoleKit when it's ready.
+# We will use it for its readiness indicator.
+if { mkdir -p /var/run/ConsoleKit }
 background {
   fdmove 1 3
-  inotifywait -q --include ConsoleKit /var/run
+  inotifywait -qe moved_to --include database /var/run/ConsoleKit
 }
 fdclose 3
 importas -u console-kit-daemon CONSOLE-KIT-DAEMON
