@@ -5,6 +5,14 @@
 foreground { echo "Starting oneshot service:  hciconfig" }
 pipeline { grep ACTIVE_HCI_DEVICES_ON_BOOT= /etc/default/bluetooth }
 pipeline { cut -f2 -d\" }
-forstdin -pnd" \n" DEV
+forstdin -o 0 -nd" \n" DEV
 importas -u dev DEV
+ifelse { [ -z $dev ] }
+{
+  foreground {
+    echo "No HCI devices listed in /etc/default/bluetooth! Aborting...
+(ERROR) Failed to start oneshot service:  hciconfig"
+  }
+  exit 1
+}
 hciconfig $dev up

@@ -6,6 +6,15 @@
 foreground { echo "Starting oneshot service:  sdptool" }
 pipeline { grep SDPTOOL_OPTIONS= /etc/default/bluetooth }
 pipeline { cut -f2 -d\" }
-forstdin -nd";\n" OPTION
+forstdin -o 0 -nd";\n" OPTION
+importas test OPTION
+ifelse { [ -z $test ] }
+{
+  foreground {
+    echo "No SDP operations listed in /etc/default/bluetooth! Aborting...
+(ERROR) Failed to start oneshot service:  sdptool"
+  }
+  exit 1
+}
 importas -usd" " option OPTION
 sdptool $option
