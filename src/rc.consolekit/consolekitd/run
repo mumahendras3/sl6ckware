@@ -4,7 +4,7 @@
 # Start the consolekit daemon #
 ###############################
 
-foreground { echo "Starting longrun service:  consolekit" }
+foreground { echo "Starting longrun service:  consolekitd" }
 backtick -ni CONSOLE-KIT-DAEMON { which console-kit-daemon }
 # ConsoleKit renamed database~ to database in /var/run/ConsoleKit when it's ready.
 # We will use it for its readiness indicator.
