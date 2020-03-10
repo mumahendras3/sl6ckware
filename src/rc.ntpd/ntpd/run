@@ -14,5 +14,5 @@ background {
 }
 fdclose 3
 importas -u ntpd NTPD
-foreground { echo "Starting NTP daemon:  ${ntpd} -g -u ntp:ntp" }
-emptyenv $ntpd -g -u ntp:ntp
+foreground { echo "Starting NTP daemon:  ${ntpd} -gn -u ntp:ntp" }
+emptyenv $ntpd -gn -u ntp:ntp
