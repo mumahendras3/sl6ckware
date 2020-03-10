@@ -1,0 +1,11 @@
+#!/bin/execlineb -P
+
+###################################
+# Start the NetworkManager daemon #
+###################################
+
+foreground { echo "Starting longrun service:  networkmanager" }
+backtick -ni NETWORKMANAGER { which NetworkManager }
+importas -u NetworkManager NETWORKMANAGER
+foreground { echo "Starting NetworkManager daemon:  ${NetworkManager} -n" }
+emptyenv $NetworkManager -n
