@@ -20,7 +20,7 @@ ifelse { grep -wq devpts /proc/mounts }
   forstdin -d"\n" DEV
   importas -u dev DEV
   pipeline { mount }
-  grep " ${dev} "
+  grep $dev
 }
 pipeline { mount -avt nonfs,nosmbfs,nocifs,noproc,nosysfs }
 pipeline { grep successfully }
@@ -29,4 +29,4 @@ pipeline { tr -d " " }
 forstdin -d"\n" DEV
 importas -u dev DEV
 pipeline { mount }
-grep " ${dev} "
+grep $dev
