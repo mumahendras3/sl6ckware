@@ -1,0 +1,11 @@
+################################################################
+# Run a set of SDP (Service Discovery Protocol) operations for #
+# bluetooth devices at boot time                               #
+################################################################
+
+foreground { echo "Starting oneshot service:  sdptool" }
+pipeline { grep SDPTOOL_OPTIONS= /etc/default/bluetooth }
+pipeline { cut -f2 -d\" }
+forstdin -nd";\n" OPTION
+importas -usd" " option OPTION
+sdptool $option
