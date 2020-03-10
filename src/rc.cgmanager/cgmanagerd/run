@@ -4,7 +4,7 @@
 # Start the cgroup manager (cgmanager) daemon #
 ###############################################
 
-foreground { echo "Starting longrun service:  cgmanager" }
+foreground { echo "Starting longrun service:  cgmanagerd" }
 # Search for cgmanager binary location
 backtick -in CGMANAGER { which cgmanager }
 importas -u cgmanager CGMANAGER
