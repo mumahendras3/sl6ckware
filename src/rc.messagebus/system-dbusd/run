@@ -4,7 +4,7 @@
 # Start the system-wide dbus-daemon #
 #####################################
 
-foreground { echo "Starting longrun service:  messagebus" }
+foreground { echo "Starting longrun service:  system-dbusd" }
 backtick -ni DBUS-UUIDGEN { which dbus-uuidgen }
 backtick -ni DBUS-DAEMON { which dbus-daemon }
 export DBUS-DAEMON_OPTS "--system --nofork --nopidfile --print-pid=3 --syslog-only"
