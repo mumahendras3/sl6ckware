@@ -10,12 +10,12 @@ importas -u NetworkManager NETWORKMANAGER
 foreground { echo "Starting NetworkManager daemon:  ${NetworkManager} -n" }
 s6-notifyoncheck -c "\
 pipeline {
-  dbus-send --system \
-    --dest=org.freedesktop.DBus \
-    --type=method_call \
-    --print-reply=literal \
-    /org/freedesktop/DBus \
-    org.freedesktop.DBus.NameHasOwner \
+  dbus-send --system
+    --dest=org.freedesktop.DBus
+    --type=method_call
+    --print-reply=literal
+    /org/freedesktop/DBus
+    org.freedesktop.DBus.NameHasOwner
     string:org.freedesktop.NetworkManager
 }
 grep -wq true"
