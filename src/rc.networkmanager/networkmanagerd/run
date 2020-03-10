@@ -4,7 +4,7 @@
 # Start the NetworkManager daemon #
 ###################################
 
-foreground { echo "Starting longrun service:  networkmanager" }
+foreground { echo "Starting longrun service:  networkmanagerd" }
 backtick -ni NETWORKMANAGER { which NetworkManager }
 importas -u NetworkManager NETWORKMANAGER
 foreground { echo "Starting NetworkManager daemon:  ${NetworkManager} -n" }
