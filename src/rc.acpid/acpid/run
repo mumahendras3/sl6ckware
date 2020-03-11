@@ -1,0 +1,23 @@
+#!/bin/execlineb -P
+
+#########################
+# Start the ACPI daemon #
+#########################
+
+foreground { echo "Starting longrun service:  acpid" }
+backtick -ni ACPID { which acpid }
+ifelse { [ ! -d /proc/acpi ] }
+{
+  foreground { echo "This system doesn't support ACPI! Aborting...
+(ERROR) Failed to start longrun service:  acpid"
+  }
+  exit 1
+}
+# Using acpid.socket appearance as readiness indicator
+background {
+  fdmove 1 3
+  inotifywait -qe create --include acpid.socket /var/run
+}
+importas -u acpid ACPID
+foreground { echo "Starting ACPI daemon:  ${acpid} -f" }
+$acpid -f
