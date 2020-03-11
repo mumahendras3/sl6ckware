@@ -8,7 +8,6 @@ multisubstitute {
   elglob -0 file1 /var/lock/*
   elglob -0 file2 /var/lib/pkgtools/setup/tmp/*
   elglob -0 file3 /var/log/setup/tmp/*
-  elglob -0 file4 /var/run/*
-  elglob -0 file5 /var/spool/uucp/*
+  elglob -0 file4 /var/spool/uucp/*
 }
-rm -rf /var/state/saslauthd/saslauthd.pid $file1 $file2 $file3 $file4 $file5
+rm -rf /var/state/saslauthd/saslauthd.pid $file1 $file2 $file3 $file4
