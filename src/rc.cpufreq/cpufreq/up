@@ -1,0 +1,71 @@
+##################################################################################
+# Set the default CPU scaling governor at boot time. Some possible choices are:  #
+# performance:  The CPUfreq governor "performance" sets the CPU statically       #
+#               to the highest frequency within the borders of scaling_min_freq  #
+#               and scaling_max_freq.                                            #
+# powersave:    The CPUfreq governor "powersave" sets the CPU statically to the  #
+#               lowest frequency within the borders of scaling_min_freq and      #
+#               scaling_max_freq.                                                #
+# userspace:    The CPUfreq governor "userspace" allows the user, or any         #
+#               userspace program running with UID "root", to set the CPU to a   #
+#               specific frequency by making a sysfs file "scaling_setspeed"     #
+#               available in the CPU-device directory.                           #
+# ondemand:     The CPUfreq governor "ondemand" sets the CPU depending on the    #
+#               current usage.                                                   #
+# conservative: The CPUfreq governor "conservative", much like the "ondemand"    #
+#               governor, sets the CPU depending on the current usage. It        #
+#               differs in behaviour in that it gracefully increases and         #
+#               decreases the CPU speed rather than jumping to max speed the     #
+#               moment there is any load on the CPU.                             #
+# schedutil:    The CPUfreq governor "schedutil" aims at better integration with #
+#               the Linux kernel scheduler. Load estimation is achieved through  #
+#               the scheduler's Per-Entity Load Tracking (PELT) mechanism, which #
+#               also provides information about the recent load.                 #
+##################################################################################
+
+foreground { echo "Starting oneshot service:  cpufreq" }
+# If you need to load a specific CPUFreq driver, load it here.  Most likely you don't.
+#if { modprobe acpi-cpufreq }
+backtick -ni SCALING_DRIVER { cat /sys/devices/system/cpu/cpu0/cpufreq/scaling_driver }
+envfile /etc/default/cpufreq
+multisubstitute {
+  importas -u scaling_driver SCALING_DRIVER
+  importas -D "" -u scaling_governor SCALING_GOVERNOR
+  elglob -0 /sys/devices/system/cpu/cpu*/cpufreq/scaling_governor
+}
+# Attempt to apply the CPU scaling governor setting.  This may or may not
+# actually override the default value depending on if the choice is supported
+# by the architecture, processor, or underlying CPUFreq driver.  For example,
+# processors that use the Intel P-state driver will only be able to set
+# performance or powersave here.
+ifthenelse { [ $scaling_driver = intel_pstate ] }
+{
+  ifelse { [ -n $scaling_governor ] }
+  {
+    pipeline { echo $scaling_governor }
+    redirfd -w 1 /dev/null
+    tee $file
+  }
+  # For CPUs using intel_pstate, the performance governor will be used by default.
+  # This also provides power savings on Intel processors while avoiding the ramp-up lag
+  # present when using the powersave governor (which is the default if ondemand is
+  # requested on these machines).
+  pipeline { echo performance }
+  redirfd -w 1 /dev/null
+  tee $file
+}
+{
+  ifelse { [ -n $scaling_governor ] }
+  {
+    pipeline { echo $scaling_governor }
+    redirfd -w 1 /dev/null
+    tee $file
+  }
+  pipeline { echo ondemand }
+  redirfd -w 1 /dev/null
+  tee $file
+}
+# Report what CPU scaling governor is in use after applying the setting
+backtick -ni NEW_SCALING_GOVERNOR { cat /sys/devices/system/cpu/cpu0/cpufreq/scaling_governor }
+importas -u new_scaling_governor NEW_SCALING_GOVERNOR
+echo "Enabled CPU frequency scaling governor:  ${new_scaling_governor}"
