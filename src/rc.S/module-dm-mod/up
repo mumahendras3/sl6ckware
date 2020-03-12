@@ -1,6 +1,6 @@
-######################################################
-# This service loads the device-mapper kernel module #
-######################################################
+########################################
+# Load the device-mapper kernel module #
+########################################
 
 foreground { echo "Starting oneshot service:  module-dm-mod" }
 foreground { modprobe -v dm-mod }
