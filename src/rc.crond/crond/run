@@ -19,5 +19,5 @@ multisubstitute {
   importas -u crond CROND
   importas -usd"_" crond_opts CROND_OPTS
 }
-foreground { echo "Starting crond:  ${crond}" $crond_opts }
-emptyenv $crond $crond_opts
+foreground { echo "Starting crond:  ${crond} -f -S" $crond_opts }
+emptyenv $crond -f -S $crond_opts
