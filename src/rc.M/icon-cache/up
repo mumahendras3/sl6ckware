@@ -3,8 +3,8 @@
 ################################################################
 
 foreground { echo "Starting oneshot service:  icon-cache" }
-elglob -0 file /usr/share/icons/*
-ifelse { redirfd -w 2 /dev/null [ -z $file ] }
+elglob -0 dir /usr/share/icons/*
+ifelse { redirfd -w 2 /dev/null [ -z $dir ] }
 {
   foreground {
     echo "No icon theme directory found! Aborting...
@@ -12,6 +12,7 @@ ifelse { redirfd -w 2 /dev/null [ -z $file ] }
   }
   exit 1
 }
-forx -p DIR { $file }
-importas -u dir DIR
+forx -p THEME_DIR { $dir }
+importas -u theme_dir THEME_DIR
+foreground { echo "Updating icon-theme.cache in ${theme_dir}..." }
 gtk-update-icon-cache -t $dir
