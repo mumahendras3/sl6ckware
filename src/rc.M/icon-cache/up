@@ -14,4 +14,4 @@ ifelse { redirfd -w 2 /dev/null [ -z $file ] }
 }
 forx -p DIR { $file }
 importas -u dir DIR
-gtk-update-icon-cache $dir
+gtk-update-icon-cache -t $dir
