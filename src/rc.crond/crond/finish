@@ -1,0 +1,7 @@
+#!/bin/execlineb -P
+
+##############################
+# Remove some leftover files #
+##############################
+
+rm -rf /var/run/cron
