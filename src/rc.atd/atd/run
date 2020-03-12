@@ -1,0 +1,22 @@
+#!/bin/execlineb -P
+
+################################################
+# Start atd (manages jobs scheduled with 'at') #
+################################################
+
+foreground { echo "Starting longrun service:  atd" }
+backtick -ni ATD { which atd }
+# Using /var/run/atd.pid appearance as readiness indicator
+background {
+  fdmove 1 3
+  inotifywait -qe modify --include atd.pid /var/run
+}
+fdclose 3
+pipeline { sed "/ATD_OPTS=/!d; s/\"//g; s/ /_/g" /etc/default/atd }
+envfile -
+multisubstitute {
+  importas -u atd ATD
+  importas -usd"_" atd_opts ATD_OPTS
+}
+foreground { echo "Starting atd:  ${atd} -f" $atd_opts }
+emptyenv $atd -f $atd_opts
