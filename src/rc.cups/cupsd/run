@@ -14,4 +14,5 @@ background {
 }
 fdclose 3
 importas -u cupsd CUPSD
+foreground { echo "Starting cupsd:  ${cupsd} -F" }
 emptyenv $cupsd -F
