@@ -1,0 +1,17 @@
+##############################################
+# Update the shared MIME-Info database cache #
+##############################################
+
+foreground { echo "Starting oneshot service:  update-mime-database" }
+backtick -ni UPDATE-MIME-DATABASE { which update-mime-database }
+ifelse { [ ! -d /usr/share/mime ] }
+{
+  foreground {
+    echo "No MIME database directory found! Aborting...
+(ERROR) Failed to start oneshot service:  update-mime-database"
+  }
+  exit 1
+}
+importas -u update-mime-database UPDATE-MIME-DATABASE
+foreground { echo "Updating MIME database:  ${update-mime-database} /usr/share/mime" }
+$update-mime-database /usr/share/mime
