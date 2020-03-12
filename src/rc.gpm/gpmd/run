@@ -1,0 +1,16 @@
+#!/bin/execlineb -P
+
+##############################
+# Start the GPM mouse server #
+##############################
+
+foreground { echo "Starting oneshot service:  gpmd" }
+backtick -ni GPM { which gpm }
+background {
+  fdmove 1 3
+  inotifywait -qe attrib --include gpmctl /dev
+}
+fdclose 3
+importas -u gpm GPM
+foreground { echo "Starting gpm:  ${gpm} -D -m /dev/mouse -t imps2" }
+$gpm -D -m /dev/mouse -t imps2
