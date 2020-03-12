@@ -1,0 +1,17 @@
+#!/bin/execlineb -P
+
+####################################
+# Start CUPS print spooling system #
+####################################
+
+foreground { echo "Starting longrun service:  cupsd" }
+backtick -ni CUPSD { which cupsd }
+if { mkdir /var/run/cups }
+# Using cups.sock appearance as readiness indicator
+background {
+  fdmove 1 3
+  inotifywait -qe attrib --include cups.sock /var/run/cups
+}
+fdclose 3
+importas -u cupsd CUPSD
+emptyenv $cupsd -F
