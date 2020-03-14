@@ -1,0 +1,79 @@
+# All the services that should be started at runlevel 3.
+# Uncomment services that you want to start at boot time.
+# Services that are dependencies of other services will not be listed here.
+
+# rc.S related services
+module-loop
+#lvm
+#luks
+swap-partition
+sysctl
+mount-local
+swap-file
+cgmanagerd
+cleanup-etc
+cleanup-var
+cleanup-tmp
+ICE-socketdir
+X11-socketdir
+utmp
+update-motd
+random-seed
+
+# rc.M related services
+shared-library-links
+setterm
+hostname
+save-dmesg
+font-information-caches
+mount-remote
+ntpd
+ensure-permissions
+acpid
+cpufreq
+gtk-icon-caches
+mime-database-cache
+gtk-immodules
+gdk-pixbuf-loaders
+pango-querymodules
+glib-schemas
+
+# rc.gpm related services
+gpmd
+
+# rc.atd
+atd
+
+# rc.font related services
+console-font
+
+# rc.crond related services
+crond
+
+# rc.networkmanager related services
+#networkmanagerd
+
+# rc.haveged related services
+haveged
+
+# rc.consolekit related services
+consolekitd
+
+# rc.bluetooth related services
+bluetooth
+
+# rc.syslog related services
+klogd
+
+# rc.modules related services
+depmod
+#modules-local
+#modules-versioned
+
+# rc.udev related services
+devpts
+local-nodes
+static-nodes
+system-nodes
+tmpfs-shm
+udev-add
