@@ -2,7 +2,7 @@
 # Update the shared MIME-Info database cache #
 ##############################################
 
-foreground { echo "Starting oneshot service:  update-mime-database" }
+foreground { echo "Starting oneshot service:  mime-database-cache" }
 backtick -ni UPDATE-MIME-DATABASE { which update-mime-database }
 ifelse { [ ! -d /usr/share/mime ] }
 {

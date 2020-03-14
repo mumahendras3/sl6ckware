@@ -2,7 +2,7 @@
 # Update/generate icon cache files for system-wide icon themes #
 ################################################################
 
-foreground { echo "Starting oneshot service:  update-gtk-icon-cache" }
+foreground { echo "Starting oneshot service:  gtk-icon-caches" }
 elglob -0 dir /usr/share/icons/*
 ifelse { redirfd -w 2 /dev/null [ -z $dir ] }
 {

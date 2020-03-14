@@ -2,7 +2,7 @@
 # Update gdk-pixbuf.loaders #
 #############################
 
-foreground { echo "Starting oneshot service:  update-gdk-pixbuf-loaders" }
+foreground { echo "Starting oneshot service:  gdk-pixbuf-loaders" }
 backtick -ni UPDATE-GDK-PIXBUF-LOADERS { which update-gdk-pixbuf-loaders }
 importas -u update-gdk-pixbuf-loaders UPDATE-GDK-PIXBUF-LOADERS
 foreground { echo "Updating gdk-pixbuf.loaders:  ${update-gdk-pixbuf-loaders}" }

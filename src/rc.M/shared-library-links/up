@@ -2,7 +2,7 @@
 # Update all the shared library links #
 #######################################
 
-foreground { echo "Starting oneshot service:  update-shared-library-links" }
+foreground { echo "Starting oneshot service:  shared-library-links" }
 backtick -n LDCONFIG { which ldconfig }
 importas -u ldconfig LDCONFIG
 foreground { echo "Updating shared library links:  ${ldconfig}" }

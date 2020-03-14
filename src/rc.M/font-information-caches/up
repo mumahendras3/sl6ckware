@@ -2,7 +2,7 @@
 # Update the X font indexes #
 #############################
 
-foreground { echo "Starting oneshot service:  update-font-information-cache" }
+foreground { echo "Starting oneshot service:  font-information-caches" }
 backtick -ni FC-CACHE { which fc-cache }
 importas -u fc-cache FC-CACHE
 if { [ -x $fc-cache ] }

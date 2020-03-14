@@ -2,7 +2,7 @@
 # Update pango.modules #
 ########################
 
-foreground { echo "Starting oneshot service:  update-pango-querymodules" }
+foreground { echo "Starting oneshot service:  pango-querymodules" }
 backtick -ni UPDATE-PANGO-QUERYMODULES { which update-pango-querymodules }
 importas -u update-pango-querymodules UPDATE-PANGO-QUERYMODULES
 foreground { echo "Updating pango.modules:  ${update-pango-querymodules}" }
