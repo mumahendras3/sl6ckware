@@ -1,6 +1,6 @@
-####################################################
-# This service loads the loop device kernel module #
-####################################################
+######################################
+# Load the loop device kernel module #
+######################################
 
 foreground { echo "Starting oneshot service:  module-loop" }
 foreground { modprobe -v loop }
