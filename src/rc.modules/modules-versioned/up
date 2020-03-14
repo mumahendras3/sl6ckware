@@ -1,10 +1,9 @@
-#################################################################
-# This service runs any rc.modules-$(uname -r) file that exists #
-# (this is used if you have specific modules which should only  #
-# be loaded for specific kernel versions).                      #
-#################################################################
+##############################################################################
+# Run any rc.modules-$(uname -r) file that exists (this is used if you have  #
+# specific modules which should only be loaded for specific kernel versions) #
+##############################################################################
 
-foreground { echo "Starting oneshot service:  modules-versioned }
+foreground { echo "Starting oneshot service:  modules-versioned" }
 # Determine the version of the running kernel:
 backtick -n RELEASE { uname -r }
 importas -u release RELEASE
