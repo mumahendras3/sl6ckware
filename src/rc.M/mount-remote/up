@@ -3,8 +3,7 @@
 # mounted (which probably just remote filesystems)                #
 ###################################################################
 
-foreground { echo "Starting oneshot service:  mount-remote" }
-foreground { echo "Mounting non-root remote filesystems:" }
+foreground { echo "mount-remote: Mounting non-root remote filesystems..." }
 pipeline { mount -av }
 pipeline { grep successfully }
 pipeline { cut -f1 -d: }

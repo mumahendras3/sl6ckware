@@ -2,7 +2,6 @@
 # Set the system's hostname #
 #############################
 
-foreground { echo "Starting oneshot service:  hostname" }
 ifelse { [ ! -r /etc/HOSTNAME ] }
 {
   # fall back on this old default:

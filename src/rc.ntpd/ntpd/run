@@ -4,10 +4,9 @@
 # Start the Network Time Protocol (NTP) daemon #
 ################################################
 
-foreground { echo "Starting longrun service:  ntpd" }
 backtick -ni NTPD { which ntpd }
 # Using ntp-wait to wait for ntpd to stabilize the system clock
 # and then write an output to notification fd
 importas -u ntpd NTPD
-foreground { echo "Starting NTP daemon:  ${ntpd} -gn -u ntp:ntp" }
+foreground { echo "ntpd: Starting NTP daemon: ${ntpd} -gn -u ntp:ntp" }
 s6-notifyoncheck -c ntp-wait emptyenv $ntpd -gn -u ntp:ntp

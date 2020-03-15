@@ -3,7 +3,6 @@
 # and its subdirectories                                #
 #########################################################
 
-foreground { echo "Starting oneshot service:  cleanup-var" }
 multisubstitute {
   elglob -0 file1 /var/lock/*
   elglob -0 file2 /var/lib/pkgtools/setup/tmp/*

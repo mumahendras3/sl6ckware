@@ -30,16 +30,12 @@
 # swap.                                                                         #
 #################################################################################
 
-foreground { echo "Starting oneshot service:  luks" }
 # Check if the system is configured to use LUKS
-backtick -n CRYPTSETUP { which cryptsetup }
+backtick -ni CRYPTSETUP { which cryptsetup }
 importas -u cryptsetup CRYPTSETUP
-ifelse -n { [ -s /etc/crypttab -a -x $cryptsetup ] }
+ifelse { [ ! -s /etc/crypttab ] }
 {
-  foreground {
-  echo "This system is not configured to use LUKS! Aborting...
-(ERROR) Failed to start oneshot service:  luks"
-  }
+  foreground { echo "luks: This system is not configured to use LUKS! Aborting..." }
   exit 1
 }
 # NOTE: we only support LUKS formatted volumes (except for swap)!
@@ -52,21 +48,21 @@ ifelse { [ $opts = swap ] }
 {
   # If any of the volumes is to be used as encrypted swap,
   # then encrypt it using a random key and run mkswap:
-  foreground { echo "Creating encrypted swap volume '${luks}' on device '${dev}':" }
-  if { cryptsetup --cipher=aes --key-file=/dev/urandom --key-size=256 create $luks $dev }
+  foreground { echo "luks: Creating encrypted swap volume '${luks}' on device '${dev}':" }
+  if { $cryptsetup --cipher=aes --key-file=/dev/urandom --key-size=256 create $luks $dev }
   mkswap /dev/mapper/${luks}
 }
 # Converting options in /etc/crypttab to appropriate cryptsetup command line options
-pipeline { echo -n $opts }
+pipeline { printf $opts }
 pipeline { sed "s/ro/--readonly/; s/discard/--allow-discards/; s/,/ /" }
 withstdinas LUKSOPTS
 importas -u luksopts LUKSOPTS
 ifthenelse { [ -z $luksopts ] }
 {
-  echo "Unlocking LUKS encrypted volume '${luks}' on device '${dev}':"
+  echo "luks: Unlocking LUKS encrypted volume '${luks}' on device '${dev}':"
 }
 {
-  echo "Unlocking LUKS encrypted volume '${luks}' on device '${dev}' with options '${luksopts}':"
+  echo "luks: Unlocking LUKS encrypted volume '${luks}' on device '${dev}' with options '${luksopts}':"
 }
 ifelse { [ -z $pass -o $pass = none ] }
 {
@@ -74,12 +70,12 @@ ifelse { [ -z $pass -o $pass = none ] }
   redirfd -r 0 /dev/tty0
   redirfd -w 1 /dev/tty0
   fdmove -c 2 1
-  cryptsetup $luksopts luksOpen $dev $luks
+  $cryptsetup $luksopts luksOpen $dev $luks
 }
 ifelse { [ -f $pass ] }
 {
   # The password field was given a key-file filename
-  cryptsetup $luksopts --key-file=${pass} luksOpen $dev $luks
+  $cryptsetup $luksopts --key-file=${pass} luksOpen $dev $luks
 }
 # The password was provided in plain text
-heredoc 0 $pass cryptsetup $luksopts luksOpen $dev $luks
+heredoc 0 $pass $cryptsetup $luksopts luksOpen $dev $luks

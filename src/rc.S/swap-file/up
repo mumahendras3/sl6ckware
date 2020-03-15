@@ -2,8 +2,7 @@
 # Enable all swap files that are configured in /etc/fstab #
 ###########################################################
 
-foreground { echo "Starting oneshot service:  swap-file" }
-pipeline { findmnt --fstab -o SOURCE -t swap -rne }
+pipeline { findmnt -rne --fstab -o SOURCE -t swap }
 forstdin -pd"\n" SOURCE
 importas -u source SOURCE
 if { [ -f $source ] }

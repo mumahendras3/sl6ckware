@@ -1,28 +1,15 @@
-#####################################################################
-# This service mounts non-root file systems in fstab, but not       #
-# NFS or SMB because TCP/IP is not yet configured, and not proc     #
-# or sysfs because those have already been mounted. Also check that #
-# devpts is not already mounted before attempting to mount it. With #
-# a 2.6.x or newer kernel udev mounts devpts.                       #
-#####################################################################
+############################################################################
+# Mount non-root file systems in fstab, but not NFS or SMB because TCP/IP  #
+# is not yet configured, and not proc or sysfs because those have already  #
+# been mounted. Also check that devpts is not already mounted before       #
+# attempting to mount it. With a 2.6.x or newer kernel udev mounts devpts. #
+############################################################################
 
-foreground { echo "Starting oneshot service:  mount-local" }
-foreground { echo "Mounting non-root local filesystems:" }
-ifelse { grep -wq devpts /proc/mounts }
-{
-  # This pipe after the mount command is just to convert the new
-  # mount verbose output back to the old format that contained
-  # more useful information:
-  pipeline { mount -avt nonfs,nosmbfs,nocifs,noproc,nosysfs,nodevpts }
-  pipeline { grep successfully }
-  pipeline { cut -f1 -d: }
-  pipeline { tr -d " " }
-  forstdin -d"\n" DEV
-  importas -u dev DEV
-  pipeline { mount }
-  grep $dev
-}
-pipeline { mount -avt nonfs,nosmbfs,nocifs,noproc,nosysfs }
+foreground { echo "mount-local: Mounting non-root local filesystems..." }
+# This pipe after the mount command is just to convert the new
+# mount verbose output back to the old format that contained
+# more useful information:
+pipeline { mount -avt nonfs,nosmbfs,nocifs,noproc,nosysfs,nodevpts }
 pipeline { grep successfully }
 pipeline { cut -f1 -d: }
 pipeline { tr -d " " }

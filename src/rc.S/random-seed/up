@@ -2,13 +2,15 @@
 # Use /etc/random-seed to initialize /dev/urandom #
 ###################################################
 
-foreground { echo "Starting oneshot service:  random-seed" }
 ifelse { [ ! -f /etc/random-seed ] }
 {
-  foreground { echo "Feeding the entropy..." }
-  # Let haveged entropy daemon do its thing
-  sleep 10
+  # Wait until there are enough entropies
+  foreground { echo "random-seed: Feeding the entropy..." }
+  loopwhilex -x 0
+  backtick -n ENTROPY { cat /proc/sys/kernel/random/entropy_avail }
+  importas -u entropy ENTROPY
+  [ $entropy -ge 1000 ]
 }
-foreground { echo "Using /etc/random-seed to initialize /dev/urandom..." }
+foreground { echo "random-seed: Using /etc/random-seed to initialize /dev/urandom..." }
 redirfd -w 1 /dev/urandom
 cat /etc/random-seed

@@ -4,13 +4,9 @@
 # Start the bluetooth daemon #
 ##############################
 
-foreground { echo "Starting longrun service:  bluetoothd" }
 ifelse { [ ! -d /sys/class/bluetooth ] }
 {
-  foreground {
-    echo "This system doesn't support bluetooth!
-(ERROR) Failed to start longrun service:  bluetoothd"
-  }
+  foreground { echo "bluetoothd: This system doesn't support bluetooth! Aborting..." }
   exit 1
 }
 backtick -ni BLUETOOTHD { which bluetoothd }
@@ -24,5 +20,5 @@ background {
 }
 fdclose 3
 importas -u bluetoothd BLUETOOTHD
-foreground { echo "Starting bluetoothd:  ${bluetoothd}" }
+foreground { echo "bluetoothd: Starting bluetoothd: ${bluetoothd}" }
 emptyenv $bluetoothd

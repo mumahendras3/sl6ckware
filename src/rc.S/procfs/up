@@ -2,16 +2,12 @@
 # Mount procfs on /proc #
 #########################
 
-foreground { echo "Starting oneshot service:  procfs" }
 # Check if /proc is already mounted
 if -nt { mountpoint -q /proc }
 # Check if /proc exists and is a directory
-ifelse -n { [ -d /proc ] }
+ifelse { [ ! -d /proc ] }
 {
-  foreground {
-  echo "/proc doesn't exist or isn't a directory! Aborting...
-(ERROR) Unable to start oneshot service:  procfs"
-  }
+  foreground { echo "procfs: /proc doesn't exist or isn't a directory! Aborting..." }
   exit 1
 }
 mount -v proc /proc -n -t proc

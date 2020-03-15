@@ -2,8 +2,7 @@
 # Update the hardware database index (/etc/udev/hwdb.bin) #
 ###########################################################
 
-foreground { echo "Starting oneshot service:  udev-hwdb" }
 backtick -ni UDEVADM { which udevadm }
 importas -u udevadm UDEVADM
-foreground { echo "Updating hardware database index:  ${udevadm} hwdb --update" }
+foreground { echo "udev-hwdb: Updating hardware database index: ${udevadm} hwdb --update" }
 $udevadm hwdb --update

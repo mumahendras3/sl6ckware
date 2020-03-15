@@ -4,7 +4,6 @@
 # Start CUPS print spooling system #
 ####################################
 
-foreground { echo "Starting longrun service:  cupsd" }
 backtick -ni CUPSD { which cupsd }
 if { mkdir /var/run/cups }
 # Using cups.sock appearance as readiness indicator
@@ -14,5 +13,5 @@ background {
 }
 fdclose 3
 importas -u cupsd CUPSD
-foreground { echo "Starting cupsd:  ${cupsd} -F" }
+foreground { echo "cupsd: Starting cupsd: ${cupsd} -F" }
 emptyenv $cupsd -F

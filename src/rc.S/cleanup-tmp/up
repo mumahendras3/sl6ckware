@@ -3,7 +3,6 @@
 # and its subdirectories                                #
 #########################################################
 
-foreground { echo "Starting oneshot service:  cleanup-tmp" }
 multisubstitute {
   elglob -0 file1 /tmp/.Xauth*
   elglob -0 file2 /tmp/kde-[a-zA-Z]*

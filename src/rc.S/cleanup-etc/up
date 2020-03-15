@@ -2,6 +2,5 @@
 # Clean up some temporary files in /etc #
 #########################################
 
-foreground { echo "Starting oneshot service:  cleanup-etc" }
 elglob -0 file /etc/dhcpc/*.pid
 rm -f /etc/nologin /etc/forcefsck /etc/fastboot $file

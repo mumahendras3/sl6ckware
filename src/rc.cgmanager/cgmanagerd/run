@@ -4,9 +4,7 @@
 # Start the cgroup manager (cgmanager) daemon #
 ###############################################
 
-foreground { echo "Starting longrun service:  cgmanagerd" }
-# Search for cgmanager binary location
-backtick -in CGMANAGER { which cgmanager }
+backtick -ni CGMANAGER { which cgmanager }
 importas -u cgmanager CGMANAGER
-foreground { echo "Starting cgmanager:  ${cgmanager}" }
+foreground { echo "cgmanagerd: Starting cgmanager: ${cgmanager}" }
 s6-notifyoncheck -c "cgm ping" emptyenv $cgmanager

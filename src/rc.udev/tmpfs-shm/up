@@ -2,7 +2,6 @@
 # Mount a tmpfs on /dev/shm #
 #############################
 
-foreground { echo "Starting oneshot service:  tmpfs-shm" }
-if { mkdir -p /dev/shm }
 if -tn { mountpoint -q /dev/shm }
+if { mkdir -p /dev/shm }
 mount -n /dev/shm

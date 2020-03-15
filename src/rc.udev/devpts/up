@@ -2,7 +2,6 @@
 # Mount devpts on /dev/pts #
 ############################
 
-foreground { echo "Starting oneshot service:  devpts" }
-if { mkdir -p /dev/pts }
 if -tn { mountpoint -q /dev/pts }
+if { mkdir -p /dev/pts }
 mount -n /dev/pts

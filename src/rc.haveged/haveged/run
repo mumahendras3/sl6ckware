@@ -4,13 +4,11 @@
 # Start the haveged entropy daemon #
 ####################################
 
-foreground { echo "Starting longrun service:  haveged" }
 backtick -ni HAVEGED { which haveged }
-export HAVEGED_OPTS "-w 1024 -v 1 -F"
+export HAVEGED_OPTS "-w 1024 -v 1"
 multisubstitute {
   importas -u haveged HAVEGED
   importas -u haveged_opts HAVEGED_OPTS
 }
-if { [ -x $haveged ] }
-foreground { echo "Starting haveged entropy daemon:  ${haveged} ${haveged_opts}" }
-emptyenv $haveged $haveged_opts
+foreground { echo "haveged: Starting haveged entropy daemon: ${haveged} ${haveged_opts}" }
+s6-fghack emptyenv $haveged $haveged_opts

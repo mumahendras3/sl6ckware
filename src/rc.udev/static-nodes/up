@@ -2,7 +2,6 @@
 # Create static nodes in /dev #
 ###############################
 
-foreground { echo "Starting oneshot service:  static-nodes" }
 pipeline { kmod static-nodes -f tmpfiles }
 pipeline { sort -r }
 pipeline { uniq }

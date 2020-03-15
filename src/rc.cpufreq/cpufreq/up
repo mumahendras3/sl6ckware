@@ -23,7 +23,6 @@
 #               also provides information about the recent load.                 #
 ##################################################################################
 
-foreground { echo "Starting oneshot service:  cpufreq" }
 # If you need to load a specific CPUFreq driver, load it here.  Most likely you don't.
 #if { modprobe acpi-cpufreq }
 backtick -ni SCALING_DRIVER { cat /sys/devices/system/cpu/cpu0/cpufreq/scaling_driver }
@@ -68,4 +67,4 @@ ifthenelse { [ $scaling_driver = intel_pstate ] }
 # Report what CPU scaling governor is in use after applying the setting
 backtick -ni NEW_SCALING_GOVERNOR { cat /sys/devices/system/cpu/cpu0/cpufreq/scaling_governor }
 importas -u new_scaling_governor NEW_SCALING_GOVERNOR
-echo "Enabled CPU frequency scaling governor:  ${new_scaling_governor}"
+echo "cpufreq: Enabled CPU frequency scaling governor: ${new_scaling_governor}"

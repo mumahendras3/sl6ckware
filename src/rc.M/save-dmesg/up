@@ -2,7 +2,6 @@
 # Save the contents of 'dmesg' #
 ################################
 
-foreground { echo "Starting oneshot service:  save-dmesg" }
 # Set the permissions on /var/log/dmesg according to whether the kernel
 # permits non-root users to access kernel dmesg information
 backtick -n RESTRICT { cat /proc/sys/kernel/dmesg_restrict }

@@ -3,15 +3,12 @@
 # specific modules which should only be loaded for specific kernel versions) #
 ##############################################################################
 
-foreground { echo "Starting oneshot service:  modules-versioned" }
 # Determine the version of the running kernel:
-backtick -n RELEASE { uname -r }
+backtick -ni RELEASE { uname -r }
 importas -u release RELEASE
-ifelse -n { [ -x /etc/rc.d/rc.modules-${release} ] }
+ifelse { [ ! -x /etc/rc.d/rc.modules-${release} ] }
 {
-  foreground {
-  echo "No /etc/rc.d/rc.modules-${release} found or it's not executable! Aborting...
-(ERROR) Failed to start oneshot service:  modules-versioned"
-  }
+  foreground { echo "modules-versioned: No /etc/rc.d/rc.modules-${release} found or it's not executable! Aborting..." }
+  exit 1
 }
 /etc/rc.d/rc.modules-${release}

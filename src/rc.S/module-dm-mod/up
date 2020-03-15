@@ -2,9 +2,4 @@
 # Load the device-mapper kernel module #
 ########################################
 
-foreground { echo "Starting oneshot service:  module-dm-mod" }
-foreground { modprobe -v dm-mod }
-# Check the exit status and print an error message for non-zero exit status
-importas -u ? ?
-ifthenelse { [ $? = 0 ] } {} { echo "(ERROR) Unable to start oneshot service:  module-dm-mod" }
-exit $?
+modprobe -v dm-mod

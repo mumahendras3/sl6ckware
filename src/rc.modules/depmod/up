@@ -2,7 +2,6 @@
 # Run depmod to generate modules.dep and map files #
 ####################################################
 
-foreground { echo "Starting oneshot service:  depmod" }
 backtick -ni DEPMOD { which depmod }
 # Determine the version of the running kernel
 backtick -ni RELEASE { uname -r }
@@ -13,8 +12,8 @@ multisubstitute {
 # Update kernel module dependencies
 ifelse { [ -e /lib/modules/${release}/modules.dep ] }
 {
-  foreground { echo "Updating module dependency list for ${release}:  ${depmod} --quick" }
+  foreground { echo "depmod: Updating module dependency list for ${release}: ${depmod} --quick" }
   $depmod --quick
 }
-foreground { echo "Creating module dependency list for ${release}:  ${depmod} --all" }
+foreground { echo "depmod: Creating module dependency list for ${release}: ${depmod} --all" }
 $depmod --all

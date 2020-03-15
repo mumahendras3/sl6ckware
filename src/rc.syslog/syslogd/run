@@ -4,7 +4,6 @@
 # Start the system logging daemon #
 ###################################
 
-foreground { echo "Starting longrun service:  syslogd" }
 # Uncomment the following line to use the -c option to syslogd.  This will
 # disable suppressing repeated messages, which may be useful with tools that
 # parse the logs, such as fail2ban:
@@ -19,7 +18,7 @@ fdclose 3
 multisubstitute
 {
   importas -u syslogd SYSLOGD
-  importas -D "" -u syslogd_options SYSLOGD_OPTIONS
+  importas -u syslogd_options SYSLOGD_OPTIONS
 }
-foreground { echo "Starting syslogd daemon:  ${syslogd} -n ${syslogd_options}" }
+foreground { echo "syslogd: Starting syslogd daemon: ${syslogd} -n" $syslogd_options }
 emptyenv $syslogd -n $syslogd_options

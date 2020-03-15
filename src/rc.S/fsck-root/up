@@ -2,35 +2,33 @@
 # Run fsck on the root filesystem #
 ###################################
 
-foreground { echo "Starting oneshot service:  fsck-root" }
 ifelse { [ -r /etc/fastboot ] }
-{ echo "Fastboot is requested. Skipping root filesystem checking..." }
+{ echo "fsck-root: Fastboot is requested. Skipping root filesystem checking..." }
 # If we're using F2FS for the root filesystem, don't check it as it doesn't
 # allow checking a read-only filesystem:
 ifelse { grep -q " / f2fs " /proc/mounts }
-{ echo "F2FS is used as the root filesystem. Skipping root filesystem checking..." }
+{ echo "fsck-root: F2FS is used as the root filesystem. Skipping root filesystem checking..." }
 # Test to see if the root partition is read-only, like it ought to be.
 ifthenelse {
   redirfd -w 1 /dev/null
   findmnt -nr -M / -O ro
 }
-{ echo "Testing root filesystem status:  read-only filesystem" }
+{ echo "fsck-root: Testing root filesystem status: read-only filesystem" }
 {
   # Remount the root filesystem as read-only so we can fsck it.
   foreground {
-  echo "Testing root filesystem status:  read-write filesystem
+    echo "fsck-root: Testing root filesystem status: read-write filesystem
 
-(WARNING) For filesystem checking to work properly on the root filesystem,
-(WARNING) it needs to be mounted as read only!
-(WARNING)
-(WARNING) Remounting the root filesystem as read only..."
+fsck-root: (WARNING) For filesystem checking to work properly on the root filesystem,
+fsck-root: (WARNING) it needs to be mounted as read only!
+fsck-root: (WARNING)
+fsck-root: (WARNING) Remounting the root filesystem as read only..."
   }
   mount -n -o remount,ro /
 }
 # Check the root filesystem:
-foreground { echo "Checking root filesystem:" }
-backtick FORCEFSCK
-{
+foreground { echo "fsck-root: Checking root filesystem..." }
+backtick FORCEFSCK {
   if { [ -r /etc/forcefsck ] }
   printf -f
 }
@@ -39,35 +37,33 @@ foreground { fsck $forcefsck -C -a / }
 importas -u ? ?
 # An error code of 2 or higher will require a reboot.
 if -t { [ $? -ge 2 ] }
+foreground { echo "fsck-root: Aborting all s6-rc longrun transitions..." }
+foreground { pkill s6-rc }
 ifthenelse { [ $? -lt 4 ] }
 {
   # With an error code of 2 or 3, reboot the machine automatically:
   foreground {
-  echo "***********************************
-*** The filesystem was changed. ***
-*** The system will now reboot. ***
-***********************************
+    echo "fsck-root: ***********************************
+fsck-root: *** The filesystem was changed. ***
+fsck-root: *** The system will now reboot. ***
+fsck-root: ***********************************
 "
   }
 }
 {
   foreground {
-    echo "***********************************************************
-*** An error occurred during the root filesystem check. ***
-*** You will now be given a chance to log into the      ***
-*** system in single-user mode to fix the problem.      ***
-***                                                     ***
-*** If you are using the ext2 filesystem, running       ***
-*** 'e2fsck -v -y <partition>' might help.              ***
-***********************************************************
+    echo "fsck-root: ***********************************************************
+fsck-root: *** An error occurred during the root filesystem check. ***
+fsck-root: *** You will now be given a chance to log into the      ***
+fsck-root: *** system in single-user mode to fix the problem.      ***
+fsck-root: ***                                                     ***
+fsck-root: *** If you are using the ext2 filesystem, running       ***
+fsck-root: *** 'e2fsck -v -y <partition>' might help.              ***
+fsck-root: ***********************************************************
 
-Once you exit the single-user shell, the system will reboot."
+fsck-root: Once you exit the single-user shell, the system will reboot."
   }
   export PS1 "(Repair filesystem) \#" sulogin /dev/tty0
 }
-foreground { echo "Aborting all s6-rc longrun transitions..." }
-foreground { pkill s6-rc }
-foreground { echo "Unmounting file systems..." }
-foreground { umount -a -r }
-foreground { echo "Rebooting system..." }
-s6-linux-init-hpr -fr
+foreground { echo "fsck-root: Rebooting system..." }
+s6-linux-init-hpr -r -d

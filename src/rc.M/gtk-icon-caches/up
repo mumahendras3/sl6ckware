@@ -2,17 +2,15 @@
 # Update/generate icon cache files for system-wide icon themes #
 ################################################################
 
-foreground { echo "Starting oneshot service:  gtk-icon-caches" }
+backtick -ni GTK-UPDATE-ICON-CACHE { which gtk-update-icon-cache }
 elglob -0 dir /usr/share/icons/*
 ifelse { redirfd -w 2 /dev/null [ -z $dir ] }
 {
-  foreground {
-    echo "No icon theme directory found! Aborting...
-(ERROR) Failed to start oneshot service:  update-gtk-icon-cache"
-  }
+  foreground { echo "gtk-icon-caches: No icon theme directories found! Aborting..." }
   exit 1
 }
+importas -u gtk-update-icon-cache GTK-UPDATE-ICON-CACHE
 forx -p THEME_DIR { $dir }
 importas -u theme_dir THEME_DIR
-foreground { echo "Updating icon-theme.cache in ${theme_dir}..." }
-gtk-update-icon-cache -t $dir
+foreground { echo "gtk-icon-caches: Updating icon-theme.cache in ${theme_dir}: ${gtk-update-icon-cache} -t ${theme_dir}" }
+$gtk-update-icon-cache -t $theme_dir

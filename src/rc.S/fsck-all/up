@@ -2,14 +2,12 @@
 # Check all non-root filesystems found in /etc/fstab #
 ######################################################
 
-foreground { echo "Starting oneshot service:  fsck-all" }
 ifelse { [ -r /etc/fastboot ] }
-{ echo "Fastboot is requested. Skipping non-root filesystems checking..." }
-backtick FORCEFSCK
-{
+{ echo "fsck-all: Fastboot is requested. Skipping non-root filesystems checking..." }
+backtick FORCEFSCK {
   if { [ -r /etc/forcefsck ] }
   printf -f
 }
 importas -u forcefsck FORCEFSCK
-foreground { echo "Checking non-root filesystems:" }
+foreground { echo "fsck-all: Checking non-root filesystems..." }
 fsck $forcefsck -C -R -A -a

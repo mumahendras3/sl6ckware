@@ -2,8 +2,7 @@
 # Enable all swap partitions that are configured in /etc/fstab #
 ################################################################
 
-foreground { echo "Starting oneshot service:  swap-partition" }
-pipeline { findmnt --fstab -o SOURCE -t swap -rne }
+pipeline { findmnt -rne --fstab -o SOURCE -t swap }
 forstdin -pd"\n" SOURCE
 importas -u source SOURCE
 if { [ -b $source ] }

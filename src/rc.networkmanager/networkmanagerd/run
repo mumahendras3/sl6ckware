@@ -4,11 +4,10 @@
 # Start the NetworkManager daemon #
 ###################################
 
-foreground { echo "Starting longrun service:  networkmanagerd" }
 backtick -ni NETWORKMANAGER { which NetworkManager }
 importas -u NetworkManager NETWORKMANAGER
-foreground { echo "Starting NetworkManager daemon:  ${NetworkManager} -n" }
-s6-notifyoncheck -c "\
+foreground { echo "networkmanagerd: Starting NetworkManager daemon: ${NetworkManager} -n" }
+s6-notifyoncheck -d -c "\
 pipeline {
   dbus-send --system
     --dest=org.freedesktop.DBus

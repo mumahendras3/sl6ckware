@@ -3,6 +3,5 @@
 # permissions and ownership as required by the Xorg server   #
 ##############################################################
 
-foreground { echo "Starting oneshot service:  ICE-socketdir" }
 if -t { [ ! -d /tmp/.ICE-unix ] }
 mkdir -m1777 /tmp/.ICE-unix

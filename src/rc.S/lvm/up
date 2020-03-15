@@ -3,14 +3,10 @@
 # available volume groups (VG) and activating all them.       #
 ###############################################################
 
-foreground { echo "Starting oneshot service:  lvm" }
 # Check if the system is configured to use LVM
 ifelse -n { [ -r /etc/lvmtab -o -d /etc/lvm/backup ] }
 {
-  foreground {
-  echo "This system is not configured to use LVM! Aborting...
-(ERROR) Unable to start oneshot service:  lvm"
-  }
+  foreground { echo "lvm: This system is not configured to use LVM! Aborting..." }
   exit 1
 }
 # Create LVM lock/run directories

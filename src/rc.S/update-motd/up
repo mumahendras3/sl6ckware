@@ -1,14 +1,9 @@
 #################################################################################
 # Update the current kernel version in the /etc/motd (Message Of The Day) file, #
-# if the first line of that file begins with the word 'Linux'.                  #
-# You are free to modify the rest of the file as you see fit.                   #
+# if the first line of that file begins with the word 'Linux'. You are free to  #
+# modify the rest of the file as you see fit.                                   #
 #################################################################################
 
-foreground { echo "Starting oneshot service:  update-motd" }
-backtick CMDS { which sed uname }
-importas -u cmds CMDS
-multidefine -d"\n" $cmds { sed uname }
-backtick -n VERSION { $uname -sr }
+backtick -n VERSION { uname -sr }
 importas -u version VERSION
-if { [ -x $sed ] }
-$sed -i "{1s/^Linux.*/${version}\./}" /etc/motd
+sed -i "1s/^Linux.*/${version}./" /etc/motd

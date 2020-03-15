@@ -2,18 +2,14 @@
 # Mount Control Groups (cgroup) filesystem interface on /sys/fs/cgroup #
 ########################################################################
 
-foreground { echo "Starting oneshot service:  cgroupfs" }
 # Check if the kernel supports cgroupfs
 ifelse -n { grep -wq cgroup /proc/filesystems }
 {
-  foreground {
-  echo "The kernel doesn't support cgroupfs! Aborting...
-(ERROR) Unable to start oneshot service:  cgroupfs"
-  }
+  foreground { echo "cgroupfs: The kernel doesn't support cgroupfs! Aborting..." }
   exit 1
 }
 # Check if /sys/fs/cgroup exists and is a directory
-ifelse -n { [ -d /sys/fs/cgroup ] }
+ifelse { [ ! -d /sys/fs/cgroup ] }
 {
   if { mkdir -p /dev/cgroup }
   mount -t cgroup cgroup /dev/cgroup

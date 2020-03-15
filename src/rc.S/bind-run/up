@@ -2,6 +2,5 @@
 # Bind mount /run to /var/run #
 ###############################
 
-foreground { echo "Starting oneshot service:  bind-run" }
 if -tn { mountpoint -q /var/run }
 mount -vo bind /run /var/run

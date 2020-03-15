@@ -2,23 +2,7 @@
 # Configure kernel parameters #
 ###############################
 
-foreground { echo "Starting oneshot service:  sysctl" }
-backtick -n SYSCTL { which sysctl }
+backtick -ni SYSCTL { which sysctl }
 importas -u sysctl SYSCTL
-ifelse -n { [ -x $sysctl ] }
-{
-  foreground {
-  echo "sysctl not found! Aborting...
-(ERROR) Failed to start oneshot service:  sysctl"
-  }
-  exit 1
-}
-ifelse { [ -r /etc/sysctl.conf ] }
-{
-  foreground { echo "Configuring kernel parameters:  sysctl -e --system" }
-  sysctl -e --system
-}
-foreground { echo "Configuring kernel parameters:  sysctl -e --system" }
-# Don't say "Applying /etc/sysctl.conf" or complain if the file doesn't exist
-pipeline { redirfd -w 2 /dev/null sysctl -e --system }
-grep -v "Applying /etc/sysctl.conf"
+foreground { echo "sysctl: Configuring kernel parameters: ${sysctl} --system" }
+$sysctl --system

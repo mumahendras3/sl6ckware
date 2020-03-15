@@ -3,18 +3,13 @@
 # bluetooth devices at boot time                               #
 ################################################################
 
-foreground { echo "Starting oneshot service:  sdptool" }
 pipeline { grep SDPTOOL_OPTIONS= /etc/default/bluetooth }
 pipeline { cut -f2 -d\" }
 forstdin -o 0 -nd";\n" OPTION
-importas test OPTION
-ifelse { [ -z $test ] }
+importas -usd" " option OPTION
+ifelse { redirfd -w 2 /dev/null [ -z $option ] }
 {
-  foreground {
-    echo "No SDP operations listed in /etc/default/bluetooth! Aborting...
-(ERROR) Failed to start oneshot service:  sdptool"
-  }
+  foreground { echo "sdptool: No SDP operations listed in /etc/default/bluetooth! Aborting..." }
   exit 1
 }
-importas -usd" " option OPTION
 sdptool $option
