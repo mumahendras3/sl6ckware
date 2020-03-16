@@ -30,8 +30,9 @@
 - rc.icecc-scheduler
 - rc.iceccd
 - rc.local
+- rc.6 (for all oneshots down scripts)
 
-### Create the -log service
+### Create the -log services
 - haveged
 - udevd
 - cgmanagerd
@@ -47,6 +48,10 @@
 - acpid
 - bluetoothd
 - consolekitd
+
+### Create bundles
+- runlevel 1 (single user)
+- runlevel 4 (graphical login)
 
 ### Create additional services
 - acpid-socket (create a socket and pass it as acpid stdin for faster startup and reliable readiness indicator)

@@ -1,0 +1,9 @@
+#!/bin/execlineb -P
+
+#########################################
+# Start getty for console login on tty6 #
+#########################################
+
+backtick -ni AGETTY { which agetty }
+importas -u agetty AGETTY
+$agetty 38400 tty6 linux

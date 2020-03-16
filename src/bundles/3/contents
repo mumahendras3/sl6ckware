@@ -38,6 +38,14 @@ gdk-pixbuf-loaders
 #pango-querymodules
 glib-schemas
 
+# These are the standard console login getties in multiuser mode
+getty1
+getty2
+getty3
+getty4
+getty5
+getty6
+
 # rc.gpm related services
 #gpmd
 
