@@ -27,7 +27,7 @@ hostname
 save-dmesg
 font-information-caches
 filesystems-remote
-#ntpd
+ntpd
 ensure-permissions
 acpid
 cpufreq
@@ -56,7 +56,7 @@ atd
 console-font
 
 # rc.crond related services
-#crond
+crond
 
 # rc.networkmanager related services
 #networkmanagerd

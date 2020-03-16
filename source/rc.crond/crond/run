@@ -16,7 +16,7 @@ fdclose 3
 pipeline { sed "/CROND_OPTS=/!d; s/\"//g; s/ /_/g" /etc/default/crond }
 envfile -
 multisubstitute {
-  importas -usnd"_\n" crond_opts CROND_OPTS
+  importas -usd"_" crond_opts CROND_OPTS
   importas -u crond CROND
 }
 foreground { echo "crond: Starting crond: ${crond} -f -S" $crond_opts }

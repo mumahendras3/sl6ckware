@@ -1,2 +1,4 @@
 bind-run
 system-time
+hostname
+syslogd

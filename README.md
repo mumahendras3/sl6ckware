@@ -48,6 +48,7 @@
 - acpid
 - bluetoothd
 - consolekitd
+## NOTE: Don't forget to add syslogd as dependencies to services that need it
 
 ### Create bundles
 - runlevel 1 (single user)
