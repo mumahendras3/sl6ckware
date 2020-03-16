@@ -1,4 +1,4 @@
-# Comment out remount-root and uncomment mount-local
+# Comment out remount-root and uncomment filesystems-local
 # if you use separate partition for /var
 remount-root
-#mount-local
+#filesystems-local

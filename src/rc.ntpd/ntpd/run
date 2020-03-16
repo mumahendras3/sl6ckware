@@ -5,8 +5,17 @@
 ################################################
 
 backtick -ni NTPD { which ntpd }
-# Using ntp-wait to wait for ntpd to stabilize the system clock
-# and then write an output to notification fd
+# ntpd initialization ends not long after it reads its config file (by default,
+# it's /etc/ntp.conf) thus we will use it as ntpd readiness indicator.
+ifelse { [ ! -r /etc/ntp.conf ] }
+{
+  foreground { echo "ntpd: No ntpd config file found! Aborting..." }
+  exit 1
+}
+background -d {
+  fdmove 1 3
+  inotifywait -qe close /etc/ntp.conf
+}
 importas -u ntpd NTPD
 foreground { echo "ntpd: Starting NTP daemon: ${ntpd} -gn -u ntp:ntp" }
-s6-notifyoncheck -c ntp-wait emptyenv $ntpd -gn -u ntp:ntp
+emptyenv $ntpd -gn -u ntp:ntp

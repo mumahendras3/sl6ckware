@@ -1,3 +1,4 @@
 bind-run
 system-dbusd
 remount-root
+udev-add

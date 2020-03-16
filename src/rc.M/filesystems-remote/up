@@ -3,8 +3,11 @@
 # mounted (which probably just remote filesystems)                #
 ###################################################################
 
-foreground { echo "mount-remote: Mounting non-root remote filesystems..." }
-pipeline { mount -av }
+foreground { echo "filesystems-remote: Mounting non-root remote filesystems..." }
+# This pipe after the mount command is just to convert the new
+# mount verbose output back to the old format that contained
+# more useful information
+pipeline { mount -avt nfs,smbfs,cifs,noproc,nosysfs,nodevpts }
 pipeline { grep successfully }
 pipeline { cut -f1 -d: }
 pipeline { tr -d " " }

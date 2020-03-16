@@ -47,3 +47,6 @@
 - acpid
 - bluetoothd
 - consolekitd
+
+### Create additional services
+- acpid-socket (create a socket and pass it as acpid stdin for faster startup and reliable readiness indicator)

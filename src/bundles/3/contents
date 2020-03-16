@@ -8,7 +8,7 @@ module-loop
 #luks
 swap-partition
 sysctl
-mount-local
+filesystems-local
 swap-file
 cgmanagerd
 cleanup-etc
@@ -26,8 +26,8 @@ setterm
 hostname
 save-dmesg
 font-information-caches
-mount-remote
-ntpd
+filesystems-remote
+#ntpd
 ensure-permissions
 acpid
 cpufreq
@@ -48,7 +48,7 @@ atd
 console-font
 
 # rc.crond related services
-crond
+#crond
 
 # rc.networkmanager related services
 #networkmanagerd

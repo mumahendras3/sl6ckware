@@ -8,6 +8,7 @@ backtick -n SETTERM { which setterm }
 importas -u setterm SETTERM
 # Screen blanks after 15 minutes idle time, and powers down in one hour
 # if the kernel supports APM or ACPI power management (default setting)
+redirfd -r 0 /dev/tty0
 $setterm --term linux -blank 15 -powersave powerdown -powerdown 60
 # Screen does not blank or use power management features
 #$setterm --term linux -blank 0 -powersave off -powerdown 0

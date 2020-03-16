@@ -1,1 +1,8 @@
 networkmanagerd
+remount-root
+# bind-run is actually not a dependency for ntpd as long as the "pidfile <pidfile>"
+# configuration file directive is commented out in /etc/ntp.conf. When using an
+# s6-based init system, pid files are generally not needed. We will leave bind-run
+# here uncommented since Slackware by default configured ntpd to write its PID to
+# /var/run/ntpd.pid.
+bind-run

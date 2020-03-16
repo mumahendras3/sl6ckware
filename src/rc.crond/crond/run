@@ -7,11 +7,17 @@
 backtick -ni CROND { which crond }
 if { mkdir -p /var/run/cron }
 # Using /var/run/cron/cron-* appearance as readiness indicator
-background {
+background -d {
   fdmove 1 3
   inotifywait -qe attrib /var/run/cron
 }
 fdclose 3
-importas -u crond CROND
-foreground { echo "crond: Starting crond: ${crond} -d" }
-emptyenv $crond -d
+# Read crond commandline arguments from /etc/default/crond
+pipeline { sed "/CROND_OPTS=/!d; s/\"//g; s/ /_/g" /etc/default/crond }
+envfile -
+multisubstitute {
+  importas -usnd"_\n" crond_opts CROND_OPTS
+  importas -u crond CROND
+}
+foreground { echo "crond: Starting crond: ${crond} -f -S" $crond_opts }
+emptyenv $crond -f -S $crond_opts
