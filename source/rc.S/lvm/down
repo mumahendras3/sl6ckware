@@ -1,0 +1,6 @@
+####################################
+# Deactivate all LVM volume groups #
+####################################
+
+foreground { echo "lvm: Deactivating all LVM volume groups..." }
+vgchange -an
