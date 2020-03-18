@@ -1,9 +1,0 @@
-#!/bin/execlineb -P
-
-#########################################
-# Start getty for console login on tty5 #
-#########################################
-
-backtick -ni AGETTY { which agetty }
-importas -u agetty AGETTY
-$agetty 38400 tty5 linux
