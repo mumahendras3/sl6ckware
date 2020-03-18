@@ -36,7 +36,7 @@ importas -u cryptsetup CRYPTSETUP
 ifelse { [ ! -s /etc/crypttab ] }
 {
   foreground { echo "luks: This system is not configured to use LUKS! Aborting..." }
-  exit 125
+  exit 1
 }
 # NOTE: we only support LUKS formatted volumes (except for swap)!
 pipeline { grep -v -e "^#" -e "^[[:space:]]*$" /etc/crypttab }
