@@ -1,0 +1,6 @@
+#################################
+# Cleanup some leftover sockets #
+#################################
+
+elglob -0 socket /tmp/.X11-unix/*
+rm -f $socket
