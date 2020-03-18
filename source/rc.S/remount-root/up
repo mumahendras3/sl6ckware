@@ -2,5 +2,5 @@
 # Remount the root filesystem with read-write enabled #
 #######################################################
 
-foreground { echo "remount-root: Remounting root device with read-write enabled..." }
-mount -vnwo remount /
+foreground { echo "remount-root: Remounting root filesystem with read-write enabled..." }
+mount -vno remount,rw /
