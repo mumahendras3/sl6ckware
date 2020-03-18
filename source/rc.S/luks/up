@@ -36,19 +36,18 @@ importas -u cryptsetup CRYPTSETUP
 ifelse { [ ! -s /etc/crypttab ] }
 {
   foreground { echo "luks: This system is not configured to use LUKS! Aborting..." }
-  exit 1
+  exit 125
 }
 # NOTE: we only support LUKS formatted volumes (except for swap)!
-pipeline { cat /etc/crypttab }
-pipeline { grep -v -e "^#" -e "^[[:space:]]*$" }
-forstdin -pd"\n\r" LUKSARRAY
+pipeline { grep -v -e "^#" -e "^[[:space:]]*$" /etc/crypttab }
+forstdin -pd"\n" LUKSARRAY
 importas -u luksarray LUKSARRAY
 multidefine -Cd" \t" $luksarray { luks dev pass opts }
 ifelse { [ $opts = swap ] }
 {
   # If any of the volumes is to be used as encrypted swap,
   # then encrypt it using a random key and run mkswap:
-  foreground { echo "luks: Creating encrypted swap volume '${luks}' on device '${dev}':" }
+  foreground { echo "luks: Creating encrypted swap volume '${luks}' on device '${dev}'..." }
   if { $cryptsetup --cipher=aes --key-file=/dev/urandom --key-size=256 create $luks $dev }
   mkswap /dev/mapper/${luks}
 }
@@ -59,10 +58,10 @@ withstdinas LUKSOPTS
 importas -u luksopts LUKSOPTS
 ifthenelse { [ -z $luksopts ] }
 {
-  echo "luks: Unlocking LUKS encrypted volume '${luks}' on device '${dev}':"
+  echo "luks: Unlocking LUKS encrypted volume '${luks}' on device '${dev}'..."
 }
 {
-  echo "luks: Unlocking LUKS encrypted volume '${luks}' on device '${dev}' with options '${luksopts}':"
+  echo "luks: Unlocking LUKS encrypted volume '${luks}' on device '${dev}' with options '${luksopts}'..."
 }
 ifelse { [ -z $pass -o $pass = none ] }
 {
