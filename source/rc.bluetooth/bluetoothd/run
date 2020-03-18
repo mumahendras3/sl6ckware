@@ -7,7 +7,7 @@
 ifelse { [ ! -d /sys/class/bluetooth ] }
 {
   foreground { echo "bluetoothd: This system doesn't support bluetooth! Aborting..." }
-  exit 1
+  exit 125
 }
 backtick -ni BLUETOOTHD { which bluetoothd }
 # bluetoothd is ready after calling rfkill_init() function, which will

@@ -1,5 +1,0 @@
-bluetoothd
-# Comment out below to not start HCI devices listed in /etc/default/bluetooth at startup
-hciconfig
-# Uncomment below to do some SDP operations listed in /etc/default/bluetooth at startup
-#sdptool
