@@ -1,17 +1,11 @@
-###################################################################
-# Mount any additional filesystem types that haven't already been #
-# mounted (which probably just remote filesystems)                #
-###################################################################
+#########################################
+# Mount all non-root remote filesystems #
+#########################################
 
 foreground { echo "filesystems-remote: Mounting non-root remote filesystems..." }
-# This pipe after the mount command is just to convert the new
-# mount verbose output back to the old format that contained
-# more useful information
-pipeline { mount -avt nfs,smbfs,cifs,noproc,nosysfs,nodevpts }
-pipeline { grep successfully }
-pipeline { cut -f1 -d: }
-pipeline { tr -d " " }
-forstdin -d"\n" DEV
-importas -u dev DEV
-pipeline { mount }
-grep $dev
+pipeline { findmnt --fstab -cnrt nfs,nfs4,smbfs,cifs -o SOURCE,TARGET,FSTYPE,OPTIONS }
+forstdin -d"\n" ENTRY
+importas -u entry ENTRY
+multidefine -d" " $entry { source target fstype options }
+if { mount -v $target }
+echo "filesystems-remote: Mounted ${source} on ${target} type ${fstype} (${options})"

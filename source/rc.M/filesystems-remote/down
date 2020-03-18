@@ -1,0 +1,19 @@
+###########################################
+# Unmount all non-root remote filesystems #
+###########################################
+
+foreground { echo "filesystems-remote: Unmounting non-root remote filesystems..." }
+pipeline { findmnt -cnrt nfs,nfs4,smbfs,cifs -o TARGET }
+pipeline { tac }
+forstdin -d"\n" TARGET
+importas -u target TARGET
+foreground {
+  # Kill any processes (typically gam for NFS) that would otherwise prevent
+  # unmounting remote filesystems
+  if { fuser -sMm $target }
+  foreground { echo "filesystems-remote: Killing processes holding ${fstype} mount ${target} open..." }
+  background { fuser -ksMm $target }
+  wait -t 5000
+}
+pipeline { umount -vl $target }
+sed "s|umount|filesystems-remote|"
