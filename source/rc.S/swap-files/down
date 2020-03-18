@@ -1,0 +1,10 @@
+###########################
+# Turn off all swap files #
+###########################
+
+pipeline { swapon --show=TYPE,NAME --raw --noheadings }
+pipeline { grep "^file" }
+pipeline { cut -d" " -f2 }
+forstdin -pd"\n" FILE
+importas -u file FILE
+swapoff $file

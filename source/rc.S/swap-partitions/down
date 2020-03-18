@@ -1,0 +1,10 @@
+################################
+# Turn off all swap partitions #
+################################
+
+pipeline { swapon --show=TYPE,NAME --raw --noheadings }
+pipeline { grep "^partition" }
+pipeline { cut -d" " -f2 }
+forstdin -pd"\n" PARTITION
+importas -u partition PARTITION
+swapoff $partition
