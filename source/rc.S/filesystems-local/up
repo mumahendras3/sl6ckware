@@ -11,5 +11,5 @@ pipeline { sed "/\/dev\/shm/d" }
 forstdin -d"\n" ENTRY
 importas -u entry ENTRY
 multidefine -d" " $entry { source target fstype options }
-if { mount -v $target }
+if { mount $target }
 echo "filesystems-local: Mounted ${source} on ${target} type ${fstype} (${options})"

@@ -8,4 +8,4 @@ forstdin -d"\n" ENTRY
 importas -u entry ENTRY
 multidefine -d" " $entry { source target }
 if { umount $target }
-echo "filesystems-remote: ${target} (${source}) unmounted"
+echo "filesystems-local: ${target} (${source}) unmounted"
