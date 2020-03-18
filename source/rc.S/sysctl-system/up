@@ -4,5 +4,5 @@
 
 backtick -ni SYSCTL { which sysctl }
 importas -u sysctl SYSCTL
-foreground { echo "sysctl: Configuring kernel parameters: ${sysctl} --system" }
+foreground { echo "sysctl-system: Configuring kernel parameters: ${sysctl} --system" }
 $sysctl --system
