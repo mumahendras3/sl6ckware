@@ -1,0 +1,11 @@
+##########################################
+# Unmount all non-root local filesystems #
+##########################################
+
+foreground { echo "filesystems-local: Unmounting non-root local filesystems..." }
+pipeline { findmnt -cnrt noproc,sysfs,devtmpfs,fuse.gvfsd-fuse,tmpfs -o SOURCE,TARGET }
+forstdin -d"\n" ENTRY
+importas -u entry ENTRY
+multidefine -d" " $entry { source target }
+if { umount $target }
+echo "filesystems-remote: ${target} (${source}) unmounted"
