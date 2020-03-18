@@ -12,4 +12,4 @@ forstdin -d"\n" ENTRY
 importas -u entry ENTRY
 multidefine -d" " $entry { source target fstype options }
 if { mount -v $target }
-echo "filesystems-remote: Mounted ${source} on ${target} type ${fstype} (${options})"
+echo "filesystems-local: Mounted ${source} on ${target} type ${fstype} (${options})"
