@@ -6,14 +6,10 @@
 ############################################################################
 
 foreground { echo "filesystems-local: Mounting non-root local filesystems..." }
-# This pipe after the mount command is just to convert the new
-# mount verbose output back to the old format that contained
-# more useful information
-pipeline { mount -avt nonfs,nosmbfs,nocifs,noproc,nosysfs,nodevpts }
-pipeline { grep successfully }
-pipeline { cut -f1 -d: }
-pipeline { tr -d " " }
-forstdin -d"\n" DEV
-importas -u dev DEV
-pipeline { mount }
-grep $dev
+pipeline { findmnt --fstab -cnrt nonfs,nfs4,smbfs,cifs,proc,sysfs,devpts -o SOURCE,TARGET,FSTYPE,OPTIONS }
+pipeline { sed "/\/dev\/shm/d" }
+forstdin -d"\n" ENTRY
+importas -u entry ENTRY
+multidefine -d" " $entry { source target fstype options }
+if { mount -v $target }
+echo "filesystems-remote: Mounted ${source} on ${target} type ${fstype} (${options})"
