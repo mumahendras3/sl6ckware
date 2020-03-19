@@ -30,7 +30,8 @@
 - rc.icecc-scheduler
 - rc.iceccd
 - rc.local
-- rc.6 (for all oneshots down scripts)
+- rc.yp
+- rc.6 (genpowerd, pppd, accton, quota)
 
 ### Create the -log services
 - haveged
@@ -56,3 +57,6 @@
 
 ### Create additional services
 - acpid-socket (create a socket and pass it as acpid stdin for faster startup and reliable readiness indicator)
+
+### Others
+- Make sure s6-linux-init-shutdownd writes a shutdown record to wtmp
