@@ -1,2 +1,3 @@
-rc.S
-rc.M
+devtmpfs
+utmp
+hostname
