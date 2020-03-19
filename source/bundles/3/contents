@@ -10,5 +10,7 @@
 
 # For system initialization (see bundles/rc.S)
 rc.S
-# For entering multi user mode (see bundles/rc.M)
+# For entering multi-user mode (see bundles/rc.M)
 rc.M
+# Start agettys for console logins
+agettys
