@@ -1,0 +1,18 @@
+#!/bin/execlineb -S0
+
+##################################################
+# Change the machine state to the given runlevel #
+##################################################
+
+# This script is called once at boot time by rc.init, and is
+# also called by the runleveld service every time the user
+# requests a machine state change via telinit.
+ifelse { [ $# -le 0 -o -z $1 ] }
+{
+  fdmove -c 1 2
+  foreground { echo "runlevel: fatal: too few arguments" }
+  exit 100
+}
+ifelse { [ $2 = init ] }
+{ s6-rc -v2 -up change $1 }
+s6-rc -v2 -up change $1 agettys

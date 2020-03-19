@@ -1,0 +1,17 @@
+#!/bin/execlineb -P
+
+########################################################################
+# Bring down all running services before hardware halt/reboot/poweroff #
+########################################################################
+
+# If your s6-linux-init-maker invocation was made with the -1
+# option, messages from rc.shutdown will appear on /dev/console
+# as well as be logged by the catch-all logger.
+# If your s6-linux-init-maker invocation did NOT include the -1
+# option, messages from rc.shutdown will only be logged by the
+# catch-all logger and will NOT appear on /dev/console. In order
+# to print them to /dev/console instead, you may want to
+# uncomment the following line:
+#redirfd -w 1 /dev/console
+#fdmove -c 2 1
+s6-rc -v2 -bda change
