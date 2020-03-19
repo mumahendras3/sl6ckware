@@ -23,8 +23,8 @@ devtmpfs
 devpts
 tmpfs-shm
 static-nodes
-system-nodes
-local-nodes
+#system-nodes
+#local-nodes
 udev-hwdb
 udevd
 udev-add
