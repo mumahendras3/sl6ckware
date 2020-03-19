@@ -1,6 +1,0 @@
-#########################################
-# Remount the root filesystem read-only #
-#########################################
-
-foreground { echo "remount-root: Remounting root filesystem read-only..." }
-mount -vno remount,ro /
