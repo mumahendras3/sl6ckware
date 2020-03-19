@@ -1,6 +1,6 @@
 ######################################################################
 # Services that should be started when the system is entering the    #
-# multi user mode.                                                   #
+# multi-user mode.                                                   #
 # You can add your own services here if you want it to be started on #
 # every multi user runlevel (e.g. 3 and 4).                          #
 # You can also disable some of the services here by commenting       #

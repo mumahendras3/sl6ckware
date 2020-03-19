@@ -1,0 +1,8 @@
+# These are the standard console login gettys that will be started
+# after the system has entered single-user mode
+maintenance-agetty-tty1
+maintenance-agetty-tty2
+maintenance-agetty-tty3
+maintenance-agetty-tty4
+maintenance-agetty-tty5
+maintenance-agetty-tty6
