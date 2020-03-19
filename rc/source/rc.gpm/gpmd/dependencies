@@ -1,2 +1,3 @@
 devtmpfs
 bind-run
+udev-add
