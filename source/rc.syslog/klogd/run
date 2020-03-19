@@ -11,5 +11,5 @@ multisubstitute
   importas -u klogd KLOGD
   importas -usd" " klogd_options KLOGD_OPTIONS
 }
-foreground { echo "klogd: Starting klogd: ${klogd}" $klogd_options -n }
-emptyenv $klogd $klogd_options -n
+foreground { echo "klogd: Starting klogd: ${klogd} -n" $klogd_options }
+emptyenv $klogd -n $klogd_options
