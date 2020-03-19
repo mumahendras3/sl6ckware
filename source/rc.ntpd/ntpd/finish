@@ -1,0 +1,8 @@
+#!/bin/execlineb -P
+
+##############################################################
+# Prevent ntpd from restarting if the run script exited 125  #
+# once in the last 5 seconds (i.e. when ntp.conf is missing) #
+##############################################################
+
+s6-permafailon 5 1 125

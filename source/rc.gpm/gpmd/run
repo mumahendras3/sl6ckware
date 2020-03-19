@@ -12,7 +12,7 @@ background {
 fdclose 3
 importas -u gpm GPM
 foreground { echo "gpmd: Starting gpm: ${gpm} -m /dev/mouse -t imps2" }
-s6-fghack emptyenv $gpm -m /dev/mouse -t imps2
+emptyenv s6-fghack $gpm -m /dev/mouse -t imps2
 
 # There is another way to run GPM, where it acts as a repeater outputting a
 # virtual MouseSystems mouse on /dev/gpmdata. This is useful for feeding

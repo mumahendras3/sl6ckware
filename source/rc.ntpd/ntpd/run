@@ -10,7 +10,7 @@ backtick -ni NTPD { which ntpd }
 ifelse { [ ! -r /etc/ntp.conf ] }
 {
   foreground { echo "ntpd: No ntpd config file found! Aborting..." }
-  exit 1
+  exit 125
 }
 background -d {
   fdmove 1 3

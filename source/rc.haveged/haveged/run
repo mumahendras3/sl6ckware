@@ -5,10 +5,10 @@
 ####################################
 
 backtick -ni HAVEGED { which haveged }
-export HAVEGED_OPTS "-w 1024 -v 1"
+export HAVEGED_OPTS "-w 1024 -v 1 -F"
 multisubstitute {
   importas -u haveged HAVEGED
-  importas -u haveged_opts HAVEGED_OPTS
+  importas -usd" " haveged_opts HAVEGED_OPTS
 }
-foreground { echo "haveged: Starting haveged entropy daemon: ${haveged} ${haveged_opts}" }
-s6-fghack emptyenv $haveged $haveged_opts
+foreground { echo "haveged: Starting haveged entropy daemon: ${haveged}" $haveged_opts }
+emptyenv $haveged $haveged_opts

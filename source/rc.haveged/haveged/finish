@@ -1,0 +1,8 @@
+#!/bin/execlineb -P
+
+##############################################################
+# Prevent haveged from restarting if the run script exited 1 #
+# 3 times in the last 5 seconds                              #
+##############################################################
+
+s6-permafailon 5 3 1
