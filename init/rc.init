@@ -23,8 +23,4 @@ if { s6-rc-init /run/service }
 # via the -D option to s6-linux-init-maker.
 # Numeric arguments from 1 to 5 on the kernel command line will
 # override the default.
-foreground { /etc/s6-linux-init/current/scripts/runlevel $1 init }
-# Start the gettys after the system has been brought to the specifed
-# runlevel to avoid tty1 login prompt being cluttered by system
-# initialization messages
-s6-rc -u change agettys
+/etc/s6-linux-init/current/scripts/runlevel $1
