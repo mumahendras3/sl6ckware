@@ -1,0 +1,207 @@
+######################################################################
+# Services that should be started when the system is entering the    #
+# multi user mode.                                                   #
+# You can add your own services here if you want it to be started on #
+# every multi user runlevel (e.g. 3 and 4).                          #
+# You can also disable some of the services here by commenting       #
+# them out. Note that if you disable a service that is a dependency  #
+# of other services, it will still be started automatically by s6-rc #
+# to satisfy the dependency chain.                                   #
+# This bundle is analogous to the rc.M script in Slackware.          #
+######################################################################
+
+shared-library-links
+
+# Begin rc.setterm related services
+setterm
+# End of rc.setterm related services
+
+hostname
+save-dmesg
+
+# Begin rc.pcmcia related services
+#This is just a placeholder since it has not been
+#converted to s6-rc service definition style yet
+# End of rc.pcmcia related services
+
+# Begin rc.syslog related services
+klogd
+syslogd
+# End of rc.syslog related services
+
+font-information-caches
+
+# Begin rc.haveged related services
+haveged
+# End of rc.haveged related services
+
+# Begin rc.inet1 related services
+#This is just a placeholder since it has not been
+#converted to s6-rc service definition style yet
+# End of rc.inet1 related services
+
+# Begin rc.messagebus related services
+system-dbusd
+# End of rc.messagebus related services
+
+# Begin rc.consolekit related services
+consolekitd
+# End of rc.consolekit related services
+
+# Begin rc.bluetooth related services
+bluetoothd
+#hciconfig
+#sdptool
+# End of rc.bluetooth related services
+
+# Begin rc.networkmanager related services
+networkmanagerd
+# End of rc.networkmanager related services
+
+# Begin rc.inet2 related services
+#This is just a placeholder since it has not been
+#converted to s6-rc service definition style yet
+# End of rc.inet2 related services
+
+#filesystems-remote
+
+# Begin rc.autofs related services
+#This is just a placeholder since it has not been
+#converted to s6-rc service definition style yet
+# End of rc.autofs related services
+
+# Begin rc.ntpd related services
+ntpd
+# End of rc.ntpd related services
+
+ensure-permissions
+
+# Begin rc.acpid related services
+acpid
+# End of rc.acpid related services
+
+# Begin rc.cpufreq related services
+cpufreq
+# End of rc.cpufreq related services
+
+gtk-icon-caches
+mime-database-cache
+
+# Begin rc.pulseaudio related services
+#This is just a placeholder since it has not been
+#converted to s6-rc service definition style yet
+# End of rc.pulseaudio related services
+
+gtk-immodules
+gdk-pixbuf-loaders
+#pango-querymodules
+glib-schemas
+
+# Begin rc.dnsmasq related services
+#This is just a placeholder since it has not been
+#converted to s6-rc service definition style yet
+# End of rc.dnsmasq related services
+
+# Begin rc.snmpd related services
+#This is just a placeholder since it has not been
+#converted to s6-rc service definition style yet
+# End of rc.snmpd related services
+
+# Begin rc.cups related services
+cupsd
+# End of rc.cups related services
+
+# Begin rc.atalk related services
+#This is just a placeholder since it has not been
+#converted to s6-rc service definition style yet
+# End of rc.atalk related services
+
+# Begin rc.smartd related services
+#This is just a placeholder since it has not been
+#converted to s6-rc service definition style yet
+# End of rc.smartd related services
+
+#Placeholder for process accounting (pacct)
+
+# Begin rc.crond related services
+crond
+# End of rc.crond related services
+
+# Begin rc.atd related services
+atd
+# End of rc.atd related services
+
+#Placeholder for turning on/off quota
+
+# Begin rc.saslauthd related services
+#This is just a placeholder since it has not been
+#converted to s6-rc service definition style yet
+# End of rc.saslauthd related services
+
+# Begin rc.postfix related services
+#This is just a placeholder since it has not been
+#converted to s6-rc service definition style yet
+# End of rc.postfix related services
+
+# Begin rc.alsa related services
+#This is just a placeholder since it has not been
+#converted to s6-rc service definition style yet
+# End of rc.alsa related services
+
+# Begin rc.font related services
+console-font
+# End of rc.font related services
+
+# Begin rc.keymap related services
+#This is just a placeholder since it has not been
+#converted to s6-rc service definition style yet
+# End of rc.keymap related services
+
+# Begin rc.mysqld related services
+#This is just a placeholder since it has not been
+#converted to s6-rc service definition style yet
+# End of rc.mysqld related services
+
+# Begin rc.httpd related services
+#This is just a placeholder since it has not been
+#converted to s6-rc service definition style yet
+# End of rc.httpd related services
+
+# Begin rc.openldap related services
+#This is just a placeholder since it has not been
+#converted to s6-rc service definition style yet
+# End of rc.openldap related services
+
+# Begin rc.dovecot related services
+#This is just a placeholder since it has not been
+#converted to s6-rc service definition style yet
+# End of rc.dovecot related services
+
+# Begin rc.samba related services
+#This is just a placeholder since it has not been
+#converted to s6-rc service definition style yet
+# End of rc.samba related services
+
+# Begin rc.gpm related services
+gpmd
+# End of rc.gpm related services
+
+# Begin rc.icecc-scheduler related services
+#This is just a placeholder since it has not been
+#converted to s6-rc service definition style yet
+# End of rc.icecc-scheduler related services
+
+# Begin rc.iceccd related services
+#This is just a placeholder since it has not been
+#converted to s6-rc service definition style yet
+# End of rc.iceccd related services
+
+# Begin rc.sysvinit related services
+#This is just a placeholder since it has not been
+#converted to s6-rc service definition style yet
+# End of rc.sysvinit related services
+
+# Begin rc.local{,_shutdown} related services
+#This is just a placeholder since it has not been
+#converted to s6-rc service definition style yet
+# End of rc.local{,_shutdown} related services

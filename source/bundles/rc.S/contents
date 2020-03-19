@@ -1,0 +1,77 @@
+######################################################################
+# Services that should be started to prepare the system before       #
+# going into the desired runlevel.                                   #
+# You can add your own services here if you want it to be            #
+# started on every runlevel.                                         #
+# You can also disable some of the services here by commenting       #
+# them out. Note that if you disable a service that is a dependency  #
+# of other services, it will still be started automatically by s6-rc #
+# to satisfy the dependency chain.                                   #
+# This bundle is analogous to the rc.S script in Slackware.          #
+######################################################################
+
+procfs
+sysfs
+tmpfs-run
+
+# Begin rc.loop related services
+module-loop
+# End of rc.loop related services
+
+# Begin rc.udev related services
+devtmpfs
+devpts
+tmpfs-shm
+static-nodes
+system-nodes
+local-nodes
+udev-hwdb
+udevd
+udev-add
+# End of rc.udev related services
+
+cgroupfs
+#module-dm-mod
+#luks
+#lvm
+swap-partitions
+#adjtimex
+system-time
+fsck-root
+remount-root
+
+# Begin rc.modules related services
+depmod
+#modules-local
+#modules-versioned
+# End of rc.modules related services
+
+sysctl-system
+fsck-all
+filesystems-local
+bind-run
+#swap-files
+
+# Begin rc.cgmanager related services
+#cgmanagerd
+# End of rc.cgmanager related services
+
+cleanup-etc
+cleanup-tmp
+cleanup-var
+ICE-socketdir
+X11-socketdir
+utmp
+update-motd
+
+# Begin rc.sysvinit related services
+#This is just a placeholder since it has not been
+#converted to s6-rc service definition style yet
+# End of rc.sysvinit related services
+
+# Begin rc.serial related services
+#This is just a placeholder since it has not been
+#converted to s6-rc service definition style yet
+# End of rc.serial related services
+
+random-seed

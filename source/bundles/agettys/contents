@@ -1,0 +1,8 @@
+# These are the standard console login gettys that will be started
+# after the system has reached a specified runlevel
+agetty-tty1
+agetty-tty2
+agetty-tty3
+agetty-tty4
+agetty-tty5
+agetty-tty6

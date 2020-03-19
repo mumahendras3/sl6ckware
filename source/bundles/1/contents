@@ -1,5 +1,5 @@
 ######################################################################
-# Services that should be started at runlevel 3.                     #
+# Services that should be started at runlevel 1.                     #
 # You can add your own services here if you want to include them in  #
 # this runlevel.                                                     #
 # You can also disable some of the services here by commenting       #
@@ -10,5 +10,17 @@
 
 # For system initialization (see bundles/rc.S)
 rc.S
-# For entering multi user mode (see bundles/rc.M)
-rc.M
+
+# Begin rc.font related services
+console-font
+# End of rc.font related services
+
+# Begin rc.keymap related services
+#This is just a placeholder since it has not been
+#converted to s6-rc service definition style yet
+# End of rc.keymap related services
+
+# Begin rc.sysvinit related services
+#This is just a placeholder since it has not been
+#converted to s6-rc service definition style yet
+# End of rc.sysvinit related services
