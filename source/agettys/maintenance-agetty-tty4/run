@@ -1,0 +1,7 @@
+#!/bin/execlineb -P
+
+##########################################
+# Start agetty for console login on tty4 #
+##########################################
+
+agetty 38400 tty4 linux
