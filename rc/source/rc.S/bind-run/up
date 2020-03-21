@@ -3,4 +3,7 @@
 ###############################
 
 if -tn { mountpoint -q /var/run }
-mount -vo bind /run /var/run
+foreground { mount -o bind /run /var/run }
+importas -u ? ?
+ifelse { [ $? != 0 ] } { exit $? }
+echo "bind-run: /run bound on /var/run"

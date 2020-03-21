@@ -6,10 +6,10 @@
 ############################################################################
 
 foreground { echo "filesystems-local: Mounting non-root local filesystems..." }
-pipeline { findmnt --fstab -cnrt nonfs,nfs4,smbfs,cifs,proc,sysfs,devpts,swap -o SOURCE,TARGET,FSTYPE,OPTIONS }
-pipeline { sed "\\|/dev/shm|d" }
+pipeline { findmnt --fstab -cnrt nonfs,nfs4,smbfs,cifs,proc,sysfs,devpts,swap -o TARGET,SOURCE,FSTYPE,OPTIONS }
+pipeline { sed "\\|/dev/shm|d; \\|^/ |d" }
 forstdin -d"\n" ENTRY
 importas -u entry ENTRY
-multidefine -d" " $entry { source target fstype options }
+multidefine -d" " $entry { target source fstype options }
 if { mount $target }
-echo "filesystems-local: Mounted ${source} on ${target} type ${fstype} (${options})"
+echo "filesystems-local: ${source} mounted on ${target} type ${fstype} (${options})"

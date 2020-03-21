@@ -3,4 +3,7 @@
 #######################################################
 
 foreground { echo "remount-root: Remounting root filesystem with read-write enabled..." }
-mount -vno remount,rw /
+foreground { mount -no remount,rw / }
+importas -u ? ?
+ifelse { [ $? != 0 ] } { exit $? }
+echo "remount-root: / remounted with read-write enabled"
