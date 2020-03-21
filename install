@@ -8,6 +8,7 @@ TMPFS_DIR="/run"
 INIT_PATH="/usr/bin:/usr/sbin:/bin:/sbin"
 COMPILED_DIR="/etc/s6-rc/compiled"
 LIVE_DIR="/run/s6-rc"
+DEF_RUNLEVEL=3
 
 # Parse command line arguments
 while [ -n "$1" ]; do
@@ -26,6 +27,10 @@ while [ -n "$1" ]; do
       ;;
     -G)
       EARLY_GETTY_CMD="$2"
+      shift 2
+      ;;
+    -D)
+      DEF_RUNLEVEL="$2"
       shift 2
       ;;
     -1)
@@ -52,9 +57,9 @@ done
 
 # Run s6-linux-init-maker
 if [ -z "$EARLY_GETTY_CMD" ]; then
-  s6-linux-init-maker -c "$BASE_DIR" -p "$INIT_PATH" -f init/skel $SHOW_BOOT_MSG "$BASE_DIR"
+  s6-linux-init-maker -c "$BASE_DIR" -p "$INIT_PATH" -D "$DEF_RUNLEVEL" -f init/skel $SHOW_BOOT_MSG "$BASE_DIR"
 else
-  s6-linux-init-maker -c "$BASE_DIR" -p "$INIT_PATH" -G "$EARLY_GETTY_CMD" -f init/skel $SHOW_BOOT_MSG "$BASE_DIR"
+  s6-linux-init-maker -c "$BASE_DIR" -p "$INIT_PATH" -G "$EARLY_GETTY_CMD" -D "$DEF_RUNLEVEL" -f init/skel $SHOW_BOOT_MSG "$BASE_DIR"
 fi
 
 # Compile s6-rc service definitions
