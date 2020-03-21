@@ -1,3 +1,4 @@
 sysfs
 remount-root
+udev-add
 syslogd
