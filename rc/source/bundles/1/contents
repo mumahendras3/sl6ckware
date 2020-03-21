@@ -8,8 +8,8 @@
 # to satisfy the dependency chain.                                   #
 ######################################################################
 
-# For system initialization (see bundles/rc.S)
-rc.S
+# For system initialization (see bundles/sysinit)
+sysinit
 
 # Begin rc.font related services
 console-font
@@ -26,4 +26,4 @@ console-font
 # End of rc.sysvinit related services
 
 # Start agettys for console logins
-agettys
+single-user-agettys

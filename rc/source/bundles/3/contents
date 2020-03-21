@@ -8,9 +8,9 @@
 # to satisfy the dependency chain.                                   #
 ######################################################################
 
-# For system initialization (see bundles/rc.S)
-rc.S
-# For entering multi-user mode (see bundles/rc.M)
-rc.M
+# For system initialization (see bundles/sysinit)
+sysinit
+# For entering multi-user mode (see bundles/multi-user)
+multi-user
 # Start agettys for console logins
 agettys

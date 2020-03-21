@@ -49,7 +49,7 @@ consolekitd
 # End of rc.consolekit related services
 
 # Begin rc.bluetooth related services
-bluetoothd
+#bluetoothd
 #hciconfig
 #sdptool
 # End of rc.bluetooth related services
@@ -81,7 +81,7 @@ acpid
 # End of rc.acpid related services
 
 # Begin rc.cpufreq related services
-cpufreq
+#cpufreq
 # End of rc.cpufreq related services
 
 gtk-icon-caches

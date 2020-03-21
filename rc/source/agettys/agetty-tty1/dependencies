@@ -1,3 +1,2 @@
-devtmpfs
-utmp
-hostname
+sysinit
+multi-user
