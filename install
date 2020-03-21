@@ -1,0 +1,82 @@
+#!/bin/sh
+
+# Install script for sl6ckware
+
+# Some default values
+BASE_DIR="/etc/s6-linux-init/current"
+TMPFS_DIR="/run"
+INIT_PATH="/usr/bin:/usr/sbin:/bin:/sbin"
+COMPILED_DIR="/etc/s6-rc/compiled"
+LIVE_DIR="/run/s6-rc"
+
+# Parse command line arguments
+while [ -n "$1" ]; do
+  case $1 in
+    -c)
+      BASE_DIR="$2"
+      shift 2
+      ;;
+    -t)
+      TMPFS_DIR="$2"
+      shift 2
+      ;;
+    -p)
+      INIT_PATH="$2"
+      shift 2
+      ;;
+    -G)
+      EARLY_GETTY_CMD="$2"
+      shift 2
+      ;;
+    -1)
+      SHOW_BOOT_MSG="-1"
+      shift
+      ;;
+    -s)
+      SYMLINK=y
+      shift
+      ;;
+    -l)
+      LIVE_DIR="$2"
+      shift 2
+      ;;
+    -C)
+      COMPILED_DIR="$2"
+      shift 2
+      ;;
+    *)
+      shift
+      ;;
+  esac
+done
+
+# Run s6-linux-init-maker
+if [ -z "$EARLY_GETTY_CMD" ]; then
+  s6-linux-init-maker -c "$BASE_DIR" -p "$INIT_PATH" -f init/skel $SHOW_BOOT_MSG "$BASE_DIR"
+else
+  s6-linux-init-maker -c "$BASE_DIR" -p "$INIT_PATH" -G "$EARLY_GETTY_CMD" -f init/skel $SHOW_BOOT_MSG "$BASE_DIR"
+fi
+
+# Compile s6-rc service definitions
+if [ "$SYMLINK" = "y" ]; then
+  TIME=$(date +%y%m%d-%R:%S)
+  NAME="$(basename "$COMPILED_DIR")"
+  s6-rc-compile "$COMPILED_DIR"-"$TIME" rc/source/*
+  ln -s "$NAME"-"$TIME" "$COMPILED_DIR"
+else
+  s6-rc-compile "$COMPILED_DIR" rc/source/*
+fi
+
+# Some adjustments to the resulted scripts
+sed -i \
+  -e "s|%compiled_dir|${COMPILED_DIR}|" \
+  -e "s|%live_dir|${LIVE_DIR}|" \
+  -e "s|%tmpfs_dir|${TMPFS_DIR}|" \
+  -e "s|%base_dir|${BASE_DIR}|" \
+  "${BASE_DIR}/scripts/rc.init"
+
+# Make symbolic links in /sbin to every scripts in $BASE_DIR/bin
+for script in "$BASE_DIR"/bin/*; do
+  NAME=$(basename "$script")
+  ln -s "$script" "/sbin/${NAME}.s6"
+done
