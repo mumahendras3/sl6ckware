@@ -30,7 +30,7 @@ envfile /etc/default/cpufreq
 multisubstitute {
   importas -u scaling_driver SCALING_DRIVER
   importas -D "" -u scaling_governor SCALING_GOVERNOR
-  elglob -0 /sys/devices/system/cpu/cpu*/cpufreq/scaling_governor
+  elglob -0 file /sys/devices/system/cpu/cpu*/cpufreq/scaling_governor
 }
 # Attempt to apply the CPU scaling governor setting.  This may or may not
 # actually override the default value depending on if the choice is supported
