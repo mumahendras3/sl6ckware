@@ -1,0 +1,9 @@
+#!/bin/execlineb -S1
+
+#######################################################################
+# Initialize s6-rc and bring up all the wanted services (based on the #
+# given runlevel)                                                     #
+#######################################################################
+
+if { s6-rc-init -d -c %compiled_dir -l %live_dir %tmpfs_dir/service }
+%base_dir/scripts/runlevel $1

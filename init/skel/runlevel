@@ -4,9 +4,6 @@
 # Change the machine state to the given runlevel #
 ##################################################
 
-# This script is called once at boot time by rc.init, and is
-# also called by the runleveld service every time the user
-# requests a machine state change via telinit.
 ifelse { [ $# -le 0 ] }
 {
   fdmove -c 1 2
