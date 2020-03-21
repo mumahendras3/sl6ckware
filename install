@@ -95,5 +95,5 @@ sed -i \
 # Make symbolic links in /sbin to every scripts in $BASE_DIR/bin
 for script in "$BASE_DIR"/bin/*; do
   NAME=$(basename "$script")
-  ln -s "$script" "/sbin/${NAME}.s6"
+  ln -s ../"${script#*/}" "/sbin/${NAME}.s6"
 done

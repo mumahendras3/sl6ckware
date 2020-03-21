@@ -32,6 +32,7 @@
 - rc.local
 - rc.yp
 - rc.6 (genpowerd, pppd, accton, quota)
+- rc.4
 
 ### Create the -log services
 - haveged
@@ -52,7 +53,6 @@
 ## NOTE: Don't forget to add syslogd as dependencies to services that need it
 
 ### Create bundles
-- runlevel 1 (single user)
 - runlevel 4 (graphical login)
 
 ### Create additional services
