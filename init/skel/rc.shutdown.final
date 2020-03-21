@@ -1,0 +1,8 @@
+#!/bin/sh -e
+
+#########################################################################
+# Additional things to do *right before* the machine gets rebooted      #
+# or powered off, at the very end of the shutdown sequence, when all    #
+# the filesystems are unmounted. You probably don't need to do anything #
+# at this stage, hence this script is kept empty.                       #
+#########################################################################
