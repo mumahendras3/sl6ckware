@@ -2,13 +2,17 @@
 
 # Install script for sl6ckware
 
+# Check if we are running inside the root directory of sl6ckware repo
+[ "$0" = "./install" ] || { echo "Please change directory to the root directory of sl6ckware repo first!"; exit 1; }
+
 # Some default values
 BASE_DIR="/etc/s6-linux-init/current"
 TMPFS_DIR="/run"
 INIT_PATH="/usr/bin:/usr/sbin:/bin:/sbin"
+DEF_RUNLEVEL=3
+SOURCE_DIR="/etc/s6-rc/source"
 COMPILED_DIR="/etc/s6-rc/compiled"
 LIVE_DIR="/run/s6-rc"
-DEF_RUNLEVEL=3
 
 # Parse command line arguments
 while [ -n "$1" ]; do
@@ -45,6 +49,10 @@ while [ -n "$1" ]; do
       LIVE_DIR="$2"
       shift 2
       ;;
+    -S)
+      SOURCE_DIR="$2"
+      shift 2
+      ;;
     -C)
       COMPILED_DIR="$2"
       shift 2
@@ -71,6 +79,10 @@ if [ "$SYMLINK" = "y" ]; then
 else
   s6-rc-compile "$COMPILED_DIR" rc/source/*
 fi
+
+# Create a copy of s6-rc service definitions in the system
+mkdir "$SOURCE_DIR"
+cp -r rc/source/* "$SOURCE_DIR"
 
 # Some adjustments to the resulted scripts
 sed -i \
