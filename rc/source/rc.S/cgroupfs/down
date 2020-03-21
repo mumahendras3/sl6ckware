@@ -1,0 +1,11 @@
+##################################
+# Unmount all cgroup filesystems #
+##################################
+
+foreground { echo "cgroupfs: Unmounting cgroup filesystems..." }
+pipeline { findmnt -nrRM /sys/fs/cgroup -o TARGET }
+pipeline { tac }
+forstdin -d"\n" TARGET
+importas -u target TARGET
+pipeline { umount -vl $target }
+sed "s|umount|cgroupfs|"
