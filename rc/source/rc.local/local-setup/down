@@ -1,0 +1,6 @@
+##################################################################
+# Run local system shutdown script (/etc/rc.d/rc.local_shutdown) #
+##################################################################
+
+if -t { [ -x /etc/rc.d/rc.local_shutdown ] }
+/etc/rc.d/rc.local_shutdown
