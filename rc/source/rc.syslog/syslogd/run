@@ -10,15 +10,15 @@
 #export SYSLOGD_OPTIONS "-c"
 backtick -ni SYSLOGD { which syslogd }
 # Using /dev/log socket appearance as syslogd readiness indicator
+if { touch /dev/log } # just for placeholder
 background {
   fdmove 1 3
-  inotifywait -qe attrib --include log /dev
+  inotifywait -qe attrib /dev/log
 }
 fdclose 3
-multisubstitute
-{
+multisubstitute {
   importas -u syslogd SYSLOGD
-  importas -u syslogd_options SYSLOGD_OPTIONS
+  importas -usd" " syslogd_options SYSLOGD_OPTIONS
 }
 foreground { echo "syslogd: Starting syslogd daemon: ${syslogd} -n" $syslogd_options }
 emptyenv $syslogd -n $syslogd_options
