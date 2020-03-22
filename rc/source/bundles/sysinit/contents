@@ -10,15 +10,36 @@
 # This bundle is analogous to the rc.S script in Slackware.          #
 ######################################################################
 
+sysctl-system
 procfs
 sysfs
+cgroupfs
 tmpfs-run
+bind-run
+#module-dm-mod
+#luks
+#lvm
+swap-partitions
+#swap-files
+#adjtimex
+system-time
+fsck-root
+fsck-all
+remount-root
+filesystems-local
+cleanup-etc
+cleanup-tmp
+cleanup-var
+ICE-socketdir
+X11-socketdir
+utmp
+update-motd
+random-seed
 
-# Begin rc.loop related services
-module-loop
-# End of rc.loop related services
+# From rc.loop
+#module-loop
 
-# Begin rc.udev related services
+# From rc.udev
 devtmpfs
 devpts
 tmpfs-shm
@@ -28,50 +49,15 @@ static-nodes
 udev-hwdb
 udevd
 udev-add
-# End of rc.udev related services
 
-cgroupfs
-#module-dm-mod
-#luks
-#lvm
-swap-partitions
-#adjtimex
-system-time
-fsck-root
-remount-root
-
-# Begin rc.modules related services
+# From rc.modules
 depmod
 #modules-local
 #modules-versioned
-# End of rc.modules related services
 
-sysctl-system
-fsck-all
-filesystems-local
-bind-run
-#swap-files
-
-# Begin rc.cgmanager related services
+# From rc.cgmanager
 #cgmanagerd
-# End of rc.cgmanager related services
 
-cleanup-etc
-cleanup-tmp
-cleanup-var
-ICE-socketdir
-X11-socketdir
-utmp
-update-motd
-
-# Begin rc.sysvinit related services
+# From rc.serial
 #This is just a placeholder since it has not been
 #converted to s6-rc service definition style yet
-# End of rc.sysvinit related services
-
-# Begin rc.serial related services
-#This is just a placeholder since it has not been
-#converted to s6-rc service definition style yet
-# End of rc.serial related services
-
-random-seed

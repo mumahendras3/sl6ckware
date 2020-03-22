@@ -10,20 +10,10 @@
 
 # For system initialization (see bundles/sysinit)
 sysinit
-
-# Begin rc.font related services
+# From rc.font
 console-font
-# End of rc.font related services
-
-# Begin rc.keymap related services
+# From rc.keymap
 #This is just a placeholder since it has not been
 #converted to s6-rc service definition style yet
-# End of rc.keymap related services
-
-# Begin rc.sysvinit related services
-#This is just a placeholder since it has not been
-#converted to s6-rc service definition style yet
-# End of rc.sysvinit related services
-
 # Start agettys for console logins
 single-user-agettys
