@@ -29,7 +29,6 @@
 - rc.samba
 - rc.icecc-scheduler
 - rc.iceccd
-- rc.local
 - rc.yp
 - rc.6 (genpowerd, pppd, accton, quota)
 - rc.4
@@ -46,7 +45,7 @@
 - cupsd
 - crond
 - atd
-- ntpd
+- ntpd (NEXT-2)
 - acpid
 - bluetoothd
 - consolekitd
@@ -59,4 +58,4 @@
 - acpid-socket (create a socket and pass it as acpid stdin for faster startup and reliable readiness indicator)
 
 ### Others
-- Make sure s6-linux-init-shutdownd writes a shutdown record to wtmp
+- Make sure s6-linux-init-shutdownd writes a shutdown record to wtmp (NEXT-1)
