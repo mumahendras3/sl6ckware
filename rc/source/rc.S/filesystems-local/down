@@ -3,9 +3,10 @@
 ##########################################
 
 foreground { echo "filesystems-local: Unmounting non-root local filesystems..." }
-pipeline { findmnt -cnrt noproc,sysfs,devtmpfs,fuse.gvfsd-fuse,tmpfs -o SOURCE,TARGET }
-forstdin -d"\n" ENTRY
-importas -u entry ENTRY
-multidefine -d" " $entry { source target }
-if { umount $target }
-echo "filesystems-local: ${target} (${source}) unmounted"
+pipeline { findmnt -cnrt noproc,sysfs,devtmpfs -o TARGET }
+pipeline { sed "\\|/dev/shm|d; \\|^/$|d; \\|cgroup|d" }
+pipeline { tac }
+forstdin -d"\n" TARGET
+importas -u target TARGET
+pipeline { umount -vl $target }
+sed "s|umount|filesystems-local|"
