@@ -12,7 +12,8 @@
 sysinit
 # For entering multi-user mode (see bundles/multi-user)
 multi-user
-# From rc.local
-local-setup
 # Start agettys for console logins
 agettys
+
+# From rc.local
+local-setup
