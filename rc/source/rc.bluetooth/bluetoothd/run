@@ -14,7 +14,7 @@ backtick -ni BLUETOOTHD { which bluetoothd }
 # open /dev/rfkill and read from it. We will wait for ACCESS event on
 # /dev/rfkill to happen and use it as bluetoothd readiness indicator.
 # It's not ideal but better than no readiness notification at all.
-background {
+background -d {
   fdmove 1 3
   inotifywait -qe access /dev/rfkill
 }
