@@ -11,11 +11,9 @@
 # For system initialization (see bundles/sysinit)
 sysinit
 # Start agettys for console logins
-single-user-agettys
-
+agettys
 # From rc.font
 console-font
-
 # From rc.keymap
 #This is just a placeholder since it has not been
 #converted to s6-rc service definition style yet

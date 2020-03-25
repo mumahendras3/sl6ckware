@@ -1,2 +1,4 @@
-sysinit
-multi-user
+devtmpfs
+utmp
+hostname
+console-font
