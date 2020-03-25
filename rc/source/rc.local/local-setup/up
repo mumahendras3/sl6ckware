@@ -2,4 +2,9 @@
 # Run local system initialization script (/etc/rc.d/rc.local) #
 ###############################################################
 
+ifelse { [ ! -x /etc/rc.d/rc.local ] }
+{
+  foreground { echo "local-setup: /etc/rc.d/rc.local not found or not executable! Aborting..." }
+  exit 1
+}
 /etc/rc.d/rc.local
