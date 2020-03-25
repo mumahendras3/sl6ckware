@@ -7,5 +7,5 @@ pipeline { findmnt --fstab -cnrt nfs,nfs4,smbfs,cifs -o SOURCE,TARGET,FSTYPE,OPT
 forstdin -d"\n" ENTRY
 importas -u entry ENTRY
 multidefine -d" " $entry { source target fstype options }
-if { mount -v $target }
-echo "filesystems-remote: Mounted ${source} on ${target} type ${fstype} (${options})"
+if { mount $target }
+echo "filesystems-remote: ${source} mounted on ${target} type ${fstype} (${options})"
