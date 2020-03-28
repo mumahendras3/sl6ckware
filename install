@@ -81,7 +81,7 @@ else
 fi
 
 # Create a copy of s6-rc service definitions in the system
-mkdir "$SOURCE_DIR"
+mkdir -p "$SOURCE_DIR"
 cp -r rc/source/* "$SOURCE_DIR"
 
 # Some adjustments to the resulted scripts
