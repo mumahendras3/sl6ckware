@@ -4,6 +4,7 @@
 # Start the udev daemon after doing some sanity checks #
 ########################################################
 
+fdmove -c 2 1
 # Perform sanity checks
 # Sanity check #1, udev requires that the kernel support tmpfs.
 ifelse -n { grep -wq tmpfs /proc/filesystems }
@@ -44,5 +45,5 @@ background {
 }
 # Starting udevd
 importas -u udevd UDEVD
-foreground { echo "udevd: Starting udevd: ${udevd}" }
+foreground { echo "udevd: Starting the udev daemon: ${udevd}" }
 emptyenv $udevd
