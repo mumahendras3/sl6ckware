@@ -4,6 +4,7 @@
 # Start the cgroup manager (cgmanager) daemon #
 ###############################################
 
+fdmove -c 2 1
 backtick -ni CGMANAGER { which cgmanager }
 importas -u cgmanager CGMANAGER
 foreground { echo "cgmanagerd: Starting cgmanager: ${cgmanager}" }
