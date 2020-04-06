@@ -1,0 +1,21 @@
+#!/bin/sh
+
+# Script to compile a new s6-rc database from a given source directories
+# and update the appropriate symlink to point to the new compiled database
+
+# Sanity check
+[ -L "$1" ] || \
+  { echo "Please pass the symlink that will be updated as the first argument!"; exit 1; }
+
+# Some variable definitions
+DEST="$1"
+TIME=$(date +%y%m%d-%R:%S)
+NAME="$(basename "$DEST"-"$TIME")"
+
+# Start compiling the new database
+shift
+s6-rc-compile "$DEST"-"$TIME" "$@"
+
+# Update the symlink
+rm "$DEST"
+ln -s "$NAME" "$DEST"
