@@ -1,0 +1,12 @@
+#!/bin/execlineb -P
+
+##############################################
+# Start a logging daemon for the ACPI daemon #
+##############################################
+
+# Add your user to adm group to be able to read the log files
+if { mkdir -pm750 /var/log/acpid }
+if { chown adm:adm /var/log/acpid }
+s6-setuidgid adm # Drop privilege to user adm and group adm
+umask 137
+s6-log -bd3 n4 s500000 T /var/log/acpid

@@ -4,12 +4,14 @@
 # Start the ACPI daemon #
 #########################
 
+fdmove -c 2 1
 backtick -ni ACPID { which acpid }
 ifelse { [ ! -d /proc/acpi ] }
 {
   foreground { echo "acpid: This system doesn't support ACPI! Aborting..." }
-  exit 1
+  exit 125
 }
 importas -u acpid ACPID
 foreground { echo "acpid: Starting ACPI daemon: ${acpid} -f" }
-$acpid -f
+#s6-fdholder-retrieve /run/service/s6rc-fdholder/s unix:/run/acpid.socket
+emptyenv $acpid -f
