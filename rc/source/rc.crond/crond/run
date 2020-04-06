@@ -4,6 +4,7 @@
 # Start crond (Dillon's crond) #
 ################################
 
+fdmove -c 2 1
 backtick -ni CROND { which crond }
 if { mkdir -p /var/run/cron }
 # Using /var/run/cron/cron-* appearance as readiness indicator
@@ -13,11 +14,11 @@ background -d {
 }
 fdclose 3
 # Read crond commandline arguments from /etc/default/crond
-pipeline { sed "/CROND_OPTS=/!d; s/\"//g; s/ /_/g" /etc/default/crond }
+pipeline -d { sed "/CROND_OPTS=/!d; s/\"//g; s/ /_/g" /etc/default/crond }
 envfile -
 multisubstitute {
   importas -usd"_" crond_opts CROND_OPTS
   importas -u crond CROND
 }
-foreground { echo "crond: Starting crond: ${crond} -f -S" $crond_opts }
-emptyenv $crond -f -S $crond_opts
+foreground { echo "crond: Starting crond: ${crond} -f" $crond_opts }
+emptyenv $crond -f $crond_opts

@@ -4,6 +4,7 @@
 # Start the NetworkManager daemon #
 ###################################
 
+fdmove -c 2 1
 backtick -ni NETWORKMANAGER { which NetworkManager }
 importas -u NetworkManager NETWORKMANAGER
 foreground { echo "networkmanagerd: Starting NetworkManager daemon: ${NetworkManager} -n" }

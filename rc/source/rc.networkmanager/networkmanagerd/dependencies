@@ -1,5 +1,8 @@
 bind-run
-system-dbusd
-remount-root
+messagebusd
 udev-add
 syslogd
+# Comment out remount-root and uncomment filesystems-local
+# if you use separate partition for /var
+remount-root
+#filesystems-local

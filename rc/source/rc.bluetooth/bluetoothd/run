@@ -4,6 +4,7 @@
 # Start the bluetooth daemon #
 ##############################
 
+fdmove -c 2 1
 ifelse { [ ! -d /sys/class/bluetooth ] }
 {
   foreground { echo "bluetoothd: This system doesn't support bluetooth! Aborting..." }
@@ -20,5 +21,5 @@ background -d {
 }
 fdclose 3
 importas -u bluetoothd BLUETOOTHD
-foreground { echo "bluetoothd: Starting bluetoothd: ${bluetoothd}" }
-emptyenv $bluetoothd
+foreground { echo "bluetoothd: Starting bluetoothd: ${bluetoothd} -n" }
+emptyenv $bluetoothd -n

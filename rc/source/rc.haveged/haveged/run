@@ -4,6 +4,7 @@
 # Start the haveged entropy daemon #
 ####################################
 
+fdmove -c 2 1
 backtick -ni HAVEGED { which haveged }
 export HAVEGED_OPTS "-w 1024 -v 1 -F"
 multisubstitute {

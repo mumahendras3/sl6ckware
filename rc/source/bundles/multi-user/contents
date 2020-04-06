@@ -32,30 +32,49 @@ setterm
 #This is just a placeholder since it has not been
 #converted to s6-rc service definition style yet
 
-# From rc.syslog
-klogd
-syslogd
+# For system logging (syslog) functionality
+syslog
 
 # From rc.haveged
-haveged
+havege
+# Above is an automatically generated bundle that contains
+# below services in one pipeline:
+# haveged
+# haveged-log
 
 # From rc.inet1
 #This is just a placeholder since it has not been
 #converted to s6-rc service definition style yet
 
 # From rc.messagebus
-system-dbusd
+messagebus
+# Above is an automatically generated bundle that contains
+# below services in one pipeline:
+# messagebusd
+# messagebusd-log
 
 # From rc.consolekit
-consolekitd
+consolekit
+# Above is an automatically generated bundle that contains
+# below services in one pipeline:
+# consolekitd
+# consolekitd-log
 
 # From rc.bluetooth
-#bluetoothd
 #hciconfig
 #sdptool
+bluetooth
+# Above is an automatically generated bundle that contains
+# below services in one pipeline:
+# bluetoothd
+# bluetoothd-log
 
 # From rc.networkmanager
-networkmanagerd
+networkmanager
+# Above is an automatically generated bundle that contains
+# below services in one pipeline:
+# networkmanagerd
+# networkmanagerd-log
 
 # From rc.inet2
 #This is just a placeholder since it has not been
@@ -66,13 +85,21 @@ networkmanagerd
 #converted to s6-rc service definition style yet
 
 # From rc.ntpd
-ntpd
+ntp
+# Above is an automatically generated bundle that contains
+# below services in one pipeline:
+# ntpd
+# ntpd-log
 
 # From rc.acpid
-acpid
+acpi
+# Above is an automatically generated bundle that contains
+# below services in one pipeline:
+# acpid
+# acpid-log
 
 # From rc.cpufreq
-#cpufreq
+cpufreq
 
 # From rc.pulseaudio
 #This is just a placeholder since it has not been
@@ -87,7 +114,11 @@ acpid
 #converted to s6-rc service definition style yet
 
 # From rc.cups
-cupsd
+cups
+# Above is an automatically generated bundle that contains
+# below services in one pipeline:
+# cupsd
+# cupsd-log
 
 # From rc.atalk
 #This is just a placeholder since it has not been
@@ -98,10 +129,18 @@ cupsd
 #converted to s6-rc service definition style yet
 
 # From rc.crond
-crond
+cron
+# Above is an automatically generated bundle that contains
+# below services in one pipeline:
+# crond
+# crond-log
 
 # From rc.atd
-atd
+at
+# Above is an automatically generated bundle that contains
+# below services in one pipeline:
+# atd
+# atd-log
 
 # From rc.saslauthd
 #This is just a placeholder since it has not been
@@ -143,7 +182,11 @@ console-font
 #converted to s6-rc service definition style yet
 
 # From rc.gpm
-gpmd
+gpm
+# Above is an automatically generated bundle that contains
+# below services in one pipeline:
+# gpmd
+# gpmd-log
 
 # From rc.icecc-scheduler
 #This is just a placeholder since it has not been

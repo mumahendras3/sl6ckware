@@ -1,11 +1,12 @@
 #!/bin/execlineb -P
 
-####################################
-# Start CUPS print spooling system #
-####################################
+########################################
+# Start the CUPS print spooling system #
+########################################
 
+fdmove -c 2 1
 backtick -ni CUPSD { which cupsd }
-if { mkdir /var/run/cups }
+if { mkdir -p /var/run/cups }
 # Using cups.sock appearance as readiness indicator
 background {
   fdmove 1 3
@@ -13,5 +14,5 @@ background {
 }
 fdclose 3
 importas -u cupsd CUPSD
-foreground { echo "cupsd: Starting cupsd: ${cupsd} -F" }
-emptyenv $cupsd -F
+foreground { echo "cupsd: Starting cupsd: ${cupsd} -f" }
+emptyenv $cupsd -f

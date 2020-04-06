@@ -1,2 +1,11 @@
-sysinit
-multi-user
+# Feel free to add all necessary dependencies for your local setup script (rc.local{,_shutdown}).
+# These are just the barebones.
+sysfs
+bind-run
+remount-root
+#filesystems-local
+#filesystems-remote
+udev-add
+cleanup-etc
+cleanup-tmp
+cleanup-var

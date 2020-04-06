@@ -4,15 +4,16 @@
 # Start the system-wide dbus-daemon #
 #####################################
 
+fdmove -c 2 1
 backtick -ni DBUS-UUIDGEN { which dbus-uuidgen }
 backtick -ni DBUS-DAEMON { which dbus-daemon }
-export DBUS-DAEMON_OPTS "--system --nofork --nopidfile --print-pid=3 --syslog-only"
+export DBUS-DAEMON_OPTS "--system --nofork --nopidfile --print-pid=3 --nosyslog --address=unix:path=/run/dbus/system_bus_socket"
 if { mkdir -p /var/run/dbus }
 multisubstitute {
   importas -u dbus-uuidgen DBUS-UUIDGEN
   importas -u dbus-daemon DBUS-DAEMON
   importas -usd" " dbus-daemon_opts DBUS-DAEMON_OPTS
 }
-foreground { echo "system-dbusd: Starting system message bus: ${dbus-uuidgen} --ensure ; ${dbus-daemon}" $dbus-daemon_opts }
+foreground { echo "messagebusd: Starting system message bus: ${dbus-uuidgen} --ensure ; ${dbus-daemon}" $dbus-daemon_opts }
 if { $dbus-uuidgen --ensure }
 emptyenv $dbus-daemon $dbus-daemon_opts

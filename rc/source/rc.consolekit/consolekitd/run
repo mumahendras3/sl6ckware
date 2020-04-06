@@ -1,9 +1,10 @@
 #!/bin/execlineb -P
 
 ###############################
-# Start the consolekit daemon #
+# Start the ConsoleKit daemon #
 ###############################
 
+fdmove -c 2 1
 backtick -ni CONSOLE-KIT-DAEMON { which console-kit-daemon }
 # ConsoleKit renamed database~ to database in /var/run/ConsoleKit when it's ready.
 # We will use it for its readiness indicator.

@@ -4,6 +4,7 @@
 # Start atd (manages jobs scheduled with 'at') #
 ################################################
 
+fdmove -c 2 1
 backtick -ni ATD { which atd }
 # Using /var/run/atd.pid appearance as readiness indicator
 background {
@@ -17,5 +18,5 @@ multisubstitute {
   importas -u atd ATD
   importas -usd"_" atd_opts ATD_OPTS
 }
-foreground { echo "atd: Starting atd: ${atd} -f" $atd_opts }
-emptyenv $atd -f $atd_opts
+foreground { echo "atd: Starting atd: ${atd} -d" $atd_opts }
+emptyenv $atd -d $atd_opts

@@ -4,6 +4,7 @@
 # Start the Network Time Protocol (NTP) daemon #
 ################################################
 
+fdmove -c 2 1
 backtick -ni NTPD { which ntpd }
 # ntpd initialization ends not long after it reads its config file (by default,
 # it's /etc/ntp.conf) thus we will use it as ntpd readiness indicator.

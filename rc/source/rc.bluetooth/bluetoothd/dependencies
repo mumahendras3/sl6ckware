@@ -1,4 +1,7 @@
 sysfs
-remount-root
 udev-add
 syslogd
+# Comment out remount-root and uncomment filesystems-local
+# if you use separate partition for /var
+remount-root
+#filesystems-local
