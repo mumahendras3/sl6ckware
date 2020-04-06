@@ -33,24 +33,6 @@
 - rc.6 (genpowerd, pppd, accton, quota)
 - rc.4
 
-### Create the -log services
-- haveged
-- udevd
-- cgmanagerd
-- klogd
-- syslogd
-- udevd
-- system-dbusd
-- networkmanagerd
-- cupsd
-- crond
-- atd
-- ntpd (NEXT-2)
-- acpid
-- bluetoothd
-- consolekitd
-## NOTE: Don't forget to add syslogd as dependencies to services that need it
-
 ### Create bundles
 - runlevel 4 (graphical login)
 
