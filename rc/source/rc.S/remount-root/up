@@ -6,4 +6,8 @@ foreground { echo "remount-root: Remounting root filesystem with read-write enab
 foreground { mount -no remount,rw / }
 importas -u ? ?
 ifelse { [ $? != 0 ] } { exit $? }
-echo "remount-root: / remounted with read-write enabled"
+pipeline { findmnt -knrM / -o TARGET,SOURCE,FSTYPE,OPTIONS }
+withstdinas -n ENTRY
+importas -u entry ENTRY
+multidefine -d" " $entry { target source fstype options }
+echo "remount-root: ${source} remounted on ${target} type ${fstype} (${options})"
