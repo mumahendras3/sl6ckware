@@ -13,4 +13,6 @@ importas -u gtk-update-icon-cache GTK-UPDATE-ICON-CACHE
 forx -p THEME_DIR { $dir }
 importas -u theme_dir THEME_DIR
 foreground { echo "gtk-icon-caches: Updating icon-theme.cache in ${theme_dir}: ${gtk-update-icon-cache} -t ${theme_dir}" }
+redirfd -w 1 /dev/null
+redirfd -w 2 /dev/null
 $gtk-update-icon-cache -t $theme_dir
