@@ -6,7 +6,7 @@
 ############################################################################
 
 foreground { echo "filesystems-local: Mounting non-root local filesystems..." }
-pipeline { findmnt --fstab -cnrt nonfs,nfs4,smbfs,cifs,proc,sysfs,devtmpfs,devpts,swap -o TARGET,SOURCE,FSTYPE,OPTIONS }
+pipeline { findmnt -senrt nonfs,nfs4,smbfs,cifs,proc,sysfs,devtmpfs,devpts,swap -o TARGET,SOURCE,FSTYPE,OPTIONS }
 pipeline { sed "\\|/dev/shm|d; \\|^/ |d" }
 forstdin -d"\n" ENTRY
 importas -u entry ENTRY

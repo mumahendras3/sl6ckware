@@ -3,10 +3,11 @@
 ###########################################
 
 foreground { echo "filesystems-remote: Unmounting non-root remote filesystems..." }
-pipeline { findmnt -cnrt nfs,nfs4,smbfs,cifs -o TARGET }
+pipeline { findmnt -knrt nfs,nfs4,smbfs,cifs -o TARGET,FSTYPE }
 pipeline { tac }
-forstdin -d"\n" TARGET
-importas -u target TARGET
+forstdin -d"\n" ENTRY
+importas -u entry ENTRY
+multidefine -d" " $entry { target fstype }
 foreground {
   # Kill any processes (typically gam for NFS) that would otherwise prevent
   # unmounting remote filesystems

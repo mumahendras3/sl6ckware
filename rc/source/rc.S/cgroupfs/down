@@ -7,5 +7,8 @@ pipeline { findmnt -nrRM /sys/fs/cgroup -o TARGET }
 pipeline { tac }
 forstdin -d"\n" TARGET
 importas -u target TARGET
-pipeline { umount -vl $target }
+pipeline {
+  fdmove -c 2 1
+  umount -vl $target
+}
 sed "s|umount|cgroupfs|"

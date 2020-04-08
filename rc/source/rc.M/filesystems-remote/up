@@ -3,7 +3,7 @@
 #########################################
 
 foreground { echo "filesystems-remote: Mounting non-root remote filesystems..." }
-pipeline { findmnt --fstab -cnrt nfs,nfs4,smbfs,cifs -o SOURCE,TARGET,FSTYPE,OPTIONS }
+pipeline { findmnt -snrt nfs,nfs4,smbfs,cifs -o SOURCE,TARGET,FSTYPE,OPTIONS }
 forstdin -d"\n" ENTRY
 importas -u entry ENTRY
 multidefine -d" " $entry { source target fstype options }

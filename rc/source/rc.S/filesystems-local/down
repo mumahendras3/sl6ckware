@@ -4,8 +4,8 @@
 ###################################################################################
 
 foreground { echo "filesystems-local: Unmounting non-root local filesystems..." }
-pipeline { findmnt -cnrt noproc,sysfs,devtmpfs -o TARGET }
-pipeline { sed "\\|/dev/shm|d; \\|^/$|d; \\|cgroup|d; \\|/run|d" }
+pipeline { findmnt -knrt nonfs,nfs4,smbfs,cifs,proc,sysfs,devtmpfs -o TARGET }
+pipeline { sed "\\|/dev/shm|d; \\|^/$|d; \\|/sys/fs/cgroup|d; \\|/run|d" }
 pipeline { tac }
 forstdin -d"\n" TARGET
 importas -u target TARGET
