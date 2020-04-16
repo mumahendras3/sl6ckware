@@ -1,0 +1,5 @@
+##################################################################################################
+# Remove udevd control socket to prevent ./run script from notifying udevd readiness prematurely #
+##################################################################################################
+
+rm /run/udev/control

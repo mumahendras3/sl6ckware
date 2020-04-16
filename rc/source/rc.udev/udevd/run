@@ -30,15 +30,14 @@ backtick -ni UDEVD { which udevd }
 # readiness notification.
 if { mkdir -p /run/udev }
 # We will use /run/udev/control appearance as udevd readiness indicator.
-# To avoid starting inotifywait after udevd has created its control socket, we will start this
-# background process as soon as possible.
 background {
   fdmove 1 3
+  ifelse { [ -S /run/udev/control ] } { echo }
   inotifywait -qe create --include control /run/udev
 }
 fdclose 3
 # Disable hotplug helper since udevd listens to netlink
-background {
+foreground {
   if { [ -e /proc/sys/kernel/hotplug ] }
   redirfd -w 1 /proc/sys/kernel/hotplug
   echo ""
