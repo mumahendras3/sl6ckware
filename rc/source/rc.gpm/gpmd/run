@@ -8,6 +8,7 @@ fdmove -c 2 1
 backtick -ni GPM { which gpm }
 background -d {
   fdmove 1 3
+  ifelse { [ -S /dev/gpmctl ] } { echo }
   inotifywait -qe attrib --include gpmctl /dev
 }
 fdclose 3

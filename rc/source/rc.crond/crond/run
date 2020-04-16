@@ -10,6 +10,7 @@ if { mkdir -p /var/run/cron }
 # Using /var/run/cron/cron-* appearance as readiness indicator
 background -d {
   fdmove 1 3
+  ifelse { [ -d /var/run/cron ] } { echo }
   inotifywait -qe attrib /var/run/cron
 }
 fdclose 3

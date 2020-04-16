@@ -9,6 +9,7 @@ backtick -ni ATD { which atd }
 # Using /var/run/atd.pid appearance as readiness indicator
 background {
   fdmove 1 3
+  ifelse { [ -r /var/run/atd.pid ] } { echo }
   inotifywait -qe modify --include atd.pid /var/run
 }
 fdclose 3
