@@ -10,4 +10,4 @@ ifelse { [ ! -d /run ] }
   foreground { echo "tmpfs-run: /run doesn't exist or isn't a directory! Aborting..." }
   exit 1
 }
-mount -vnt tmpfs tmpfs /run -o mode=0755,size=32M,nodev,nosuid,noexec
+mount --make-shared -o mode=0755,size=32M,nodev,nosuid,noexec -vnt tmpfs tmpfs /run
