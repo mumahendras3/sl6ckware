@@ -7,9 +7,9 @@ foreground { echo "random-seed: Saving random seed from /dev/urandom in /etc/ran
 # Use the pool size from /proc, or 4096 bits
 ifthenelse { [ -r /proc/sys/kernel/random/poolsize ] }
 {
-  backtick POOLSIZE { cat /proc/sys/kernel/random/poolsize }
+  backtick -n POOLSIZE { cat /proc/sys/kernel/random/poolsize }
   importas -u poolsize POOLSIZE
-  backtick BS { expr $poolsize / 8 }
+  backtick -n BS { expr $poolsize / 8 }
   importas -u bs BS
   dd if=/dev/urandom of=/etc/random-seed count=1 bs=${bs}
 }
