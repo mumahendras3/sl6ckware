@@ -9,16 +9,11 @@
 # parse the logs, such as fail2ban:
 #export SYSLOGD_OPTIONS "-c"
 backtick -ni SYSLOGD { which syslogd }
-# Using /dev/log socket appearance as syslogd readiness indicator
-background {
-  fdmove 1 3
-  ifelse { [ -S /dev/log ] } { echo }
-  inotifywait -qe attrib --include log /dev
-}
-fdclose 3
 multisubstitute {
   importas -u syslogd SYSLOGD
   importas -usd" " syslogd_options SYSLOGD_OPTIONS
 }
 foreground { echo "syslogd: Starting syslogd daemon: ${syslogd} -n" $syslogd_options }
+# Using /dev/log socket availability as syslogd readiness indicator
+s6-notifyoncheck -dc "[ -S /dev/log ]"
 emptyenv $syslogd -n $syslogd_options

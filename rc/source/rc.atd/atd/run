@@ -6,18 +6,13 @@
 
 fdmove -c 2 1
 backtick -ni ATD { which atd }
-# Using /var/run/atd.pid appearance as readiness indicator
-background {
-  fdmove 1 3
-  ifelse { [ -r /var/run/atd.pid ] } { echo }
-  inotifywait -qe modify --include atd.pid /var/run
-}
-fdclose 3
-pipeline { sed "/ATD_OPTS=/!d; s/\"//g; s/ /_/g" /etc/default/atd }
+pipeline -d { sed "/ATD_OPTS=/!d; s/\"//g; s/ /_/g" /etc/default/atd }
 envfile -
 multisubstitute {
   importas -u atd ATD
   importas -usd"_" atd_opts ATD_OPTS
 }
 foreground { echo "atd: Starting atd: ${atd} -d" $atd_opts }
+# Using /var/run/atd.pid availability as readiness indicator
+s6-notifyoncheck -dc "[ -r /var/run/atd.pid ]"
 emptyenv $atd -d $atd_opts

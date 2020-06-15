@@ -6,14 +6,8 @@
 
 fdmove -c 2 1
 backtick -ni CUPSD { which cupsd }
-if { mkdir -p /var/run/cups }
-# Using cups.sock appearance as readiness indicator
-background {
-  fdmove 1 3
-  ifelse { [ -S /var/run/cups/cups.sock ] } { echo }
-  inotifywait -qe attrib --include cups.sock /var/run/cups
-}
-fdclose 3
 importas -u cupsd CUPSD
 foreground { echo "cupsd: Starting cupsd: ${cupsd} -f" }
+# Using cups.sock availability as readiness indicator
+s6-notifyoncheck -dc "[ -S /var/run/cups/cups.sock ]"
 emptyenv $cupsd -f

@@ -26,16 +26,6 @@ ifelse {
 }
 # Sanity check #3, make sure the eudev package was not removed.
 backtick -ni UDEVD { which udevd }
-# Create the udev runtime directory under /run (/run/udev). We will need this later for
-# readiness notification.
-if { mkdir -p /run/udev }
-# We will use /run/udev/control appearance as udevd readiness indicator.
-background {
-  fdmove 1 3
-  ifelse { [ -S /run/udev/control ] } { echo }
-  inotifywait -qe create --include control /run/udev
-}
-fdclose 3
 # Disable hotplug helper since udevd listens to netlink
 foreground {
   if { [ -e /proc/sys/kernel/hotplug ] }
@@ -45,4 +35,6 @@ foreground {
 # Starting udevd
 importas -u udevd UDEVD
 foreground { echo "udevd: Starting the udev daemon: ${udevd}" }
+# We will use /run/udev/control availability as udevd readiness indicator
+s6-notifyoncheck -dc "[ -S /run/udev/control ]"
 emptyenv $udevd

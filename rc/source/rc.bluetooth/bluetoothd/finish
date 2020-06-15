@@ -4,4 +4,4 @@
 # Prevent bluetoothd from restarting if the run script exited 125 #
 ###################################################################
 
-s6-permafailon 5 1 125
+s6-permafailon 5 1 1,125

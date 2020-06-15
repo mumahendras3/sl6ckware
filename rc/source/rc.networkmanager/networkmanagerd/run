@@ -8,15 +8,8 @@ fdmove -c 2 1
 backtick -ni NETWORKMANAGER { which NetworkManager }
 importas -u NetworkManager NETWORKMANAGER
 foreground { echo "networkmanagerd: Starting NetworkManager daemon: ${NetworkManager} -n" }
-s6-notifyoncheck -d -c "\
-pipeline {
-  dbus-send --system
-    --dest=org.freedesktop.DBus
-    --type=method_call
-    --print-reply=literal
-    /org/freedesktop/DBus
-    org.freedesktop.DBus.NameHasOwner
-    string:org.freedesktop.NetworkManager
-}
-grep -wq true"
+# Use org.freedesktop.NetworkManager dbus address availability as readiness indicator
+s6-notifyoncheck -dc "pipeline { dbus-send --system --dest=org.freedesktop.DBus \
+--type=method_call --print-reply=literal /org/freedesktop/DBus \
+org.freedesktop.DBus.NameHasOwner string:org.freedesktop.NetworkManager } grep -wq true"
 emptyenv $NetworkManager -n
