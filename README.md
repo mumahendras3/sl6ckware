@@ -36,8 +36,5 @@
 ### Create bundles
 - runlevel 4 (graphical login)
 
-### Create additional services
-- acpid-socket (create a socket and pass it as acpid stdin for faster startup and reliable readiness indicator)
-
 ### Others
-- Make sure s6-linux-init-shutdownd writes a shutdown record to wtmp (NEXT-1)
+- Make sure s6-linux-init-shutdownd writes a shutdown record to wtmp
