@@ -53,6 +53,9 @@ messagebus
 # messagebusd
 # messagebusd-log
 
+# From rc.elogind
+elogind
+
 # From rc.consolekit
 consolekit
 # Above is an automatically generated bundle that contains
