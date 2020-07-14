@@ -54,7 +54,7 @@ messagebus
 # messagebusd-log
 
 # From rc.elogind
-elogind
+#elogind
 # Above is an automatically generated bundle that contains
 # below services in one pipeline:
 # elogind.srv
