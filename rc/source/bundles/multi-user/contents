@@ -32,7 +32,7 @@ setterm
 #This is just a placeholder since it has not been
 #converted to s6-rc service definition style yet
 
-# For system logging (syslog) functionality
+# From rc.syslog
 syslog
 
 # From rc.haveged
