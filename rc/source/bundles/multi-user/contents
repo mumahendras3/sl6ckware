@@ -48,6 +48,10 @@ messagebus
 
 # From rc.elogind
 elogind
+# Above is an automatically generated bundle that contains
+# below services in one pipeline:
+# elogind.srv
+# elogind.log
 
 # From rc.consolekit
 consolekit
