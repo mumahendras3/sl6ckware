@@ -13,4 +13,7 @@ shift
 s6-rc-compile "$DEST"-"$TIME" "$@"
 
 # Create/update the symlink
-ln -sf "$NAME" "$DEST"
+# Somehow 'ln -sf' doesn't replace the existing symlink with a new one so we will
+# remove it first
+rm -f "$DEST"
+ln -s "$NAME" "$DEST"
