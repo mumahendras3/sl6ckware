@@ -4,16 +4,14 @@
 # Start the system logging daemon #
 ###################################
 
-# Uncomment the following line to use the -c option to syslogd.  This will
-# disable suppressing repeated messages, which may be useful with tools that
-# parse the logs, such as fail2ban:
-#export SYSLOGD_OPTIONS "-c"
-backtick -ni SYSLOGD { which syslogd }
+backtick -in SYSLOGD { which syslogd }
+# Source default settings
+envfile /etc/default/syslogd
 multisubstitute {
   importas -u syslogd SYSLOGD
-  importas -usd" " syslogd_options SYSLOGD_OPTIONS
+  importas -usd" " syslogd_opts SYSLOGD_OPTS
 }
-foreground { echo "syslogd: Starting syslogd daemon: ${syslogd} -n" $syslogd_options }
+foreground { echo "syslogd: Starting syslogd daemon: ${syslogd} -F" $syslogd_opts }
 # Using /dev/log socket availability as syslogd readiness indicator
 s6-notifyoncheck -dc "[ -S /dev/log ]"
-emptyenv $syslogd -n $syslogd_options
+exec -c $syslogd -F $syslogd_opts
