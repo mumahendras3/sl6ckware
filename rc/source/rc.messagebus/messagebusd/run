@@ -7,7 +7,7 @@
 fdmove -c 2 1
 backtick -ni DBUS-UUIDGEN { which dbus-uuidgen }
 backtick -ni DBUS-DAEMON { which dbus-daemon }
-export DBUS-DAEMON_OPTS "--system --nofork --nopidfile --print-pid=3 --nosyslog --address=unix:path=/run/dbus/system_bus_socket"
+export DBUS-DAEMON_OPTS "--system --nofork --nopidfile --print-pid=3 --address=unix:path=/run/dbus/system_bus_socket"
 if { mkdir -p /var/run/dbus }
 multisubstitute {
   importas -u dbus-uuidgen DBUS-UUIDGEN
