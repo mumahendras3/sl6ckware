@@ -35,13 +35,6 @@ setterm
 # For system logging (syslog) functionality
 syslog
 
-# From rc.haveged
-havege
-# Above is an automatically generated bundle that contains
-# below services in one pipeline:
-# haveged
-# haveged-log
-
 # From rc.inet1
 #This is just a placeholder since it has not been
 #converted to s6-rc service definition style yet
