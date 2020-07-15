@@ -1,6 +1,9 @@
 # sl6ckware
 ## Using s6 + s6-rc as init system in Slackware
 
+## NOTE
+The **master** branch is for **Slackware -current**. Use the **14.2** branch for **Slackware 14.2**.
+
 ## TODO
 ### Converting to s6-rc service definitions
 - rc.cgconfig
@@ -38,3 +41,5 @@
 
 ### Others
 - Make sure s6-linux-init-shutdownd writes a shutdown record to wtmp
+- Do some renames to better match Slackware's rc scripts naming and
+  and also some restructuring in the repo files to simplify things
