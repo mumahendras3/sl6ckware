@@ -1,5 +1,5 @@
 bind-run
 system-time
 hostname
-syslogd
-syslogd
+syslog
+syslog

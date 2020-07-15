@@ -1,8 +1,0 @@
-##################################################################
-# Services that should be started to provide the system logging  #
-# (syslog) functionality.                                        #
-# This bundle is analogous to the rc.syslog script in Slackware. #
-##################################################################
-
-klogd
-syslogd
