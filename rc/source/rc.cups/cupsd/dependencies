@@ -1,2 +1,5 @@
 bind-run
-syslog
+# Comment out remount-root and uncomment filesystems-local
+# if you use separate partition for /var/log
+remount-root
+#filesystems-local
