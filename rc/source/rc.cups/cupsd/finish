@@ -1,7 +1,0 @@
-#!/bin/execlineb -P
-
-###############################
-# Cleanup some leftover files #
-###############################
-
-rm -rf /var/run/cups
