@@ -51,17 +51,9 @@ messagebus
 
 # From rc.elogind
 #elogind
-# Above is an automatically generated bundle that contains
-# below services in one pipeline:
-# elogind.srv
-# elogind.log
 
 # From rc.consolekit
 consolekit
-# Above is an automatically generated bundle that contains
-# below services in one pipeline:
-# consolekitd
-# consolekitd-log
 
 # From rc.bluetooth
 #hciconfig
@@ -74,10 +66,6 @@ bluetooth
 
 # From rc.networkmanager
 networkmanager
-# Above is an automatically generated bundle that contains
-# below services in one pipeline:
-# networkmanagerd
-# networkmanagerd-log
 
 # From rc.inet2
 #This is just a placeholder since it has not been

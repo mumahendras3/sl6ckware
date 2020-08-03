@@ -7,7 +7,7 @@
 fdmove -c 2 1
 backtick -ni CONSOLE-KIT-DAEMON { which console-kit-daemon }
 importas -u console-kit-daemon CONSOLE-KIT-DAEMON
-foreground { echo "consolekitd: Starting ConsoleKit daemon: ${console-kit-daemon} --no-daemon" }
+foreground { echo "consolekit: Starting ConsoleKit daemon: ${console-kit-daemon} --no-daemon" }
 # Using /var/run/ConsoleKit/database availability as readiness indicator
 s6-notifyoncheck -dc "[ -r /var/run/ConsoleKit/database ]"
 emptyenv $console-kit-daemon --no-daemon

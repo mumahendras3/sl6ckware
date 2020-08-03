@@ -1,4 +1,4 @@
-networkmanagerd
+networkmanager
 remount-root
 # bind-run is actually not a dependency for ntpd as long as the "pidfile <pidfile>"
 # configuration file directive is commented out in /etc/ntp.conf. When using an
