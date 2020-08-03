@@ -5,8 +5,8 @@
 ##########################################################
 
 # Add your user to adm group to be able to read the log files
-if { mkdir -pm750 /var/log/messagebusd }
-if { chown adm:adm /var/log/messagebusd }
+if { mkdir -pm750 /var/log/messagebus }
+if { chown adm:adm /var/log/messagebus }
 s6-setuidgid adm # Drop privilege to user adm and group adm
 umask 137
-s6-log -bd3 n4 s500000 T /var/log/messagebusd
+s6-log -bd3 n4 s500000 T /var/log/messagebus

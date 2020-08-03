@@ -48,10 +48,6 @@ havege
 
 # From rc.messagebus
 messagebus
-# Above is an automatically generated bundle that contains
-# below services in one pipeline:
-# messagebusd
-# messagebusd-log
 
 # From rc.elogind
 #elogind

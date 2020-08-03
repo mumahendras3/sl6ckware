@@ -1,5 +1,5 @@
 bind-run
-messagebusd
+messagebus
 udev-add
 syslog
 # Comment out remount-root and uncomment filesystems-local
