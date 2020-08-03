@@ -13,5 +13,4 @@ ifelse { [ ! -d /proc/acpi ] }
 }
 importas -u acpid ACPID
 foreground { echo "acpid: Starting ACPI daemon: ${acpid} -f" }
-#s6-fdholder-retrieve /run/service/s6rc-fdholder/s unix:/run/acpid.socket
-emptyenv $acpid -f
+exec -c $acpid -f

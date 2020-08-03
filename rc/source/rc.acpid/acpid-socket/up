@@ -1,8 +1,0 @@
-#########################################
-# Create a UNIX domain socket for acpid #
-#########################################
-
-# We will start at s6rc-oneshot-runner directory
-# Please change all below
-s6-ipcserver-socketbinder -a0666 /run/acpid.socket
-s6-fdholder-store /run/service/fdholder/s unix:/run/acpid.socket
