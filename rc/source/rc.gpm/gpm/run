@@ -7,10 +7,10 @@
 fdmove -c 2 1
 backtick -ni GPM { which gpm }
 importas -u gpm GPM
-foreground { echo "gpmd: Starting gpm: ${gpm} -D -m /dev/mouse -t imps2" }
+foreground { echo "gpm: Starting gpm: ${gpm} -Dm /dev/mouse -t imps2" }
 # Using gpmctl availability as readiness indicator
 s6-notifyoncheck -dc "[ -S /dev/gpmctl ]"
-emptyenv $gpm -D -m /dev/mouse -t imps2
+exec -c $gpm -Dm /dev/mouse -t imps2
 
 # There is another way to run GPM, where it acts as a repeater outputting a
 # virtual MouseSystems mouse on /dev/gpmdata. This is useful for feeding

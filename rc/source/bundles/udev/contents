@@ -1,0 +1,9 @@
+devtmpfs
+devpts
+tmpfs-shm
+static-nodes
+#system-nodes
+#local-nodes
+udevd
+udev-hwdb
+udev-add

@@ -2,6 +2,5 @@
 # Run local system shutdown script (/etc/rc.d/rc.local_shutdown) #
 ##################################################################
 
-ifelse { [ ! -x /etc/rc.d/rc.local_shutdown ] }
-{ echo "local-setup: /etc/rc.d/rc.local_shutdown not found or not executable. Skipping..." }
+if -t { [ -x /etc/rc.d/rc.local_shutdown ] }
 /etc/rc.d/rc.local_shutdown

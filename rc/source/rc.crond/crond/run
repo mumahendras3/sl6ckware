@@ -10,16 +10,14 @@ if { mkdir -p /var/run/cron }
 # Using /var/run/cron/cron-* appearance as readiness indicator
 background -d {
   fdmove 1 3
-  ifelse { [ -d /var/run/cron ] } { echo }
   inotifywait -qe attrib /var/run/cron
 }
 fdclose 3
 # Read crond commandline arguments from /etc/default/crond
-pipeline -d { sed "/CROND_OPTS=/!d; s/\"//g; s/ /_/g" /etc/default/crond }
-envfile -
+envfile /etc/default/crond
 multisubstitute {
-  importas -usd"_" crond_opts CROND_OPTS
+  importas -usd" " crond_opts CROND_OPTS
   importas -u crond CROND
 }
 foreground { echo "crond: Starting crond: ${crond} -f" $crond_opts }
-emptyenv $crond -f $crond_opts
+exec -c $crond -f $crond_opts

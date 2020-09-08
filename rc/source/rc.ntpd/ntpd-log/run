@@ -9,4 +9,4 @@ if { mkdir -pm750 /var/log/ntpd }
 if { chown adm:adm /var/log/ntpd }
 s6-setuidgid adm # Drop privilege to user adm and group adm
 umask 137
-s6-log -bd3 n4 s500000 T /var/log/ntpd
+s6-log -bd3 n4 s500000 /var/log/ntpd

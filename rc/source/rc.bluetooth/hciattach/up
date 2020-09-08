@@ -1,0 +1,11 @@
+##################################################################
+# Attach serial devices via UART HCI to BlueZ stack at boot time #
+##################################################################
+
+if -t { [ -r /etc/bluetooth/uart.conf ] }
+pipeline { grep -ve"^[[:blank:]]*$" -e"^[[:blank:]]*#" /etc/bluetooth/uart.conf }
+pipeline { sed -e "s/^[[:blank:]][[:blank:]]*//" }
+forstdin -pd"\n\r" ENTRY
+importas -usd" \t" entry ENTRY
+if -n { redirfd -w 2 /dev/null [ -z $entry ] }
+hciattach $entry

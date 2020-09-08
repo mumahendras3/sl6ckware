@@ -5,11 +5,8 @@
 
 pipeline { grep SDPTOOL_OPTIONS= /etc/default/bluetooth }
 pipeline { cut -f2 -d\" }
-forstdin -o 0 -nd";\n" OPTION
+pipeline { sed -e "s/;[[:blank:]][[:blank:]]*/;/g" }
+forstdin -Cnd";\n" OPTION
 importas -usd" " option OPTION
-ifelse { redirfd -w 2 /dev/null [ -z $option ] }
-{
-  foreground { echo "sdptool: No SDP operations listed in /etc/default/bluetooth! Aborting..." }
-  exit 1
-}
+if -n { redirfd -w 2 /dev/null [ -z $option ] }
 sdptool $option

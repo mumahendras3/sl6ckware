@@ -1,0 +1,2 @@
+# Using "if -t" here to force zero exit code
+if -t { killall -q hciattach }

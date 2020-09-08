@@ -7,5 +7,5 @@
 fdmove -c 2 1
 backtick -ni CGMANAGER { which cgmanager }
 importas -u cgmanager CGMANAGER
-foreground { echo "cgmanagerd: Starting cgmanager: ${cgmanager}" }
+foreground { echo "cgmanager: Starting cgmanager: ${cgmanager}" }
 s6-notifyoncheck -c "cgm ping" emptyenv $cgmanager

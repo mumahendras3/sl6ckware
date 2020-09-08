@@ -16,4 +16,4 @@ multi-user
 agettys
 
 # From rc.local
-local-setup
+local

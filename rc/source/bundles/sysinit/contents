@@ -40,19 +40,7 @@ random-seed
 #module-loop
 
 # From rc.udev
-devtmpfs
-devpts
-tmpfs-shm
-static-nodes
-#system-nodes
-#local-nodes
-udev-hwdb
-udev-add
 udev
-# Above is an automatically generated bundle that contains
-# below services in one pipeline:
-# udevd
-# udevd-log
 
 # From rc.modules
 depmod
@@ -61,10 +49,6 @@ depmod
 
 # From rc.cgmanager
 cgmanager
-# Above is an automatically generated bundle that contains
-# below services in one pipeline:
-# cgmanagerd
-# cgmanagerd-log
 
 # From rc.serial
 #This is just a placeholder since it has not been

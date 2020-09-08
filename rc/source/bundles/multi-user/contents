@@ -36,11 +36,7 @@ setterm
 syslog
 
 # From rc.haveged
-havege
-# Above is an automatically generated bundle that contains
-# below services in one pipeline:
-# haveged
-# haveged-log
+haveged
 
 # From rc.inet1
 #This is just a placeholder since it has not been
@@ -56,13 +52,7 @@ messagebus
 consolekit
 
 # From rc.bluetooth
-#hciconfig
-#sdptool
 bluetooth
-# Above is an automatically generated bundle that contains
-# below services in one pipeline:
-# bluetoothd
-# bluetoothd-log
 
 # From rc.networkmanager
 networkmanager
@@ -76,18 +66,10 @@ networkmanager
 #converted to s6-rc service definition style yet
 
 # From rc.ntpd
-ntp
-# Above is an automatically generated bundle that contains
-# below services in one pipeline:
-# ntpd
-# ntpd-log
+ntpd
 
 # From rc.acpid
-acpi
-# Above is an automatically generated bundle that contains
-# below services in one pipeline:
-# acpid
-# acpid-log
+acpid
 
 # From rc.cpufreq
 cpufreq
@@ -106,10 +88,6 @@ cpufreq
 
 # From rc.cups
 cups
-# Above is an automatically generated bundle that contains
-# below services in one pipeline:
-# cupsd
-# cupsd-log
 
 # From rc.atalk
 #This is just a placeholder since it has not been
@@ -120,18 +98,10 @@ cups
 #converted to s6-rc service definition style yet
 
 # From rc.crond
-cron
-# Above is an automatically generated bundle that contains
-# below services in one pipeline:
-# crond
-# crond-log
+crond
 
 # From rc.atd
-at
-# Above is an automatically generated bundle that contains
-# below services in one pipeline:
-# atd
-# atd-log
+atd
 
 # From rc.saslauthd
 #This is just a placeholder since it has not been
@@ -174,10 +144,6 @@ console-font
 
 # From rc.gpm
 gpm
-# Above is an automatically generated bundle that contains
-# below services in one pipeline:
-# gpmd
-# gpmd-log
 
 # From rc.icecc-scheduler
 #This is just a placeholder since it has not been
