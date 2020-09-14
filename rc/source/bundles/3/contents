@@ -14,6 +14,5 @@ sysinit
 multi-user
 # Start agettys for console logins
 agettys
-
-# From rc.local
+# Run rc.local script
 local
