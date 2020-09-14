@@ -1,0 +1,8 @@
+#!/bin/execlineb -P
+
+#############################
+# Start XDM Display Manager #
+#############################
+
+fdmove -c 2 1
+exec -c xdm -nodaemon

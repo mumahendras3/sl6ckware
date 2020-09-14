@@ -1,0 +1,20 @@
+######################################################################
+# Services that should be started at runlevel 4.                     #
+# You can add your own services here if you want to include them in  #
+# this runlevel.                                                     #
+# You can also disable some of the services here by commenting       #
+# them out. Note that if you disable a service that is a dependency  #
+# of other services, it will still be started automatically by s6-rc #
+# to satisfy the dependency chain.                                   #
+######################################################################
+
+# For system initialization (see bundles/sysinit)
+sysinit
+# For entering multi-user mode (see bundles/multi-user)
+multi-user
+# Start agettys for console logins
+agettys
+# Run rc.local script
+local
+# Start a display manager
+xdm
