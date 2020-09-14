@@ -2,7 +2,6 @@
 # These are just the barebones.
 sysfs
 bind-run
-remount-root
 #filesystems-local
 #filesystems-remote
 udev-add
