@@ -7,12 +7,6 @@
 fdmove -c 2 1
 backtick -ni CROND { which crond }
 if { mkdir -p /var/run/cron }
-# Using /var/run/cron/cron-* appearance as readiness indicator
-background -d {
-  fdmove 1 3
-  inotifywait -qe attrib /var/run/cron
-}
-fdclose 3
 # Read crond commandline arguments from /etc/default/crond
 envfile /etc/default/crond
 multisubstitute {
