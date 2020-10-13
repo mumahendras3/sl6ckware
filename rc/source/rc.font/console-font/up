@@ -3,7 +3,7 @@
 # script) from among the ones in /usr/share/kbd/consolefonts    #
 #################################################################
 
-pipeline { grep setfont /etc/rc.d/rc.font }
+pipeline { grep ^setfont /etc/rc.d/rc.font }
 withstdinas -n SETFONT
 importas -usd" " setfont SETFONT
 $setfont
