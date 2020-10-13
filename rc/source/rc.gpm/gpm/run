@@ -5,23 +5,11 @@
 ##############################
 
 fdmove -c 2 1
-backtick -ni GPM { which gpm }
-importas -u gpm GPM
-foreground { echo "gpm: Starting gpm: ${gpm} -Dm /dev/mouse -t imps2" }
+# Using the same gpm command as the one used in /etc/rc.d/rc.gpm
+backtick -ni GPM { sed -n "/Starting gpm:/ s/\"//g; s/.*gpm:\\s*//p" /etc/rc.d/rc.gpm }
+importas -usd" " gpm GPM
+# Added "-D" command line option to prevent gpm from backgrounding
+foreground { echo "gpm: Starting gpm:" $gpm -D }
 # Using gpmctl availability as readiness indicator
 s6-notifyoncheck -dc "[ -S /dev/gpmctl ]"
-exec -c $gpm -Dm /dev/mouse -t imps2
-
-# There is another way to run GPM, where it acts as a repeater outputting a
-# virtual MouseSystems mouse on /dev/gpmdata. This is useful for feeding
-# gpm's data to X, especially if you've got a busmouse (in that situation X
-# and gpm may not coexist without using a repeater). To try running a GPM
-# repeater for X, change the gpm command line to look like this:
-# /usr/sbin/gpm -R msc -m /dev/mouse -t imps2
-# Then, make sure that the mouse configuration in your XF86Config file refers
-# to the repeater device (/dev/gpmdata) and a MouseSystems mouse type. If you
-# edit the file directly, you'll want the lines to look like this (minus the
-# comment marks '#' shown here, of course):
-#Section "Pointer"
-#    Protocol    "MouseSystems"
-#    Device      "/dev/gpmdata"
+exec -c $gpm -D
