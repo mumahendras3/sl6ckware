@@ -1,5 +1,10 @@
-# Load non-default keymap for the console as defined by the
-# KEYMAP environment variable inside /etc/default/keymap
+####################################
+# Load user-defined console keymap #
+####################################
+
+# Set KEYMAP environment variable inside /etc/default/keymap (create one
+# if it doesn't exist) to your desired keymap name first before starting
+# this service
 envfile /etc/default/keymap
 importas -u keymap KEYMAP
 loadkeys $keymap
