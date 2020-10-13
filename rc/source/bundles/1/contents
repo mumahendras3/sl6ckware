@@ -12,8 +12,7 @@
 sysinit
 # Start agettys for console logins
 agettys
-# From rc.font
-console-font
-# From rc.keymap
-#This is just a placeholder since it has not been
-#converted to s6-rc service definition style yet
+# Set console font
+#console-font
+# Set console keymap
+#keymap
