@@ -116,7 +116,7 @@ atd
 #converted to s6-rc service definition style yet
 
 # Set console font
-#console-font
+#font
 
 # Set console keymap
 #keymap

@@ -1,0 +1,10 @@
+##################################
+# Load user-defined console font #
+##################################
+
+# Set FONT environment variable inside /etc/default/font (create one
+# if it doesn't exist) to your desired font name first before starting
+# this service
+envfile /etc/default/font
+importas -u font FONT
+setfont -v $font

@@ -1,8 +1,0 @@
-#################################################################
-# Select the default console screen font (set by setconsolefont #
-# script) from among the ones in /usr/share/kbd/consolefonts    #
-#################################################################
-
-backtick -ni SETFONT { grep ^setfont /etc/rc.d/rc.font }
-importas -usd" " setfont SETFONT
-$setfont

@@ -13,6 +13,6 @@ sysinit
 # Start agettys for console logins
 agettys
 # Set console font
-#console-font
+#font
 # Set console keymap
 #keymap
