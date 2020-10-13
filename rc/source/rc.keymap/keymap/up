@@ -1,0 +1,5 @@
+# Load non-default keymap for the console as defined by the
+# KEYMAP environment variable inside /etc/default/keymap
+envfile /etc/default/keymap
+importas -u keymap KEYMAP
+loadkeys $keymap
