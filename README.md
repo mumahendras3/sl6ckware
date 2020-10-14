@@ -19,7 +19,6 @@ The **master** branch is for **Slackware -current**. Use the **14.2** branch for
 - rc.dnsmasq
 - rc.snmpd
 - rc.atalk
-- rc.smartd
 - rc.saslauthd
 - rc.postfix
 - rc.alsa
