@@ -1,4 +1,1 @@
-devtmpfs
-utmp
-hostname
-font
+../agetty-tty1/dependencies

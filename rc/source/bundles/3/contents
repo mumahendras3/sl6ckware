@@ -12,7 +12,3 @@
 sysinit
 # For entering multi-user mode (see bundles/multi-user)
 multi-user
-# Start agettys for console logins
-agettys
-# Run rc.local script
-local

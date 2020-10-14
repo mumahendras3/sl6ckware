@@ -115,12 +115,6 @@ atd
 #This is just a placeholder since it has not been
 #converted to s6-rc service definition style yet
 
-# Set console font
-#font
-
-# Set console keymap
-#keymap
-
 # From rc.mysqld
 #This is just a placeholder since it has not been
 #converted to s6-rc service definition style yet
@@ -151,3 +145,6 @@ gpm
 # From rc.iceccd
 #This is just a placeholder since it has not been
 #converted to s6-rc service definition style yet
+
+# Run local system initialization script
+local

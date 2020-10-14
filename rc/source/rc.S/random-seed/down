@@ -11,7 +11,7 @@ ifthenelse { [ -r /proc/sys/kernel/random/poolsize ] }
   importas -u poolsize POOLSIZE
   backtick -n BS { expr $poolsize / 8 }
   importas -u bs BS
-  dd if=/dev/urandom of=/etc/random-seed count=1 bs=${bs}
+  dd if=/dev/urandom of=/etc/random-seed count=1 bs=${bs} status=none
 }
-{ dd if=/dev/urandom of=/etc/random-seed count=1 bs=512 }
+{ dd if=/dev/urandom of=/etc/random-seed count=1 bs=512 status=none }
 chmod 600 /etc/random-seed

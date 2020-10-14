@@ -1,5 +1,5 @@
-# These are the standard console login gettys that will be started
-# after the system has entered multi-user mode
+# These are the standard console login gettys that will be started at
+# system startup
 agetty-tty1
 agetty-tty2
 agetty-tty3

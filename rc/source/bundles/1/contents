@@ -10,9 +10,3 @@
 
 # For system initialization (see bundles/sysinit)
 sysinit
-# Start agettys for console logins
-agettys
-# Set console font
-#font
-# Set console keymap
-#keymap

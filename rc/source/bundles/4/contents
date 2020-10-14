@@ -8,13 +8,8 @@
 # to satisfy the dependency chain.                                   #
 ######################################################################
 
-# For system initialization (see bundles/sysinit)
-sysinit
-# For entering multi-user mode (see bundles/multi-user)
-multi-user
-# Start agettys for console logins
-agettys
-# Run rc.local script
-local
-# Start a display manager
+# Runlevel 4 is basically runlevel 3 plus a display manager so we will
+# include the "3" bundle here to avoid duplication
+3
+# Start the display manager
 xdm
