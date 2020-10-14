@@ -5,5 +5,10 @@
 ######################################
 
 fdmove -c 2 1
-#if { mkdir -p /run/user }
+foreground {
+  if { [ ! -d /run/systemd ] }
+  if { mkdir -p /run/elogind }
+  ln -sf elogind /run/systemd
+}
+foreground { echo "Starting elogind: /lib64/elogind/elogind" }
 exec -c /lib64/elogind/elogind
