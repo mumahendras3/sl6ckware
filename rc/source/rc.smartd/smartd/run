@@ -1,0 +1,16 @@
+#!/bin/execlineb -P
+
+####################################################################
+# Start the smartd daemon, which monitors the status of S.M.A.R.T. #
+# compatible hard drives and reports any problems.                 #
+#                                                                  #
+# By default, smartd will scan for all ATA/SATA and SCSI/SAS hard  #
+# drives and solid-state drives. Settings may be customized in     #
+# /etc/smartd.conf.                                                #
+####################################################################
+
+fdmove -c 2 1
+backtick -ni SMARTD { which smartd }
+importas -u smartd SMARTD
+foreground { echo "smartd: Starting smartd: ${smartd} -n" }
+exec -c $smartd -n

@@ -94,8 +94,7 @@ cups
 #converted to s6-rc service definition style yet
 
 # From rc.smartd
-#This is just a placeholder since it has not been
-#converted to s6-rc service definition style yet
+#smartd
 
 # From rc.crond
 crond
