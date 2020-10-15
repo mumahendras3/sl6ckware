@@ -1,4 +1,4 @@
-hciattach
-hciconfig
-sdptool
 bluetoothd
+#hciattach
+#hciconfig
+#sdptool
