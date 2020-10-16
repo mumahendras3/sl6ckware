@@ -16,7 +16,6 @@ The **master** branch is for **Slackware -current**. Use the **14.2** branch for
 - rc.inet2
 - rc.autofs
 - rc.pulseaudio
-- rc.dnsmasq
 - rc.snmpd
 - rc.atalk
 - rc.saslauthd
