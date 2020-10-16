@@ -1,0 +1,7 @@
+#!/bin/execlineb -P
+
+################################################################
+# Prevent dnsmasq from restarting if the run script exited 125 #
+################################################################
+
+s6-permafailon 5 1 125

@@ -1,0 +1,16 @@
+#!/bin/execlineb -P
+
+#############################################################
+# Start dnsmasq (a lightweight DHCP and caching DNS server) #
+#############################################################
+
+fdmove -c 2 1
+backtick -ni DNSMASQ { which dnsmasq }
+importas -u dnsmasq DNSMASQ
+ifelse -n { $dnsmasq --test }
+{ 
+  foreground { echo "dnsmasq: FAILED to start up" }
+  exit 125
+}
+foreground { echo "dnsmasq: Starting dnsmasq: ${dnsmasq}" }
+exec -c $dnsmasq --pid-file -k8-
