@@ -1,8 +1,8 @@
 #!/bin/execlineb -P
 
-#####################################################################
-# Start the server daemon that provide SMB/CIFS services to clients #
-#####################################################################
+###############################################################
+# Start smbd (server to provide SMB/CIFS services to clients) #
+###############################################################
 
 fdmove -c 2 1
 ifelse { [ ! -r /etc/samba/smb.conf ] }
