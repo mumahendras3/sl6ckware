@@ -1,0 +1,17 @@
+#!/bin/execlineb -P
+
+#####################################################################
+# Start the server daemon that provide SMB/CIFS services to clients #
+#####################################################################
+
+fdmove -c 2 1
+ifelse { [ ! -r /etc/samba/smb.conf ] }
+{
+  foreground { echo "smbd: ERROR: Cannot start smbd since /etc/samba/smb.conf does not exist" }
+  exit 125
+}
+backtick -ni SMBD { which smbd }
+if { mkdir -p /var/run/samba }
+importas -u smbd SMBD
+foreground { echo "smbd: Starting smbd: ${smbd} -F -S -d=1 --no-process-group" }
+exec -c $smbd -F -S -d=1 --no-process-group

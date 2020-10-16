@@ -1,0 +1,18 @@
+#!/bin/execlineb -P
+
+###################################################################
+# Start the NetBIOS name server to provide NetBIOS over IP naming #
+# services to clients                                             #
+###################################################################
+
+fdmove -c 2 1
+ifelse { [ ! -r /etc/samba/smb.conf ] }
+{
+  foreground { echo "nmbd: ERROR: Cannot start nmbd since /etc/samba/smb.conf does not exist" }
+  exit 125
+}
+backtick -ni NMBD { which nmbd }
+if { mkdir -p /var/run/samba }
+importas -u nmbd NMBD
+foreground { echo "nmbd: Starting nmbd: ${nmbd} -F -S -d=1 --no-process-group" }
+exec -c $nmbd -F -S -d=1 --no-process-group
