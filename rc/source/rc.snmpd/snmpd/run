@@ -1,0 +1,15 @@
+#!/bin/execlineb -P
+
+###########################################################
+# Start snmpd (daemon to respond to SNMP request packets) #
+###########################################################
+
+fdmove -c 2 1
+backtick -ni SNMPD { which snmpd }
+s6-envdir env
+multisubstitute {
+  importas -u SNMPD SNMPD
+  importas -usCd" " CMD_OPTS CMD_OPTS
+}
+foreground { echo "snmpd: Starting snmpd: ${SNMPD}" $CMD_OPTS }
+exec -c $SNMPD $CMD_OPTS

@@ -1,0 +1,26 @@
+#!/bin/execlineb -P
+
+###############################################
+# Start a logging daemon for the snmpd daemon #
+###############################################
+
+s6-envdir env # Load environment variables from "env" directory
+multisubstitute {
+  importas -u LOGDIR_OWNER LOGDIR_OWNER
+  importas -u LOGDIR_GROUP LOGDIR_GROUP
+  importas -u LOGDIR_PERMS LOGDIR_PERMS
+  importas -usCd" " LOG_SCRIPT LOG_SCRIPT
+  importas -usCd" " CMD_OPTS CMD_OPTS
+}
+# Find $LOGDIR_OWNER UID and $LOGDIR_GROUP GID
+s6-envuidgid -B ${LOGDIR_OWNER}:${LOGDIR_GROUP}
+multisubstitute {
+  importas -u UID UID
+  importas -u GID GID
+  importas -u LOGDIR_PATH LOGDIR_PATH
+}
+if { mkdir -pm $LOGDIR_PERMS $LOGDIR_PATH }
+if { chown ${UID}:${GID} $LOGDIR_PATH }
+# Start s6-log as user $LOGDIR_OWNER and group $LOGDIR_GROUP by using
+# the appropriate UID and GID
+s6-setuidgid ${UID}:${GID} exec -c s6-log $CMD_OPTS $LOG_SCRIPT

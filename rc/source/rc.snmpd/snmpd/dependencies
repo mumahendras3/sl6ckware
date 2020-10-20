@@ -1,0 +1,3 @@
+networkmanager
+# Uncomment "filesystems-local" if you use separate partition for /var
+#filesystems-local
