@@ -2,9 +2,10 @@
 # These are just the barebones.
 sysfs
 bind-run
-#filesystems-local
-#filesystems-remote
 udev-add
 cleanup-etc
 cleanup-tmp
 cleanup-var
+#networkmanager
+#filesystems-local
+#filesystems-remote
