@@ -5,12 +5,15 @@
 #############################################################
 
 fdmove -c 2 1
-backtick -ni DNSMASQ { which dnsmasq }
-importas -u dnsmasq DNSMASQ
+s6-envdir env
+multisubstitute {
+  importas -u CMD CMD
+  importas -usCd" " CMD_OPTS CMD_OPTS
+}
+foreground { echo Starting dnsmasq: $CMD $CMD_OPTS }
 ifelse -n { $dnsmasq --test }
 {
-  foreground { echo "dnsmasq: FAILED to start up" }
+  foreground { echo dnsmasq: FAILED to start up }
   exit 125
 }
-foreground { echo "dnsmasq: Starting dnsmasq: ${dnsmasq}" }
-exec -c $dnsmasq --pid-file -k8-
+exec -c $CMD $CMD_OPTS

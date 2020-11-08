@@ -5,9 +5,12 @@
 ########################################
 
 fdmove -c 2 1
-backtick -ni CUPSD { which cupsd }
-importas -u cupsd CUPSD
-foreground { echo "cups: Starting scheduler: ${cupsd} -f" }
+s6-envdir env
+multisubstitute {
+  importas -u CMD CMD
+  importas -usCd" " CMD_OPTS CMD_OPTS
+}
+foreground { echo Starting scheduler: $CMD $CMD_OPTS }
 # Using cups.sock availability as readiness indicator
-s6-notifyoncheck -dc "[ -S /var/run/cups/cups.sock ]"
-exec -c $cupsd -f
+s6-notifyoncheck -dn0 -c "[ -S /var/run/cups/cups.sock ]"
+exec -c $CMD $CMD_OPTS

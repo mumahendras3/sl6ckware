@@ -10,5 +10,10 @@ foreground {
   if { mkdir -p /run/elogind }
   ln -sf elogind /run/systemd
 }
-foreground { echo "Starting elogind: /lib64/elogind/elogind" }
-exec -c /lib64/elogind/elogind
+s6-envdir env
+multisubstitute {
+  importas -u CMD CMD
+  importas -usCd" " CMD_OPTS CMD_OPTS
+}
+foreground { echo "Starting elogind: ${CMD}" $CMD_OPTS }
+exec -c $CMD $CMD_OPTS
