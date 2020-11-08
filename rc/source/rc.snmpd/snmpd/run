@@ -5,11 +5,10 @@
 ###########################################################
 
 fdmove -c 2 1
-backtick -ni SNMPD { which snmpd }
 s6-envdir env
 multisubstitute {
-  importas -u SNMPD SNMPD
+  importas -u CMD CMD
   importas -usCd" " CMD_OPTS CMD_OPTS
 }
-foreground { echo "snmpd: Starting snmpd: ${SNMPD}" $CMD_OPTS }
-exec -c $SNMPD $CMD_OPTS
+foreground { echo "Starting snmpd: ${CMD}" $CMD_OPTS }
+exec -c $CMD $CMD_OPTS
