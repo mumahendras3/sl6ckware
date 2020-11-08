@@ -10,4 +10,5 @@ multisubstitute {
   importas -u CMD CMD
   importas -usCd" " CMD_OPTS CMD_OPTS
 }
+foreground { echo Starting XDM Display Manager: $CMD $CMD_OPTS }
 exec -c $CMD $CMD_OPTS
