@@ -5,4 +5,9 @@
 #############################
 
 fdmove -c 2 1
-exec -c xdm -nodaemon
+s6-envdir env
+multisubstitute {
+  importas -u CMD CMD
+  importas -usCd" " CMD_OPTS CMD_OPTS
+}
+exec -c $CMD $CMD_OPTS
