@@ -5,9 +5,14 @@
 ###############################
 
 fdmove -c 2 1
-backtick -ni CONSOLE-KIT-DAEMON { which console-kit-daemon }
-importas -u console-kit-daemon CONSOLE-KIT-DAEMON
-foreground { echo "consolekit: Starting ConsoleKit daemon: ${console-kit-daemon} --no-daemon" }
-# Using /var/run/ConsoleKit/database availability as readiness indicator
-s6-notifyoncheck -dc "[ -r /var/run/ConsoleKit/database ]"
-emptyenv $console-kit-daemon --no-daemon
+s6-envdir env
+multisubstitute {
+  importas -u CMD CMD
+  importas -usCd" " CMD_OPTS CMD_OPTS
+}
+foreground { echo Starting ConsoleKit daemon: $CMD $CMD_OPTS }
+# Use org.freedesktop.ConsoleKit dbus address availability as readiness indicator
+s6-notifyoncheck -dn0 -c "pipeline { dbus-send --system --dest=org.freedesktop.DBus \
+--type=method_call --print-reply=literal /org/freedesktop/DBus \
+org.freedesktop.DBus.NameHasOwner string:org.freedesktop.ConsoleKit } grep -wq true"
+exec -c $CMD $CMD_OPTS

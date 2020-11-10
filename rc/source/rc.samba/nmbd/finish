@@ -4,4 +4,5 @@
 # Prevent nmbd from restarting if the run script exited 125 #
 #############################################################
 
+fdmove -c 2 1
 s6-permafailon 5 1 125

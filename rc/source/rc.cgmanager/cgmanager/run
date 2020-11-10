@@ -5,7 +5,10 @@
 ###############################################
 
 fdmove -c 2 1
-backtick -ni CGMANAGER { which cgmanager }
-importas -u cgmanager CGMANAGER
-foreground { echo "cgmanager: Starting cgmanager: ${cgmanager}" }
-s6-notifyoncheck -c "cgm ping" emptyenv $cgmanager
+s6-envdir env
+multisubstitute {
+  importas -u CMD CMD
+  importas -usCd" " CMD_OPTS CMD_OPTS
+}
+foreground { echo Starting cgmanager: $CMD $CMD_OPTS }
+s6-notifyoncheck -dn0 -c "cgm ping" exec -c $CMD $CMD_OPTS

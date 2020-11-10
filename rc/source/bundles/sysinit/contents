@@ -56,6 +56,3 @@ cgmanager
 
 # Set console keymap
 #keymap
-
-# Start all configured console login gettys
-agettys

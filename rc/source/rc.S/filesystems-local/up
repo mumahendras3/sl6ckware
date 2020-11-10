@@ -5,11 +5,11 @@
 # attempting to mount it. With a 2.6.x or newer kernel udev mounts devpts. #
 ############################################################################
 
-foreground { echo "filesystems-local: Mounting non-root local filesystems..." }
-pipeline { findmnt -senrt nonfs,nfs4,smbfs,cifs,proc,sysfs,devtmpfs,devpts,swap -o TARGET,SOURCE,FSTYPE,OPTIONS }
+foreground { echo filesystems-local: Mounting non-root local filesystems... }
+pipeline { findmnt -senrt nonfs,nfs4,smbfs,cifs,proc,devpts,swap -o TARGET,SOURCE,FSTYPE,OPTIONS }
 pipeline { sed "\\|/dev/shm|d; \\|^/ |d" }
 forstdin -d"\n" ENTRY
-importas -u entry ENTRY
-multidefine -d" " $entry { target source fstype options }
+importas -u ENTRY ENTRY
+multidefine -d" " $ENTRY { target source fstype options }
 if { mount $target }
-echo "filesystems-local: ${source} mounted on ${target} type ${fstype} (${options})"
+echo filesystems-local: $source mounted on $target type $fstype (${options})

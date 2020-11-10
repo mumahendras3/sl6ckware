@@ -5,4 +5,5 @@
 # 3 times in the last 5 seconds                           #
 ###########################################################
 
+fdmove -c 2 1
 s6-permafailon 5 3 1

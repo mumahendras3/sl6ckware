@@ -1,18 +1,18 @@
-###########################################
-# Unmount all non-root remote filesystems #
-###########################################
+###############################################################
+# Unmount all non-root remote filesystems found in /etc/fstab #
+###############################################################
 
-foreground { echo "filesystems-remote: Unmounting non-root remote filesystems..." }
-pipeline { findmnt -knrt nfs,nfs4,smbfs,cifs -o TARGET,FSTYPE }
+foreground { echo filesystems-remote: Unmounting non-root remote filesystems... }
+pipeline { findmnt -snrt nfs,nfs4,smbfs,cifs -o TARGET,FSTYPE }
 pipeline { tac }
 forstdin -d"\n" ENTRY
-importas -u entry ENTRY
-multidefine -d" " $entry { target fstype }
+importas -u ENTRY ENTRY
+multidefine -d" " $ENTRY { target fstype }
 foreground {
   # Kill any processes (typically gam for NFS) that would otherwise prevent
   # unmounting remote filesystems
   if { fuser -sMm $target }
-  foreground { echo "filesystems-remote: Killing processes holding ${fstype} mount ${target} open..." }
+  foreground { echo filesystems-remote: Killing processes holding $fstype mount $target open... }
   background { fuser -ksMm $target }
   wait -t 5000
 }
@@ -20,4 +20,4 @@ pipeline {
   fdmove -c 2 1
   umount -vl $target
 }
-sed "s|umount|filesystems-remote|"
+sed s|umount|filesystems-remote|

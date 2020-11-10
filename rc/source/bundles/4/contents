@@ -11,5 +11,6 @@
 # Runlevel 4 is basically runlevel 3 plus a display manager so we will
 # include the "3" bundle here to avoid duplication
 3
-# Start the display manager
-xdm
+# Start the display manager (uncomment one only!)
+#xdm
+#sddm

@@ -1,16 +1,16 @@
-###################################################################################
-# Unmount all non-root local filesystems except /dev/shm, cgroup filesystems, and #
-# all tmpfs on /run and its subdirectories. Also do not unbind /var/run.          #
-###################################################################################
+##############################################################
+# Unmount all non-root local filesystems found in /etc/fstab #
+# except devpts, swap, and tmpfs                             #
+##############################################################
 
-foreground { echo "filesystems-local: Unmounting non-root local filesystems..." }
-pipeline { findmnt -knrt nonfs,nfs4,smbfs,cifs,proc,sysfs,devtmpfs -o TARGET }
-pipeline { sed "\\|/dev/shm|d; \\|^/$|d; \\|/sys/fs/cgroup|d; \\|/run|d" }
+foreground { echo filesystems-local: Unmounting non-root local filesystems... }
+pipeline { findmnt --real -snrt nonfs,nfs4,smbfs,cifs,swap -o TARGET }
+pipeline { sed \\|^/$|d }
 pipeline { tac }
 forstdin -d"\n" TARGET
-importas -u target TARGET
+importas -u TARGET TARGET
 pipeline {
   fdmove -c 2 1
-  umount -vl $target
+  umount -vl $TARGET
 }
-sed "s|umount|filesystems-local|"
+sed s|umount|filesystems-local|

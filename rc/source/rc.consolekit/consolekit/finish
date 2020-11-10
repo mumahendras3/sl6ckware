@@ -1,7 +1,0 @@
-#!/bin/execlineb -P
-
-###########################################
-# Remove ConsoleKit directory in /var/run #
-###########################################
-
-rm -rf /var/run/ConsoleKit
