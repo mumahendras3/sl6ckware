@@ -1,7 +1,0 @@
-#!/bin/execlineb -P
-
-########################################################################
-# Bring down all running services before hardware halt/reboot/poweroff #
-########################################################################
-
-s6-rc -v2 -bda change
