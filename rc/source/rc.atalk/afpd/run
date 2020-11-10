@@ -1,0 +1,21 @@
+#!/bin/execlineb -P
+
+#############################################
+# Start afpd (Apple Filing Protocol daemon) #
+#############################################
+
+fdmove -c 2 1
+backtick -n LINES { grep -c ^[^;] /etc/netatalk/afp.conf }
+s6-envdir env
+multisubstitute {
+  importas -u LINES LINES
+  importas -u CMD CMD
+  importas -usCd" " CMD_OPTS CMD_OPTS
+}
+ifelse { [ $LINES -lt 2 ] }
+{
+  foreground { echo afpd is not configured.... exiting. }
+  exit 125
+}
+foreground { echo Starting Apple Filing Protocol daemon: $CMD $CMD_OPTS }
+exec -c $CMD $CMD_OPTS

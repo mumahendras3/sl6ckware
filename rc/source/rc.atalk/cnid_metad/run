@@ -1,0 +1,21 @@
+#!/bin/execlineb -P
+
+########################################################
+# Start cnid_metad (start cnid_dbd daemons on request) #
+########################################################
+
+fdmove -c 2 1
+backtick -n LINES { grep -c ^[^;] /etc/netatalk/afp.conf }
+s6-envdir env
+multisubstitute {
+  importas -u LINES LINES
+  importas -u CMD CMD
+  importas -usCd" " CMD_OPTS CMD_OPTS
+}
+ifelse { [ $LINES -lt 2 ] }
+{
+  foreground { echo cnid_metad is not configured.... exiting. }
+  exit 125
+}
+foreground { echo Starting cnid_metad: $CMD $CMD_OPTS }
+exec -c $CMD $CMD_OPTS
