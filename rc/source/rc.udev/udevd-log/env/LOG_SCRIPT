@@ -1,2 +1,0 @@
-n4 s500000 T $LOGDIR_PATH
-# Logging script used by s6-log
