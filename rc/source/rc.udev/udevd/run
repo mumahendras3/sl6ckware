@@ -1,40 +1,21 @@
 #!/bin/execlineb -P
 
-########################################################
-# Start the udev daemon after doing some sanity checks #
-########################################################
+#########################
+# Start the udev daemon #
+#########################
 
 fdmove -c 2 1
-# Perform sanity checks
-# Sanity check #1, udev requires that the kernel support tmpfs.
-ifelse -n { grep -wq tmpfs /proc/filesystems }
-{
-  foreground { echo "udevd: Sorry, but you need tmpfs support in the kernel to use udev. Aborting..." }
-  exit 1
-}
-# Sanity check #2, make sure that the running kernel is new enough.
-pipeline { uname -r }  
-withstdinas -n VERSION 
-importas -u version VERSION  
-multidefine -d. $version { a b c } # version = a.b.c    
-ifelse {                                                                             
-  redirfd -w 1 /dev/null expr ( ${a}.${b} < 2.6 ) | ( ${a}.${b} = 2.6 ) & ( $c < 32 )
-}
-{
-  foreground { echo "udevd: Sorry, but you need a 2.6.32+ kernel to use this udev. Your kernel version is only ${version}. Aborting..." }
-  exit 1
-}
-# Sanity check #3, make sure the eudev package was not removed.
-backtick -ni UDEVD { which udevd }
 # Disable hotplug helper since udevd listens to netlink
 foreground {
   if { [ -e /proc/sys/kernel/hotplug ] }
   redirfd -w 1 /proc/sys/kernel/hotplug
   echo ""
 }
-# Starting udevd
-importas -u udevd UDEVD
-foreground { echo "udevd: Starting the udev daemon: ${udevd}" }
+s6-envdir env
+multisubstitute {
+  importas -u CMD CMD
+  importas -usCd" " CMD_OPTS CMD_OPTS
+}
 # We will use /run/udev/control availability as udevd readiness indicator
-s6-notifyoncheck -dc "[ -S /run/udev/control ]"
-emptyenv $udevd
+s6-notifyoncheck -dn0 -c "[ -S /run/udev/control ]"
+exec -c $CMD $CMD_OPTS
