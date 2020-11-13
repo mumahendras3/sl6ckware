@@ -5,11 +5,11 @@
 ##############################
 
 fdmove -c 2 1
-# Using the same gpm command as the one used in /etc/rc.d/rc.gpm
-backtick -ni GPM { sed -n "/Starting gpm:/ s/\"//g; s/.*gpm:\\s*//p" /etc/rc.d/rc.gpm }
-importas -usd" " gpm GPM
-# Added "-D" command line option to prevent gpm from backgrounding
-foreground { echo "gpm: Starting gpm:" $gpm -D }
+s6-envdir env
+multisubstitute {
+  importas -u CMD CMD
+  importas -usCd" " CMD_OPTS CMD_OPTS
+}
 # Using gpmctl availability as readiness indicator
-s6-notifyoncheck -dc "[ -S /dev/gpmctl ]"
-exec -c $gpm -D
+s6-notifyoncheck -dn0 -c "[ -S /dev/gpmctl ]"
+exec -c $CMD $CMD_OPTS

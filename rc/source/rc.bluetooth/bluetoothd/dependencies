@@ -1,5 +1,4 @@
-sysfs
-syslog
+messagebus
 # Comment out "udev-add" and uncomment "filesystems-local"
 # if you use separate partition for /var
 udev-add

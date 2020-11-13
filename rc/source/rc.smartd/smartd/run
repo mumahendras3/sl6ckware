@@ -10,7 +10,9 @@
 ####################################################################
 
 fdmove -c 2 1
-backtick -ni SMARTD { which smartd }
-importas -u smartd SMARTD
-foreground { echo "smartd: Starting smartd: ${smartd} -n" }
-exec -c $smartd -n
+s6-envdir env
+multisubstitute {
+  importas -u CMD CMD
+  importas -usCd" " CMD_OPTS CMD_OPTS
+}
+exec -c $CMD $CMD_OPTS

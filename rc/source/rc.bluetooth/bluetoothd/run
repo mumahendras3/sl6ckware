@@ -5,16 +5,19 @@
 ##############################
 
 fdmove -c 2 1
-ifelse { [ ! -d /sys/class/bluetooth ] }
-{
-  foreground { echo "bluetoothd: This system doesn't support bluetooth! Aborting..." }
-  exit 125
+s6-envdir env
+multisubstitute {
+  importas -u CMD CMD
+  importas -usCd" " CMD_OPTS CMD_OPTS
 }
-backtick -ni BLUETOOTHD { which bluetoothd }
-importas -u bluetoothd BLUETOOTHD
-foreground { echo "bluetoothd: Starting bluetoothd: ${bluetoothd} -n" }
 # Use org.bluez dbus address availability as readiness indicator
-s6-notifyoncheck -dc "pipeline { dbus-send --system --dest=org.freedesktop.DBus \
---type=method_call --print-reply=literal /org/freedesktop/DBus \
-org.freedesktop.DBus.NameHasOwner string:org.bluez } grep -wq true"
-emptyenv $bluetoothd -n
+s6-notifyoncheck -dn0 -c
+"pipeline {
+  dbus-send
+    --system
+    --type=method_call
+    --print-reply=literal
+    --dest=org.freedesktop.DBus
+    /org/freedesktop/DBus org.freedesktop.DBus.NameHasOwner string:org.bluez
+} grep -wq true"
+exec -c $CMD $CMD_OPTS

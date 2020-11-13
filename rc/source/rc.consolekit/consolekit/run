@@ -10,9 +10,14 @@ multisubstitute {
   importas -u CMD CMD
   importas -usCd" " CMD_OPTS CMD_OPTS
 }
-foreground { echo Starting ConsoleKit daemon: $CMD $CMD_OPTS }
 # Use org.freedesktop.ConsoleKit dbus address availability as readiness indicator
-s6-notifyoncheck -dn0 -c "pipeline { dbus-send --system --dest=org.freedesktop.DBus \
---type=method_call --print-reply=literal /org/freedesktop/DBus \
-org.freedesktop.DBus.NameHasOwner string:org.freedesktop.ConsoleKit } grep -wq true"
+s6-notifyoncheck -dn0 -c
+"pipeline {
+  dbus-send
+    --system
+    --type=method_call
+    --print-reply=literal
+    --dest=org.freedesktop.DBus
+    /org/freedesktop/DBus org.freedesktop.DBus.NameHasOwner string:org.freedesktop.ConsoleKit
+} grep -wq true"
 exec -c $CMD $CMD_OPTS

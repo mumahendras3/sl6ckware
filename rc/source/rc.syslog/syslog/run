@@ -4,14 +4,11 @@
 # Start the system logging daemon #
 ###################################
 
-backtick -in SYSLOGD { which syslogd }
-# Source default settings
-envfile /etc/default/syslogd
+s6-envdir env
 multisubstitute {
-  importas -u syslogd SYSLOGD
-  importas -usd" " syslogd_opts SYSLOGD_OPTS
+  importas -u CMD CMD
+  importas -usCd" " CMD_OPTS CMD_OPTS
 }
-foreground { echo "syslogd: Starting syslogd daemon: ${syslogd} -F" $syslogd_opts }
 # Using /dev/log socket availability as syslogd readiness indicator
-s6-notifyoncheck -dc "[ -S /dev/log ]"
-exec -c $syslogd -F $syslogd_opts
+s6-notifyoncheck -dn0 -c "[ -S /dev/log ]"
+exec -c $CMD $CMD_OPTS

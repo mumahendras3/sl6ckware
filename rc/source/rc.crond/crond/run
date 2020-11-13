@@ -5,13 +5,10 @@
 ################################
 
 fdmove -c 2 1
-backtick -ni CROND { which crond }
 if { mkdir -p /var/run/cron }
-# Read crond commandline arguments from /etc/default/crond
-envfile /etc/default/crond
+s6-envdir env
 multisubstitute {
-  importas -usd" " crond_opts CROND_OPTS
-  importas -u crond CROND
+  importas -u CMD CMD
+  importas -usCd" " CMD_OPTS CMD_OPTS
 }
-foreground { echo "crond: Starting crond: ${crond} -f" $crond_opts }
-exec -c $crond -f $crond_opts
+exec -c $CMD $CMD_OPTS

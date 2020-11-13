@@ -4,9 +4,22 @@
 # Start a logging daemon for the smbd daemon #
 ##############################################
 
-# Add your user to adm group to be able to read the log files
-if { mkdir -pm750 /var/log/smbd }
-if { chown adm:adm /var/log/smbd }
-s6-setuidgid adm # Drop privilege to user adm and group adm
-umask 137
-s6-log -bd3 n4 s500000 T /var/log/smbd
+s6-envdir env
+multisubstitute {
+  importas -u LOGDIR_OWNER LOGDIR_OWNER
+  importas -u LOGDIR_GROUP LOGDIR_GROUP
+  importas -u LOGDIR_PERMS LOGDIR_PERMS
+  importas -u CMD CMD
+  importas -usCd" " CMD_OPTS CMD_OPTS
+  importas -usCd" " LOG_SCRIPT LOG_SCRIPT
+}
+s6-envuidgid -B ${LOGDIR_OWNER}:${LOGDIR_GROUP}
+multisubstitute {
+  importas -u LOGDIR_PATH LOGDIR_PATH
+  importas -u UID UID
+  importas -u GID GID
+}
+if { mkdir -pm $LOGDIR_PERMS $LOGDIR_PATH }
+if { chown ${UID}:${GID} $LOGDIR_PATH }
+s6-setuidgid ${UID}:${GID}
+exec -c $CMD $CMD_OPTS -- $LOG_SCRIPT

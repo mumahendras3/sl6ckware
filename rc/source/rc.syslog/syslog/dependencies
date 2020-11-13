@@ -1,3 +1,6 @@
-remount-root
 devtmpfs
-bind-run
+tmpfs-run
+# Comment out "remount-root" and uncomment "filesystems-local"
+# if you use separate partition for /var/log
+remount-root
+#filesystems-local

@@ -17,5 +17,4 @@ ifelse { [ $LINES -lt 2 ] }
   foreground { echo cnid_metad is not configured.... exiting. }
   exit 125
 }
-foreground { echo Starting cnid_metad: $CMD $CMD_OPTS }
 exec -c $CMD $CMD_OPTS

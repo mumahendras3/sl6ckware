@@ -5,15 +5,9 @@
 #########################
 
 fdmove -c 2 1
-ifelse { [ ! -d /proc/acpi ] }
-{
-  foreground { echo This system doesn't support ACPI! Aborting... }
-  exit 125
-}
 s6-envdir env
 multisubstitute {
   importas -u CMD CMD
   importas -usCd" " CMD_OPTS CMD_OPTS
 }
-foreground { echo Starting ACPI daemon: $CMD $CMD_OPTS }
 exec -c $CMD $CMD_OPTS

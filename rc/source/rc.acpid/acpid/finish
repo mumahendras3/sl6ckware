@@ -1,8 +1,0 @@
-#!/bin/execlineb -P
-
-###########################################################################
-# Stop the ACPI daemon from restarting if the system doesn't support ACPI #
-###########################################################################
-
-fdmove -c 2 1
-s6-permafailon 3 1 125

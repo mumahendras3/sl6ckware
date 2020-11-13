@@ -17,5 +17,4 @@ ifelse { [ $LINES -lt 2 ] }
   foreground { echo afpd is not configured.... exiting. }
   exit 125
 }
-foreground { echo Starting Apple Filing Protocol daemon: $CMD $CMD_OPTS }
 exec -c $CMD $CMD_OPTS

@@ -10,8 +10,7 @@ multisubstitute {
   importas -u CMD CMD
   importas -usCd" " CMD_OPTS CMD_OPTS
 }
-foreground { echo Starting dnsmasq: $CMD $CMD_OPTS }
-ifelse -n { $dnsmasq --test }
+ifelse -n { $CMD --test }
 {
   foreground { echo dnsmasq: FAILED to start up }
   exit 125

@@ -7,11 +7,13 @@
 fdmove -c 2 1
 ifelse { [ ! -r /etc/samba/smb.conf ] }
 {
-  foreground { echo "smbd: ERROR: Cannot start smbd since /etc/samba/smb.conf does not exist" }
+  foreground { echo "ERROR: Cannot start smbd since /etc/samba/smb.conf does not exist" }
   exit 125
 }
-backtick -ni SMBD { which smbd }
 if { mkdir -p /var/run/samba }
-importas -u smbd SMBD
-foreground { echo "smbd: Starting smbd: ${smbd} -F -S -d=1 --no-process-group" }
-exec -c $smbd -F -S -d=1 --no-process-group
+s6-envdir env
+multisubstitute {
+  importas -u CMD CMD
+  importas -usCd" " CMD_OPTS CMD_OPTS
+}
+exec -c $CMD $CMD_OPTS

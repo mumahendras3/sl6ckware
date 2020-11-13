@@ -10,5 +10,5 @@ multisubstitute {
   importas -u CMD CMD
   importas -usCd" " CMD_OPTS CMD_OPTS
 }
-foreground { echo Starting cgmanager: $CMD $CMD_OPTS }
-s6-notifyoncheck -dn0 -c "cgm ping" exec -c $CMD $CMD_OPTS
+s6-notifyoncheck -dn0 -c "cgm ping"
+exec -c $CMD $CMD_OPTS

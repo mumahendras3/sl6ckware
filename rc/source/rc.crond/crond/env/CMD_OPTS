@@ -1,0 +1,9 @@
+-f -l notice
+# Default log level is "notice". If you want cron to actually log activity
+# to /var/log/cron, then change "-l notice" to "-l info" to increase the
+# logging level.
+#
+# Valid log levels are:
+# alert, crit, debug, emerg, err, error (deprecated synonym for err),
+# info, notice, panic (deprecated synonym for emerg), warning,
+# warn (deprecated synonym for warning).
