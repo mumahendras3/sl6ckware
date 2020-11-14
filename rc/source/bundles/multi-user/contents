@@ -123,8 +123,7 @@ atd
 #converted to s6-rc service definition style yet
 
 # From rc.dovecot
-#This is just a placeholder since it has not been
-#converted to s6-rc service definition style yet
+#dovecot
 
 # From rc.samba
 #samba

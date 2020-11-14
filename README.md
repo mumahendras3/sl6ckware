@@ -21,7 +21,6 @@ The **master** branch is for **Slackware -current**. Use the **14.2** branch for
 - rc.mysqld
 - rc.httpd
 - rc.openldap
-- rc.dovecot
 - rc.icecc-scheduler
 - rc.iceccd
 - rc.yp

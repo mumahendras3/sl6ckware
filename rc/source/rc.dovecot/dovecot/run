@@ -1,0 +1,13 @@
+#!/bin/execlineb -P
+
+#########################################################################
+# Start dovecot (a secure and highly configurable IMAP and POP3 server) #
+#########################################################################
+
+fdmove -c 2 1
+s6-envdir env
+multisubstitute {
+  importas -u CMD CMD
+  importas -usCd" " CMD_OPTS CMD_OPTS
+}
+emptyenv -p $CMD $CMD_OPTS
