@@ -1,0 +1,14 @@
+#!/bin/execlineb -P
+
+#############################################
+# Start Postfix mail system's master daemon #
+#############################################
+
+fdmove -c 2 1
+if { postfix check }
+s6-envdir env
+multisubstitute {
+  importas -u CMD CMD
+  importas -usCd" " CMD_OPTS CMD_OPTS
+}
+exec -c $CMD $CMD_OPTS

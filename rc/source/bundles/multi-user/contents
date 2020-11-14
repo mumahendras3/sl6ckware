@@ -103,8 +103,7 @@ atd
 #converted to s6-rc service definition style yet
 
 # From rc.postfix
-#This is just a placeholder since it has not been
-#converted to s6-rc service definition style yet
+#postfix
 
 # From rc.alsa
 #This is just a placeholder since it has not been

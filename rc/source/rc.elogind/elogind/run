@@ -16,6 +16,6 @@ multisubstitute {
   importas -u CMD CMD
   importas -usCd" " CMD_OPTS CMD_OPTS
 }
-backtick -n BASENAME { basename $CMD }
+backtick BASENAME { basename -z $CMD }
 importas -u BASENAME BASENAME
 exec -ca $BASENAME $CMD $CMD_OPTS
