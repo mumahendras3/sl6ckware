@@ -15,7 +15,6 @@ The **master** branch is for **Slackware -current**. Use the **14.2** branch for
 - rc.inet1
 - rc.inet2
 - rc.autofs
-- rc.pulseaudio
 - rc.saslauthd
 - rc.postfix
 - rc.alsa
