@@ -1,6 +1,4 @@
 bind-run
 messagebus
-# Comment out "remount-root" and uncomment "filesystems-local"
-# if you use separate partition for /var
-remount-root
+# Uncomment "filesystems-local" if you use separate partition for /var
 #filesystems-local
