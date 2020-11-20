@@ -117,8 +117,7 @@ atd
 #converted to s6-rc service definition style yet
 
 # From rc.openldap
-#This is just a placeholder since it has not been
-#converted to s6-rc service definition style yet
+#openldap
 
 # From rc.dovecot
 #dovecot

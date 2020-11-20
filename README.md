@@ -18,7 +18,6 @@ The **master** branch is for **Slackware -current**. Use the **14.2** branch for
 - rc.alsa
 - rc.mysqld
 - rc.httpd
-- rc.openldap
 - rc.icecc-scheduler
 - rc.iceccd
 - rc.yp

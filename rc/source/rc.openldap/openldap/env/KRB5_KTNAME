@@ -1,0 +1,3 @@
+FILE:/etc/openldap/ldap.keytab
+# Keytab location for GSSAPI Kerberos authentication
+# Above is just an example (feel free to change it)
