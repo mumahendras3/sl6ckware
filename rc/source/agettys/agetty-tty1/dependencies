@@ -1,8 +1,3 @@
-devtmpfs
 utmp
 hostname
-# Comment out "udev-add" and uncomment "font" if you want to use
-# different console font than the default one. See "font" service
-# definition files for more detail.
 udev-add
-#font
