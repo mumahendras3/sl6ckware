@@ -2,7 +2,8 @@
 # Configure kernel parameters #
 ###############################
 
-backtick -ni SYSCTL { which sysctl }
-importas -u sysctl SYSCTL
-foreground { echo "sysctl-system: Configuring kernel parameters: ${sysctl} --system" }
-$sysctl --system
+# Prepend every output with the service's name
+pipeline -w { sed -u "s/^/sysctl-system: /" }
+fdmove -c 2 1
+if { echo Configuring kernel parameters: sysctl --system }
+sysctl --system

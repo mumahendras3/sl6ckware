@@ -2,29 +2,33 @@
 # Set the system time from the hardware clock using hwclock --hctosys #
 #######################################################################
 
-# Check if hwclock exists.
-backtick -ni HWCLOCK { which hwclock }
+# Prepend every output with the service's name
+pipeline -w { sed -u "s/^/system-time: /" }
+fdmove -c 2 1
 # Check for a broken motherboard RTC clock (where ioports for rtc are
 # unknown) to prevent hwclock causing a hang
 backtick -I CLOCK_OPT {
   if -n { grep -q " : rtc" /proc/ioports }
   printf --directisa
 }
-multisubstitute {
-  importas -u hwclock HWCLOCK
-  importas -u clock_opt CLOCK_OPT
-}
+importas -u CLOCK_OPT CLOCK_OPT
 ifelse { [ /etc/adjtime -nt /etc/hardwareclock ] }
 {
-  ifthenelse { grep -q "^LOCAL" /etc/adjtime }
-  { echo "system-time: Setting system time from the hardware clock (localtime)..." }
-  { echo "system-time: Setting system time from the hardware clock (UTC)..." }
-  $hwclock $clock_opt --hctosys
+  if { hwclock $CLOCK_OPT --hctosys }
+  backtick -n TIMESTAMP { date }
+  importas -u TIMESTAMP TIMESTAMP
+  ifelse { grep -q "^LOCAL" /etc/adjtime }
+  { echo Setting system time from the hardware clock (localtime): $TIMESTAMP }
+  echo Setting system time from the hardware clock (UTC): $TIMESTAMP
 }
 ifelse { grep -q "^UTC" /etc/hardwareclock }
 {
-  foreground { echo "system-time: Setting system time from the hardware clock (UTC)..." }
-  $hwclock $clock_opt --utc --hctosys
+  if { hwclock $CLOCK_OPT --utc --hctosys }
+  backtick -n TIMESTAMP { date }
+  importas -u TIMESTAMP TIMESTAMP
+  echo Setting system time from the hardware clock (UTC): $TIMESTAMP
 }
-foreground { echo "system-time: Setting system time from the hardware clock (localtime)..." }
-$hwclock $clock_opt --localtime --hctosys
+if { hwclock $CLOCK_OPT --localtime --hctosys }
+backtick -n TIMESTAMP { date }
+importas -u TIMESTAMP TIMESTAMP
+echo Setting system time from the hardware clock (localtime): $TIMESTAMP

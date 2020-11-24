@@ -3,14 +3,13 @@
 # except devpts, swap, and tmpfs                             #
 ##############################################################
 
-foreground { echo filesystems-local: Unmounting non-root local filesystems... }
-pipeline { findmnt --real -snrt nonfs,nfs4,smbfs,cifs,swap -o TARGET }
+# Prepend every output with the service's name
+pipeline -w { sed -u "s/^/filesystems-local: /" }
+fdmove -c 2 1
+if { echo Unmounting non-root local filesystems... }
+pipeline { findmnt --real -knrt nonfs,nfs4,smbfs,cifs -o TARGET }
 pipeline { sed \\|^/$|d }
 pipeline { tac }
 forstdin -d"\n" TARGET
 importas -u TARGET TARGET
-pipeline {
-  fdmove -c 2 1
-  umount -vl $TARGET
-}
-sed s|umount|filesystems-local|
+umount -v $TARGET

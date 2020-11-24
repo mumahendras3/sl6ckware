@@ -2,10 +2,11 @@
 # Mount all non-root remote filesystems #
 #########################################
 
-foreground { echo filesystems-remote: Mounting non-root remote filesystems... }
-pipeline { findmnt -snrt nfs,nfs4,smbfs,cifs -o SOURCE,TARGET,FSTYPE,OPTIONS }
-forstdin -d"\n" ENTRY
-importas -u ENTRY ENTRY
-multidefine -d" " $ENTRY { source target fstype options }
-if { mount $target }
-echo filesystems-remote: $source mounted on $target type $fstype (${options})
+# Don't print ignored and already mounted filesystems
+# Also prepend every output with the service's name
+pipeline -w {
+  sed -u "/ignored/d; /already mounted/d; s/^/filesystems-remote: /;"
+}
+fdmove -c 2 1
+if { echo Mounting non-root remote filesystems... }
+mount -avt nfs,nfs4,smbfs,cifs

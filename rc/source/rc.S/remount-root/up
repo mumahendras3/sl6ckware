@@ -2,12 +2,9 @@
 # Remount the root filesystem with read-write enabled #
 #######################################################
 
-foreground { echo "remount-root: Remounting root filesystem with read-write enabled..." }
-foreground { mount -no remount,rw / }
-importas -u ? ?
-ifelse { [ $? != 0 ] } { exit $? }
-pipeline { findmnt -knrM / -o TARGET,SOURCE,FSTYPE,OPTIONS }
-withstdinas -n ENTRY
-importas -u entry ENTRY
-multidefine -d" " $entry { target source fstype options }
-echo "remount-root: ${source} remounted on ${target} type ${fstype} (${options})"
+# Prepend every output with the service's name
+pipeline -w { sed -u "s/^/remount-root: /" }
+fdmove -c 2 1
+if -t { grep -q " / .* ro" /proc/mounts }
+if { echo Remounting root filesystem with read-write enabled... }
+mount -wvno remount /

@@ -2,12 +2,11 @@
 # Check all non-root filesystems found in /etc/fstab #
 ######################################################
 
+# Prepend every output with the service's name
+pipeline -w { sed -u "s/^/fsck-all: /" }
+fdmove -c 2 1
 ifelse { [ -r /etc/fastboot ] }
-{ echo "fsck-all: Fastboot is requested. Skipping non-root filesystems checking..." }
-backtick FORCEFSCK {
-  if { [ -r /etc/forcefsck ] }
-  printf -f
-}
-importas -u forcefsck FORCEFSCK
-foreground { echo "fsck-all: Checking non-root filesystems..." }
-fsck $forcefsck -C -R -A -a
+{ echo Fastboot is requested. Skipping non-root filesystems checking... }
+if { echo Checking non-root filesystems... }
+ifelse { [ -r /etc/forcefsck ] } { fsck -fCRAa }
+fsck -CRAa

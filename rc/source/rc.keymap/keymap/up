@@ -2,9 +2,12 @@
 # Load user-defined console keymap #
 ####################################
 
+# Prepend every output with the service's name
+pipeline -w { sed -u "s/^/keymap: /" }
+fdmove -c 2 1
 # Set KEYMAP environment variable inside /etc/default/keymap (create one
 # if it doesn't exist) to your desired keymap name first before starting
 # this service
 envfile /etc/default/keymap
-importas -u keymap KEYMAP
-loadkeys $keymap
+importas -u KEYMAP KEYMAP
+loadkeys -v $KEYMAP

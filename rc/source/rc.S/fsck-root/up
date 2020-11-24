@@ -2,68 +2,64 @@
 # Run fsck on the root filesystem #
 ###################################
 
+# Prepend every output with the service's name
+pipeline -w { sed -u "s/^/fsck-root: /" }
+fdmove -c 2 1
 ifelse { [ -r /etc/fastboot ] }
-{ echo "fsck-root: Fastboot is requested. Skipping root filesystem checking..." }
+{ echo Fastboot is requested. Skipping root filesystem checking... }
 # If we're using F2FS for the root filesystem, don't check it as it doesn't
-# allow checking a read-only filesystem:
+# allow checking a read-only filesystem
 ifelse { grep -q " / f2fs " /proc/mounts }
-{ echo "fsck-root: F2FS is used as the root filesystem. Skipping root filesystem checking..." }
-# Test to see if the root partition is read-only, like it ought to be.
-ifthenelse {
-  redirfd -w 1 /dev/null
-  findmnt -nr -M / -O ro
-}
-{ echo "fsck-root: Testing root filesystem status: read-only filesystem" }
+{ echo F2FS is used as the root filesystem. Skipping root filesystem checking... }
+# Test to see if the root partition is already read-writable
+ifelse { grep -q " / .* rw" /proc/mounts }
 {
-  # Remount the root filesystem as read-only so we can fsck it.
-  foreground {
-    echo "fsck-root: Testing root filesystem status: read-write filesystem
+  echo "Testing root filesystem status: read-write filesystem
 
-fsck-root: (WARNING) For filesystem checking to work properly on the root filesystem,
-fsck-root: (WARNING) it needs to be mounted as read only!
-fsck-root: (WARNING)
-fsck-root: (WARNING) Remounting the root filesystem as read only..."
-  }
-  mount -n -o remount,ro /
+ERROR: Root partition has already been mounted read-write. Cannot check!
+
+For filesystem checking to work properly, your system must initially mount
+the root partition as read only.  If you're booting with LILO, add a line:
+
+   read-only
+
+to the Linux section in your /etc/lilo.conf and type 'lilo' to reinstall it."
 }
-# Check the root filesystem:
-foreground { echo "fsck-root: Checking root filesystem..." }
-backtick FORCEFSCK {
-  if { [ -r /etc/forcefsck ] }
-  printf -f
-}
-importas -u forcefsck FORCEFSCK
-foreground { fsck $forcefsck -C -a / }
+if { echo Testing root filesystem status: read-only filesystem }
+# Check the root filesystem
+if { echo Checking root filesystem... }
+ifthenelse { [ -r /etc/forcefsck ] } { fsck -fCa / } { fsck -Ca / }
 importas -u ? ?
-# An error code of 2 or higher will require a reboot.
+# An error code of 2 or higher will require a reboot
 if -t { [ $? -ge 2 ] }
-foreground { echo "fsck-root: Aborting all s6-rc longrun transitions..." }
-foreground { pkill s6-rc }
+if { echo Aborting all s6-rc longrun transitions... }
+if { pkill s6-rc }
 ifthenelse { [ $? -lt 4 ] }
 {
-  # With an error code of 2 or 3, reboot the machine automatically:
-  foreground {
-    echo "fsck-root: ***********************************
-fsck-root: *** The filesystem was changed. ***
-fsck-root: *** The system will now reboot. ***
-fsck-root: ***********************************
+  # With an error code of 2 or 3, reboot the machine automatically
+  echo "
+***********************************
+*** The filesystem was changed. ***
+*** The system will now reboot. ***
+***********************************
 "
-  }
 }
 {
-  foreground {
-    echo "fsck-root: ***********************************************************
-fsck-root: *** An error occurred during the root filesystem check. ***
-fsck-root: *** You will now be given a chance to log into the      ***
-fsck-root: *** system in single-user mode to fix the problem.      ***
-fsck-root: ***                                                     ***
-fsck-root: *** If you are using the ext2 filesystem, running       ***
-fsck-root: *** 'e2fsck -v -y <partition>' might help.              ***
-fsck-root: ***********************************************************
+  if {
+    echo "
+***********************************************************
+*** An error occurred during the root filesystem check. ***
+*** You will now be given a chance to log into the      ***
+*** system in single-user mode to fix the problem.      ***
+***                                                     ***
+*** If you are using the ext2 filesystem, running       ***
+*** 'e2fsck -v -y <partition>' might help.              ***
+***********************************************************
 
-fsck-root: Once you exit the single-user shell, the system will reboot."
+Once you exit the single-user shell, the system will reboot.
+"
   }
   export PS1 "(Repair filesystem) \#" sulogin /dev/tty0
 }
-foreground { echo "fsck-root: Rebooting system..." }
-s6-linux-init-hpr -r -d
+if { echo Rebooting system... }
+reboot -d

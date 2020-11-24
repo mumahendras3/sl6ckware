@@ -3,37 +3,35 @@
 # This will also create or update the timestamps in /etc/adjtime.     #
 #######################################################################
 
-# Check if hwclock exists.
-backtick -ni HWCLOCK { which hwclock }
+# Prepend every output with the service's name
+pipeline -w { sed -u "s/^/system-time: /" }
+fdmove -c 2 1
 # Check for a broken motherboard RTC clock (where ioports for rtc are
 # unknown) to prevent hwclock causing a hang
 backtick -I CLOCK_OPT {
   if -n { grep -q " : rtc" /proc/ioports }
   printf --directisa
 }
-multisubstitute {
-  importas -u hwclock HWCLOCK
-  importas -u clock_opt CLOCK_OPT
-}
+importas -u CLOCK_OPT CLOCK_OPT
 ifelse { [ /etc/adjtime -nt /etc/hardwareclock ] }
 {
   ifthenelse { grep -q "^LOCAL" /etc/adjtime }
-  { echo "system-time: Saving system time to the hardware clock (localtime)..." }
-  { echo "system-time: Saving system time to the hardware clock (UTC)..." }
-  $hwclock $clock_opt --systohc
+  { echo Saving system time to the hardware clock (localtime)... }
+  { echo Saving system time to the hardware clock (UTC)... }
+  hwclock $CLOCK_OPT --systohc
 }
 ifelse { grep -q "^UTC" /etc/hardwareclock }
 {
-  foreground { echo "system-time: Saving system time to the hardware clock (UTC)..." }
+  if { echo Saving system time to the hardware clock (UTC)... }
   foreground {
     if { [ ! -r /etc/adjtime ] }
-    echo "system-time: Creating system time correction file (/etc/adjtime)..."
+    echo Creating system time correction file (/etc/adjtime)...
   }
-  $hwclock $clock_opt --utc --systohc
+  hwclock $CLOCK_OPT --utc --systohc
 }
-foreground { echo "system-time: Saving system time to the hardware clock (localtime)..." }
+if { echo Saving system time to the hardware clock (localtime)... }
 foreground {
   if { [ ! -r /etc/adjtime ] }
-  echo "system-time: Creating system time correction file (/etc/adjtime)..."
+  echo Creating system time correction file (/etc/adjtime)...
 }
-$hwclock $clock_opt --localtime --systohc
+hwclock $CLOCK_OPT --localtime --systohc

@@ -2,9 +2,12 @@
 # Run local system initialization script (/etc/rc.d/rc.local) #
 ###############################################################
 
+# Prepend every output with the service's name
+pipeline -w { sed -u "s/^/local: /" }
+fdmove -c 2 1
 ifelse { [ ! -x /etc/rc.d/rc.local ] }
 {
-  foreground { echo "local: /etc/rc.d/rc.local not found or not executable! Aborting..." }
+  if { echo /etc/rc.d/rc.local not found or not executable! Aborting... }
   exit 1
 }
 /etc/rc.d/rc.local

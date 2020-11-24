@@ -1,23 +1,29 @@
-###############################################################
-# Unmount all non-root remote filesystems found in /etc/fstab #
-###############################################################
+###########################################
+# Unmount all non-root remote filesystems #
+###########################################
 
-foreground { echo filesystems-remote: Unmounting non-root remote filesystems... }
-pipeline { findmnt -snrt nfs,nfs4,smbfs,cifs -o TARGET,FSTYPE }
-pipeline { tac }
-forstdin -d"\n" ENTRY
-importas -u ENTRY ENTRY
-multidefine -d" " $ENTRY { target fstype }
+# Prepend every output with the service's name
+pipeline -w { sed -u "s/^/filesystems-remote: /" }
+fdmove -c 2 1
 foreground {
+  # Kill any processes (typically gam) that would otherwise prevent
+  # unmounting NFS volumes
+  pipeline { findmnt --real -knrt nfs,nfs4 -o TARGET }
+  pipeline { sed \\|^/$|d }
+  pipeline { tac }
+  forstdin -d"\n" TARGET
+  importas -u TARGET TARGET
   # Kill any processes (typically gam for NFS) that would otherwise prevent
   # unmounting remote filesystems
-  if { fuser -sMm $target }
-  foreground { echo filesystems-remote: Killing processes holding $fstype mount $target open... }
-  background { fuser -ksMm $target }
+  if { fuser -sMm $TARGET }
+  if { echo Killing processes holding NFS mount $TARGET open... }
+  background { fuser -ksMm $TARGET }
   wait -t 5000
 }
-pipeline {
-  fdmove -c 2 1
-  umount -vl $target
-}
-sed s|umount|filesystems-remote|
+if { echo Unmounting non-root remote filesystems... }
+pipeline { findmnt --real -knrt nfs,nfs4,smbfs,cifs -o TARGET }
+pipeline { sed \\|^/$|d }
+pipeline { tac }
+forstdin -d"\n" TARGET
+importas -u TARGET TARGET
+umount -vlfr $TARGET

@@ -1,15 +1,14 @@
-############################################################################
-# Mount non-root file systems in fstab, but not NFS or SMB because TCP/IP  #
-# is not yet configured, and not proc or sysfs because those have already  #
-# been mounted. Also check that devpts is not already mounted before       #
-# attempting to mount it. With a 2.6.x or newer kernel udev mounts devpts. #
-############################################################################
+###########################################################################
+# Mount non-root file systems in fstab, but not NFS or SMB because TCP/IP #
+# is not yet configured, and not devpts, proc, and sysfs because those    #
+# have already been mounted.                                              #
+###########################################################################
 
-foreground { echo filesystems-local: Mounting non-root local filesystems... }
-pipeline { findmnt -senrt nonfs,nfs4,smbfs,cifs,proc,devpts,swap -o TARGET,SOURCE,FSTYPE,OPTIONS }
-pipeline { sed "\\|/dev/shm|d; \\|^/ |d" }
-forstdin -d"\n" ENTRY
-importas -u ENTRY ENTRY
-multidefine -d" " $ENTRY { target source fstype options }
-if { mount $target }
-echo filesystems-local: $source mounted on $target type $fstype (${options})
+# Don't print ignored and already mounted filesystems
+# Also prepend every output with the service's name
+pipeline -w {
+  sed -u "/ignored/d; /already mounted/d; s/^/filesystems-local: /;"
+}
+fdmove -c 2 1
+if { echo Mounting non-root local filesystems... }
+mount -avt nonfs,nfs4,smbfs,cifs,proc,sysfs,devpts,swap

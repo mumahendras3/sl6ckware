@@ -2,9 +2,12 @@
 # Load user-defined console font #
 ##################################
 
+# Prepend every output with the service's name
+pipeline -w { sed -u "s/^/font: /" }
+fdmove -c 2 1
 # Set FONT environment variable inside /etc/default/font (create one
 # if it doesn't exist) to your desired font name first before starting
 # this service
 envfile /etc/default/font
-importas -u font FONT
-setfont -v $font
+importas -u FONT FONT
+setfont -v $FONT

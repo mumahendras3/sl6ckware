@@ -2,24 +2,24 @@
 # Set the tick and frequency of the system clock #
 ##################################################
 
-backtick -ni ADJTIMEX { which adjtimex }
-importas -u adjtimex ADJTIMEX
+# Prepend every output with the service's name
+pipeline -w { sed -u "s/^/adjtimex: /" }
+fdmove -c 2 1
 # Default values are: TICK=10000 and FREQ=0. If there's a
 # /etc/default/adjtimex config file, source it to override
 # the default TICK and FREQ.
 ifelse { [ ! -r /etc/default/adjtimex ] }
 {
-  foreground { echo "adjtimex: Setting the system clock rate: ${adjtimex} --tick 10000 --frequency 0" }
-  $adjtimex --tick 10000 --frequency 0
+  if { echo Setting the system clock rate: adjtimex --tick 10000 --frequency 0 }
+  adjtimex --tick 10000 --frequency 0
 }
 envfile /etc/default/adjtimex
 multisubstitute {
-  importas -u tick TICK
-  importas -u freq FREQ
+  importas -u TICK TICK
+  importas -u FREQ FREQ
 }
-ifelse { $adjtimex --tick $tick --frequency $freq }
+ifelse { adjtimex --tick $TICK --frequency $FREQ }
 {
-  echo "adjtimex: Setting the system clock rate: ${adjtimex} --tick ${tick} --frequency ${freq}"
+  echo Setting the system clock rate: adjtimex --tick $TICK --frequency $FREQ
 }
-foreground { echo "adjtimex: Failed to set system clock with adjtimex, possibly invalid parameters? (TICK=${tick} FREQ=${freq})" }
-exit 1
+echo Failed to set system clock with adjtimex, possibly invalid parameters? (TICK=${TICK} FREQ=${FREQ})

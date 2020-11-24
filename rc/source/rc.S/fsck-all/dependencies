@@ -1,5 +1,5 @@
-# Comment out "devtmpfs" and uncomment "lvm" or/and "luks" if you use LVM
+udev-add
+# Uncomment "lvm" or/and "luks" if you use LVM
 # or/and LUKS
-devtmpfs
 #lvm
 #luks
