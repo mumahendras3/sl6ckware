@@ -21,7 +21,7 @@ bind-run
 #lvm
 swap-partitions
 #swap-files
-#adjtimex
+adjtimex
 system-time
 fsck-root
 fsck-all
@@ -46,9 +46,6 @@ udev
 depmod
 #modules-local
 #modules-versioned
-
-# From rc.cgmanager
-cgmanager
 
 # From rc.serial
 #This is just a placeholder since it has not been

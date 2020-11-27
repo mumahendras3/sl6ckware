@@ -25,6 +25,9 @@ glib-schemas
 #Placeholder for process accounting (pacct)
 #Placeholder for turning on/off quota
 
+# From rc.cgmanager
+#cgmanager
+
 # From rc.setterm
 setterm
 
@@ -46,10 +49,10 @@ haveged
 messagebus
 
 # From rc.elogind
-#elogind
+elogind
 
 # From rc.consolekit
-consolekit
+#consolekit
 
 # From rc.bluetooth
 bluetooth

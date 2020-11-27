@@ -13,4 +13,4 @@
 3
 # Start the display manager (uncomment one only!)
 #xdm
-#sddm
+sddm
