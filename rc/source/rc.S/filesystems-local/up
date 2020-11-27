@@ -4,8 +4,9 @@
 # have already been mounted.                                              #
 ###########################################################################
 
-# Don't print ignored and already mounted filesystems
-# Also prepend every output with the service's name
+# Don't print ignored filesystems
+# Also don't print /dev/shm (since it's already mounted)
+# Lastly, prepend every output with the service's name
 pipeline -w {
   sed -u "/ignored/d; \\|/dev/shm|d; s/^/filesystems-local: /;"
 }

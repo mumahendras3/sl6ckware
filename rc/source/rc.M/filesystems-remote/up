@@ -2,7 +2,7 @@
 # Mount all non-root remote filesystems #
 #########################################
 
-# Don't print ignored and already mounted filesystems
+# Don't print ignored filesystems
 # Also prepend every output with the service's name
 pipeline -w {
   sed -u "/ignored/d; s/^/filesystems-remote: /;"
