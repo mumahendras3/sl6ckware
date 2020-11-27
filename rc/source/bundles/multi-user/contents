@@ -55,6 +55,7 @@ consolekit
 bluetooth
 
 # From rc.networkmanager
+modemmanager
 networkmanager
 
 # From rc.inet2
