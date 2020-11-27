@@ -1,8 +1,5 @@
 bind-run
 messagebus
 udev-add
-syslog
-# Comment out "remount-root" and uncomment "filesystems-local"
-# if you use separate partition for /var
-remount-root
+# Uncomment "filesystems-local" if you use separate partition for /var
 #filesystems-local
