@@ -1,1 +1,2 @@
--d -a shadow
+-d -a pam -c
+# Use PAM authentication with credential caching
