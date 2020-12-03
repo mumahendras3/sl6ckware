@@ -1,2 +1,6 @@
-tmpfs-run
+depmod
 devtmpfs
+procfs
+sysfs
+tmpfs-run
+udev-hwdb

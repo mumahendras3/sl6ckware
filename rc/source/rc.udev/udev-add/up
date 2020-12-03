@@ -3,11 +3,8 @@
 # configure the devices, and populate /dev with device nodes.                       #
 #####################################################################################
 
-backtick -ni UDEVADM { which udevadm }
-importas -u udevadm UDEVADM
-foreground { echo "udev-add: Triggering udev events: ${udevadm} trigger --action=add" }
+if { echo udev-add: Triggering udev events: udevadm trigger --action=add }
 # Call udevtrigger and udevsettle to do the device configuration
-if { $udevadm trigger --action=add --attr-match=dev }
-if { $udevadm trigger --action=add --type=subsystems }
-if { $udevadm trigger --action=add --type=devices }
-$udevadm settle --timeout=120
+if { udevadm trigger --type=subsystems --action=add }
+if { udevadm trigger --type=devices --action=add }
+udevadm settle --timeout=120

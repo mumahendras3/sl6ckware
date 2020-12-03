@@ -4,7 +4,6 @@
 # Start the udev daemon #
 #########################
 
-fdmove -c 2 1
 # Disable hotplug helper since udevd listens to netlink
 foreground {
   if { [ -e /proc/sys/kernel/hotplug ] }

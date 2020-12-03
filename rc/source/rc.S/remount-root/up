@@ -2,9 +2,9 @@
 # Remount the root filesystem with read-write enabled #
 #######################################################
 
+if -t { grep -qE " / .+ ro" /proc/mounts }
 # Prepend every output with the service's name
 pipeline -w { sed -u "s/^/remount-root: /" }
 fdmove -c 2 1
-if -t { grep -q " / .* ro" /proc/mounts }
 if { echo Remounting root filesystem with read-write enabled... }
 mount -wvno remount /

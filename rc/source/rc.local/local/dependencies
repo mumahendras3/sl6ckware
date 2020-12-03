@@ -1,11 +1,5 @@
 # Feel free to add all necessary dependencies for your local setup script (rc.local{,_shutdown}).
 # These are just the barebones.
-sysfs
-bind-run
-udev-add
-cleanup-etc
-cleanup-tmp
-cleanup-var
+sysinit
 #networkmanager
-#filesystems-local
 #filesystems-remote

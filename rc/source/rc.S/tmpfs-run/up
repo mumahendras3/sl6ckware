@@ -2,12 +2,13 @@
 # Mount a tmpfs on /run #
 #########################
 
+# Prepend every output with the service's name
+pipeline -w { sed -u "s/^/tmpfs-run: /" }
+fdmove -c 2 1
 # Check if a tmpfs is already mounted on /run
-if -nt { mountpoint -q /run }
-# Check if /run exists and is a directory
-ifelse { [ ! -d /run ] }
+ifelse { mountpoint -q /run }
 {
-  foreground { echo "tmpfs-run: /run doesn't exist or isn't a directory! Aborting..." }
-  exit 1
+  # Make sure that mounts below /run are visible in both /run and /var/run
+  mount -v --make-shared /run
 }
-mount --make-shared -o mode=0755,size=32M,nodev,nosuid,noexec -vnt tmpfs tmpfs /run
+mount -vnt tmpfs -o mode=0755,size=32M,nodev,nosuid,noexec --make-shared tmpfs /run

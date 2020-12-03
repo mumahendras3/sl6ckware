@@ -2,8 +2,8 @@
 # Bind mount /run to /var/run #
 ###############################
 
+if -tn { mountpoint -q /var/run }
 # Prepend every output with the service's name
 pipeline -w { sed -u "s/^/bind-run: /" }
 fdmove -c 2 1
-if -tn { mountpoint -q /var/run }
 mount -vo bind /run /var/run

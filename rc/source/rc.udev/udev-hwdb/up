@@ -2,7 +2,5 @@
 # Update the hardware database index (/etc/udev/hwdb.bin) #
 ###########################################################
 
-backtick -ni UDEVADM { which udevadm }
-importas -u udevadm UDEVADM
-foreground { echo "udev-hwdb: Updating hardware database index: ${udevadm} hwdb --update" }
-$udevadm hwdb --update
+if { echo udev-hwdb: Updating hardware database index: udevadm hwdb --update }
+udevadm hwdb --update

@@ -2,7 +2,8 @@
 # Mount devtmpfs on /dev #
 ##########################
 
-if -tn { mountpoint -q /dev }
-ifelse { grep -wq devtmpfs /proc/filesystems }
-{ mount -nt devtmpfs -o size=8M devtmpfs /dev }
-mount -no mode=0755,size=8M -t tmpfs tmpfs /dev
+if -nt { mountpoint -q /dev }
+# Prepend every output with the service's name
+pipeline -w { sed -u "s/^/devtmpfs: /" }
+fdmove -c 2 1
+mount -vnt devtmpfs -o size=8M devtmpfs /dev

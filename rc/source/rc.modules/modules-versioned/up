@@ -4,11 +4,11 @@
 ##############################################################################
 
 # Determine the version of the running kernel:
-backtick -ni RELEASE { uname -r }
-importas -u release RELEASE
-ifelse { [ ! -x /etc/rc.d/rc.modules-${release} ] }
+backtick -n RELEASE { uname -r }
+importas -u RELEASE RELEASE
+ifelse { [ ! -x /etc/rc.d/rc.modules-$RELEASE ] }
 {
-  foreground { echo "modules-versioned: No /etc/rc.d/rc.modules-${release} found or it's not executable! Aborting..." }
+  if { echo modules-versioned: No /etc/rc.d/rc.modules-$RELEASE found or it's not executable! Aborting... }
   exit 1
 }
-/etc/rc.d/rc.modules-${release}
+/etc/rc.d/rc.modules-$RELEASE

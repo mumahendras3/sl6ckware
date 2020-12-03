@@ -2,15 +2,15 @@
 # Use /etc/random-seed to initialize /dev/urandom #
 ###################################################
 
-ifelse { [ ! -f /etc/random-seed ] }
+ifelse { [ -f /etc/random-seed ] }
 {
-  # Wait until there are enough entropies
-  if { echo "random-seed: Feeding the entropy..." }
-  loopwhilex -x 0
-  backtick -n ENTROPY { cat /proc/sys/kernel/random/entropy_avail }
-  importas -u entropy ENTROPY
-  [ $entropy -ge 1000 ]
+  if { echo random-seed: Using /etc/random-seed to initialize /dev/urandom... }
+  redirfd -w 1 /dev/urandom
+  cat /etc/random-seed
 }
-if { echo "random-seed: Using /etc/random-seed to initialize /dev/urandom..." }
-redirfd -w 1 /dev/urandom
-cat /etc/random-seed
+# Wait until there are enough entropies
+if { echo random-seed: Feeding the entropy... }
+loopwhilex -x 0
+backtick -n ENTROPY { cat /proc/sys/kernel/random/entropy_avail }
+importas -u ENTROPY ENTROPY
+[ $ENTROPY -ge 1000 ]

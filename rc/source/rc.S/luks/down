@@ -3,18 +3,18 @@
 ##########################################
 
 # NOTE: we only support LUKS formatted volumes (except for swap)!
-pipeline { grep -v -e "^#" -e "^[[:space:]]*$" /etc/crypttab }
-forstdin -pd"\n" LUKSARRAY
-importas -u luksarray LUKSARRAY
-multidefine -Cd" \t" $luksarray { luks dev pass opts }
+pipeline { grep -ve "^[[:space:]]*#" -e "^[[:space:]]*$" /etc/crypttab }
+forstdin -pd"\n" ENTRY
+importas -u ENTRY ENTRY
+multidefine -Cd" \t" $ENTRY { luks dev "" opts }
 ifelse { [ $opts = swap ] }
 {
   # If any of the volumes was used as encrypted swap,
   # then run mkswap on the underlying device in case
   # other Linux installations on this computer should use it.
-  foreground { echo "luks: Erasing encrypted swap '${luks}' and restoring normal swap on ${dev}..." }
+  if { echo luks: Erasing encrypted swap '${luks}' and restoring normal swap on ${dev}... }
   if { cryptsetup remove $luks }
   mkswap $dev
 }
-foreground { echo "luks: Locking LUKS crypt volume '${luks}'..." }
+if { echo luks: Locking LUKS crypt volume '${luks}'... }
 cryptsetup luksClose $luks

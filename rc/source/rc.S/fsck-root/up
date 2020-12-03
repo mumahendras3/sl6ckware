@@ -12,7 +12,7 @@ ifelse { [ -r /etc/fastboot ] }
 ifelse { grep -q " / f2fs " /proc/mounts }
 { echo F2FS is used as the root filesystem. Skipping root filesystem checking... }
 # Test to see if the root partition is already read-writable
-ifelse { grep -q " / .* rw" /proc/mounts }
+ifelse { grep -qE " / .+ rw" /proc/mounts }
 {
   echo "Testing root filesystem status: read-write filesystem
 

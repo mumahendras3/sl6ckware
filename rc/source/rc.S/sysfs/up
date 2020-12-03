@@ -4,16 +4,7 @@
 
 # Check if sysfs is already mounted
 if -nt { mountpoint -q /sys }
-# Check if /sys exists and is a directory
-ifelse { [ ! -d /sys ] }
-{
-  foreground { echo "sysfs: /sys doesn't exist or isn't a directory! Aborting..." }
-  exit 1
-}
-# Check if the kernel supports sysfs
-ifelse -n { grep -wq sysfs /proc/filesystems }
-{
-  foreground { echo "sysfs: The kernel doesn't support sysfs! Aborting..." }
-  exit 1
-}
-mount -v sysfs /sys -n -t sysfs
+# Prepend every output with the service's name
+pipeline -w { sed -u "s/^/sysfs: /" }
+fdmove -c 2 1
+mount -vnt sysfs sysfs /sys

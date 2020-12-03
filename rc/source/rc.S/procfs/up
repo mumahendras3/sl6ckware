@@ -4,10 +4,7 @@
 
 # Check if /proc is already mounted
 if -nt { mountpoint -q /proc }
-# Check if /proc exists and is a directory
-ifelse { [ ! -d /proc ] }
-{
-  foreground { echo "procfs: /proc doesn't exist or isn't a directory! Aborting..." }
-  exit 1
-}
-mount -v proc /proc -n -t proc
+# Prepend every output with the service's name
+pipeline -w { sed -u "s/^/tmpfs-run: /" }
+fdmove -c 2 1
+mount -vnt proc proc /proc

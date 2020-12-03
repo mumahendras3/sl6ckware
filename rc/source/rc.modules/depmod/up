@@ -2,18 +2,14 @@
 # Run depmod to generate modules.dep and map files #
 ####################################################
 
-backtick -ni DEPMOD { which depmod }
 # Determine the version of the running kernel
-backtick -ni RELEASE { uname -r }
-multisubstitute {
-  importas -u release RELEASE
-  importas -u depmod DEPMOD
-}
+backtick -n RELEASE { uname -r }
+importas -u RELEASE RELEASE
 # Update kernel module dependencies
-ifelse { [ -e /lib/modules/${release}/modules.dep ] }
+ifelse { [ -e /lib/modules/${RELEASE}/modules.dep ] }
 {
-  foreground { echo "depmod: Updating module dependency list for ${release}: ${depmod} --quick" }
-  $depmod --quick
+  if { echo depmod: Updating module dependency list for ${RELEASE}: depmod --quick }
+  depmod --quick
 }
-foreground { echo "depmod: Creating module dependency list for ${release}: ${depmod} --all" }
-$depmod --all
+if { echo depmod: Creating module dependency list for ${RELEASE}: depmod --all }
+depmod --all

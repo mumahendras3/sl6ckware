@@ -25,46 +25,38 @@
 
 # If you need to load a specific CPUFreq driver, load it here.  Most likely you don't.
 #if { modprobe acpi-cpufreq }
-backtick -ni SCALING_DRIVER { cat /sys/devices/system/cpu/cpu0/cpufreq/scaling_driver }
+backtick -n SCALING_DRIVER { cat /sys/devices/system/cpu/cpu0/cpufreq/scaling_driver }
 envfile /etc/default/cpufreq
 multisubstitute {
-  importas -u scaling_driver SCALING_DRIVER
-  importas -D "" -u scaling_governor SCALING_GOVERNOR
-  elglob -0 file /sys/devices/system/cpu/cpu*/cpufreq/scaling_governor
+  importas -u SCALING_DRIVER SCALING_DRIVER
+  importas -D "" -u SCALING_GOVERNOR SCALING_GOVERNOR
+  elglob file /sys/devices/system/cpu/cpu*/cpufreq/scaling_governor
 }
 # Attempt to apply the CPU scaling governor setting.  This may or may not
 # actually override the default value depending on if the choice is supported
 # by the architecture, processor, or underlying CPUFreq driver.  For example,
 # processors that use the Intel P-state driver will only be able to set
 # performance or powersave here.
-ifthenelse { [ $scaling_driver = intel_pstate ] }
+ifthenelse { [ $SCALING_DRIVER = intel_pstate ] }
 {
-  ifelse { [ -n $scaling_governor ] }
+  ifelse { [ -n $SCALING_GOVERNOR ] }
   {
-    pipeline { echo $scaling_governor }
-    redirfd -w 1 /dev/null
-    tee $file
+    heredoc 0 $SCALING_GOVERNOR redirfd -w 1 /dev/null tee $file
   }
   # For CPUs using intel_pstate, the performance governor will be used by default.
   # This also provides power savings on Intel processors while avoiding the ramp-up lag
   # present when using the powersave governor (which is the default if ondemand is
   # requested on these machines).
-  pipeline { echo performance }
-  redirfd -w 1 /dev/null
-  tee $file
+  heredoc 0 performance redirfd -w 1 /dev/null tee $file
 }
 {
-  ifelse { [ -n $scaling_governor ] }
+  ifelse { [ -n $SCALING_GOVERNOR ] }
   {
-    pipeline { echo $scaling_governor }
-    redirfd -w 1 /dev/null
-    tee $file
+    heredoc 0 $SCALING_GOVERNOR redirfd -w 1 /dev/null tee $file
   }
-  pipeline { echo ondemand }
-  redirfd -w 1 /dev/null
-  tee $file
+  heredoc 0 ondemand redirfd -w 1 /dev/null tee $file
 }
 # Report what CPU scaling governor is in use after applying the setting
-backtick -ni NEW_SCALING_GOVERNOR { cat /sys/devices/system/cpu/cpu0/cpufreq/scaling_governor }
-importas -u new_scaling_governor NEW_SCALING_GOVERNOR
-echo "cpufreq: Enabled CPU frequency scaling governor: ${new_scaling_governor}"
+backtick -n NEW_SCALING_GOVERNOR { cat /sys/devices/system/cpu/cpu0/cpufreq/scaling_governor }
+importas -u NEW_SCALING_GOVERNOR NEW_SCALING_GOVERNOR
+echo cpufreq: Enabled CPU frequency scaling governor: $NEW_SCALING_GOVERNOR
