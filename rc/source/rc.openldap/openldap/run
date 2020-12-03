@@ -7,10 +7,11 @@
 fdmove -c 2 1
 if { mkdir -p /var/run/openldap }
 if { chown ldap:ldap /var/run/openldap }
+emptyenv -p
 s6-envdir env
 multisubstitute {
   importas -u CMD CMD
   importas -usCd" " CMD_OPTS CMD_OPTS
 }
 importas -u SLAPD_URLS SLAPD_URLS
-emptyenv -c $CMD $CMD_OPTS
+emptyenv -c unexport PATH $CMD $CMD_OPTS

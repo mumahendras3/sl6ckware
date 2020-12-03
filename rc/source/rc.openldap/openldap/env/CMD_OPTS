@@ -1,1 +1,1 @@
--d 0 -u ldap -h $SLAPD_URLS
+-d 0 -u ldap -g ldap -h $SLAPD_URLS
