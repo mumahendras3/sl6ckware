@@ -55,11 +55,11 @@ elogind
 #consolekit
 
 # From rc.bluetooth
-bluetooth
+#bluetooth
 
 # From rc.networkmanager
-modemmanager
-networkmanager
+#modemmanager
+#networkmanager
 
 # From rc.inet2
 #This is just a placeholder since it has not been
@@ -70,13 +70,13 @@ networkmanager
 #converted to s6-rc service definition style yet
 
 # From rc.ntpd
-ntpd
+#ntpd
 
 # From rc.acpid
 acpid
 
 # From rc.cpufreq
-cpufreq
+#cpufreq
 
 # From rc.pulseaudio
 #pulseaudio
@@ -88,7 +88,7 @@ cpufreq
 #snmpd
 
 # From rc.cups
-cups
+#cups
 
 # From rc.atalk
 #atalk
@@ -130,7 +130,7 @@ atd
 #samba
 
 # From rc.gpm
-gpm
+#gpm
 
 # From rc.icecc-scheduler
 #This is just a placeholder since it has not been
