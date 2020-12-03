@@ -2,7 +2,5 @@
 # Update the X font indexes #
 #############################
 
-backtick -ni FC-CACHE { which fc-cache }
-importas -u fc-cache FC-CACHE
-foreground { echo "font-information-caches: Updating X font indexes: ${fc-cache} -f" }
-$fc-cache -f
+if { echo font-information-caches: Updating X font indexes: fc-cache -f }
+fc-cache -f

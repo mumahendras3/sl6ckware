@@ -2,7 +2,5 @@
 # Update pango.modules #
 ########################
 
-backtick -ni UPDATE-PANGO-QUERYMODULES { which update-pango-querymodules }
-importas -u update-pango-querymodules UPDATE-PANGO-QUERYMODULES
-foreground { echo "pango-querymodules: Updating pango.modules: ${update-pango-querymodules}" }
-$update-pango-querymodules
+if { echo pango-querymodules: Updating pango.modules: update-pango-querymodules }
+update-pango-querymodules

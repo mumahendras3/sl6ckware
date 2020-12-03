@@ -2,7 +2,5 @@
 # Update all the shared library links #
 #######################################
 
-backtick -ni LDCONFIG { which ldconfig }
-importas -u ldconfig LDCONFIG
-foreground { echo "shared-library-links: Updating shared library links: ${ldconfig}" }
-$ldconfig
+if { echo shared-library-links: Updating shared library links: ldconfig }
+ldconfig

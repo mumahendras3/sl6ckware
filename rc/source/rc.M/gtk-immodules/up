@@ -2,7 +2,5 @@
 # Update gtk.immodules #
 ########################
 
-backtick -ni UPDATE-GTK-IMMODULES { which update-gtk-immodules }
-importas -u update-gtk-immodules UPDATE-GTK-IMMODULES
-foreground { echo "gtk-immodules: Updating gtk.immodules: ${update-gtk-immodules}" }
-$update-gtk-immodules
+if { echo gtk-immodules: Updating gtk.immodules: update-gtk-immodules }
+update-gtk-immodules

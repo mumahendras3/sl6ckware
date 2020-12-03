@@ -2,12 +2,10 @@
 # Update the shared MIME-Info database cache #
 ##############################################
 
-backtick -ni UPDATE-MIME-DATABASE { which update-mime-database }
 ifelse { [ ! -d /usr/share/mime ] }
 {
-  foreground { echo "mime-database-cache: No MIME database directory found! Aborting..." }
+  if { echo mime-database-cache: No MIME database directory found! Aborting... }
   exit 1
 }
-importas -u update-mime-database UPDATE-MIME-DATABASE
-foreground { echo "mime-database-cache: Updating MIME database: ${update-mime-database} /usr/share/mime" }
-$update-mime-database /usr/share/mime
+if { echo mime-database-cache: Updating MIME database: update-mime-database /usr/share/mime }
+update-mime-database /usr/share/mime

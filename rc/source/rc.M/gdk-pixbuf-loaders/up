@@ -2,7 +2,5 @@
 # Update gdk-pixbuf.loaders #
 #############################
 
-backtick -ni UPDATE-GDK-PIXBUF-LOADERS { which update-gdk-pixbuf-loaders }
-importas -u update-gdk-pixbuf-loaders UPDATE-GDK-PIXBUF-LOADERS
-foreground { echo "gdk-pixbuf-loaders: Updating gdk-pixbuf.loaders: ${update-gdk-pixbuf-loaders}" }
-$update-gdk-pixbuf-loaders
+if { echo gdk-pixbuf-loaders: Updating gdk-pixbuf.loaders: update-gdk-pixbuf-loaders }
+update-gdk-pixbuf-loaders
