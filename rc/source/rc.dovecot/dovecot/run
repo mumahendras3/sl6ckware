@@ -10,4 +10,4 @@ multisubstitute {
   importas -u CMD CMD
   importas -usCd" " CMD_OPTS CMD_OPTS
 }
-emptyenv -p $CMD $CMD_OPTS
+exec -c $CMD $CMD_OPTS
