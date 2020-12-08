@@ -16,14 +16,20 @@ All of them are available on [SBo](https://slackbuilds.org/).
 ## SETUP
 ### Compiling a new s6-rc service database
 1. Clone this repo.
+
 2. Create a copy of the `source` directory from this repo and put it somewhere else in your system (e.g. `/etc/s6/rc/source`).
+
 3. Edit these two files (all paths below are relative to the `source` directory that you just copied):
-    3. `bundles/sysinit/contents`: this file contains a list of services that are needed to initialize the system, just like the `rc.S` script. In this file you can (for example) uncomment `font` service to load a custom screen font for the virtual console (see `rc.font/font/up` for instructions on how to load your desired custom screen font).
-    3. `bundles/multi-user/contents`: this file contains a list of services that will be started when entering one of the multi user runlevels (runlevel 2, 3, 4, and 5 by default), just like the `rc.M` script. In this file you can (for example) uncomment `cpufreq` and `bluetooth` service to set the default cpu governor and enable bluetooth support, respectively, at boot time.
+    1. `bundles/sysinit/contents`: this file contains a list of services that are needed to initialize the system, just like the `rc.S` script. In this file you can (for example) uncomment `font` service to load a custom screen font for the virtual console (see `rc.font/font/up` for instructions on how to load your desired custom screen font).
+    2. `bundles/multi-user/contents`: this file contains a list of services that will be started when entering one of the multi user runlevels (runlevel 2, 3, 4, and 5 by default), just like the `rc.M` script. In this file you can (for example) uncomment `cpufreq` and `bluetooth` service to set the default cpu governor and enable bluetooth support, respectively, at boot time.
+
 4. Feel free to edit all other files inside the `source` directory beside those two files above.
+
 5. Use `s6-rc-compile` (more details are available in `/usr/doc/s6-rc-<version>/doc/s6-rc-compile.html`) to compile a new s6-rc service database from your `source` directory that will be used by s6-rc at runtime to manage services:
 
-    `s6-rc-compile /etc/s6/rc/compiled /etc/s6/rc/source/*`
+    ```bash
+    s6-rc-compile /etc/s6/rc/compiled /etc/s6/rc/source/*
+    ```
 
     Explanation:
     * `/etc/s6/rc/compiled`: tell `s6-rc-compile` to put the compiled database data in `/etc/s6/rc/compiled` directory (it must not exist beforehand). Of course you can change `/etc/s6/rc/compiled` to other places that you want.
@@ -32,7 +38,9 @@ All of them are available on [SBo](https://slackbuilds.org/).
 ### Setting up s6-linux-init
 1. Run the `s6-linux-init-maker` command (more details are available in `/usr/doc/s6-linux-init-<version>/doc/s6-linux-init-maker.html`) to create all necessary files that the system needs to be able to properly boot and bring up a full s6 infrastructure. Below is the `s6-linux-init-maker` invocation that I use for my system (feel free to change them and add any other options that suit your needs):
 
-    `s6-linux-init-maker -c /etc/s6/init/current -u adm -G "agetty 38400 tty12 linux" -1 -p "/usr/bin:/usr/sbin:/bin:/sbin" -t 2 -D 4 /etc/s6/init/current`
+    ```bash
+    s6-linux-init-maker -c /etc/s6/init/current -u adm -G "agetty 38400 tty12 linux" -1 -p "/usr/bin:/usr/sbin:/bin:/sbin" -t 2 -D 4 /etc/s6/init/current
+    ```
 
     Explanation:
     * `-c /etc/s6/init/current`: tell `s6-linux-init` to look inside `/etc/s6/init/current` at system startup for all the necessary files it needs in order to boot the system properly. We will reference this directory as *basedir*.
@@ -45,11 +53,12 @@ All of them are available on [SBo](https://slackbuilds.org/).
     * `/etc/s6/init/current`: tell `s6-linux-init-maker` to put the generated files inside `/etc/s6/init/current` directory (this directory must not exist beforehand). You can change this argument to other places that you want (e.g. `/tmp/init-current`) but don't forget to move/copy the generated files back to the declared *basedir* (`/etc/s6/init/current` in my case). Use `cp -a` when copying the generated files since there are fifos, files with precise uid/gid permissions, and files with non-standard access rights, so be sure to copy it verbatim.
 
 2. Edit `rc.init`, `rc.shutdown`, and `runlevel` script inside `basedir/scripts` to incorporate below changes:
-    * `rc.shutdown`: uncomment `exec s6-rc -v2 -bda change` since we're going to use s6-rc as the service manager.
-    * `rc.init`:
-        * uncomment and change `s6-rc-init /run/service` to `s6-rc-init -c /etc/s6/rc/compiled /run/service`. Change `/etc/s6/rc/compiled` to the path of your new s6-rc service database directory that you have compiled before. Also if you use different *tmpfsdir* when compiling s6-linux-init, change `/run` to your *tmpfsdir*.
-        * uncomment and change `exec /etc/s6-linux-init/current/scripts/runlevel "$rl"` to `s6-rc -v2 -up change "$rl"; exec s6-rc -v1 -u change gettys`. The `s6-rc -v2 -up change "$rl"` part will bring the system up to the desired runlevel and the `exec s6-rc -v1 -u change gettys` part will start all configured gettys (from tty1 to tty6, just like Slackware's default behaviour). By running `s6-rc -v2 -up change "$rl"` first and then followed by `exec s6-rc -v1 -u change gettys`, the login prompt at tty1 will not be covered by boot time messages that also appear on tty1.
-    * `runlevel`: uncomment and change `exec s6-rc -v2 -up change "$1"` to `exec s6-rc -v2 -up change gettys "$1"`. This will make sure the already running gettys are not stopped when changing from one runlevel to other runlevel.
+    1. `rc.shutdown`: uncomment `exec s6-rc -v2 -bda change` since we're going to use s6-rc as the service manager.
+    2. `rc.init`:
+        1. uncomment and change `s6-rc-init /run/service` to `s6-rc-init -c /etc/s6/rc/compiled /run/service`. Change `/etc/s6/rc/compiled` to the path of your new s6-rc service database directory that you have compiled before. Also if you use different *tmpfsdir* when compiling s6-linux-init, change `/run` to your *tmpfsdir*.
+        2. uncomment and change `exec /etc/s6-linux-init/current/scripts/runlevel "$rl"` to `s6-rc -v2 -up change "$rl"; exec s6-rc -v1 -u change gettys`. The `s6-rc -v2 -up change "$rl"` part will bring the system up to the desired runlevel and the `exec s6-rc -v1 -u change gettys` part will start all configured gettys (from tty1 to tty6, just like Slackware's default behaviour). By running `s6-rc -v2 -up change "$rl"` first and then followed by `exec s6-rc -v1 -u change gettys`, the login prompt at tty1 will not be covered by boot time messages that also appear on tty1.
+    3. `runlevel`: uncomment and change `exec s6-rc -v2 -up change "$1"` to `exec s6-rc -v2 -up change gettys "$1"`. This will make sure the already running gettys are not stopped when changing from one runlevel to other runlevel.
+
 3. Lastly, make a backup copy of `/sbin/halt`, `/sbin/init`, `/sbin/poweroff`, `/sbin/reboot`, `/sbin/shutdown`, and `/sbin/telinit`. Then, copy all scripts inside `basedir/bin` to `/sbin` (or alternatively, you can just create symbolic links that point to each scripts inside `basedir/bin`).
 
 ## TIPS
