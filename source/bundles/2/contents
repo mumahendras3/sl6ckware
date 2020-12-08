@@ -1,0 +1,15 @@
+########################################################################
+# Services that should be started at runlevel 2 (unused but configured #
+# to be the same as runlevel 3 by default)                             #
+# You can add your own services here if you want to include them in    #
+# this runlevel.                                                       #
+# You can also disable some of the services here by commenting         #
+# them out. Note that if you disable a service that is a dependency    #
+# of other services, it will still be started automatically by s6-rc   #
+# to satisfy the dependency chain.                                     #
+########################################################################
+
+# For system initialization (see bundles/sysinit)
+sysinit
+# For entering multi-user mode (see bundles/multi-user)
+multi-user
