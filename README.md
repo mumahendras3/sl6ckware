@@ -1,4 +1,4 @@
-# sl6ckware - Using s6 + s6-rc + s6-linux-init as the init system on Slackware
+# Sl6ckware - Using s6 + s6-rc + s6-linux-init as the init system on Slackware
 
 ## NOTE
 * This repo is intended to be used on Slackware-current (for now) so some adjustments need to be done to some of the s6-rc service definition source directories in order to make it work on Slackware 14.2.
