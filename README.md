@@ -57,7 +57,7 @@ All of them are available on [SBo](https://slackbuilds.org/).
     2. `rc.init`:
         1. uncomment and change `s6-rc-init /run/service` to `s6-rc-init -c /etc/s6/rc/compiled /run/service`. Change `/etc/s6/rc/compiled` to the path of your new s6-rc service database directory that you have compiled before. Also if you use different *tmpfsdir* when compiling s6-linux-init, change `/run` to your *tmpfsdir*.
         2. uncomment and change `exec /etc/s6-linux-init/current/scripts/runlevel "$rl"` to `s6-rc -v2 -up change "$rl"; exec s6-rc -v1 -u change gettys`. The `s6-rc -v2 -up change "$rl"` part will bring the system up to the desired runlevel and the `exec s6-rc -v1 -u change gettys` part will start all configured gettys (from tty1 to tty6, just like Slackware's default behaviour). By running `s6-rc -v2 -up change "$rl"` first and then followed by `exec s6-rc -v1 -u change gettys`, the login prompt at tty1 will not be covered by boot time messages that also appear on tty1.
-    3. `runlevel`: uncomment and change `exec s6-rc -v2 -up change "$1"` to `exec s6-rc -v2 -up change gettys "$1"`. This will make sure the already running gettys are not stopped when changing from one runlevel to other runlevel.
+    3. `runlevel`: uncomment and change `exec s6-rc -v2 -up change "$1"` to `exec s6-rc -v2 -up change gettys "$1"`. This will make sure the already running gettys are not stopped when changing from one runlevel to another.
 
 3. Lastly, make a backup copy of `/sbin/halt`, `/sbin/init`, `/sbin/poweroff`, `/sbin/reboot`, `/sbin/shutdown`, and `/sbin/telinit`. Then, copy all scripts inside `basedir/bin` to `/sbin` (or alternatively, you can just create symbolic links that point to each scripts inside `basedir/bin`).
 
