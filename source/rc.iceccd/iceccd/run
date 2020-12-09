@@ -1,0 +1,35 @@
+#!/bin/execlineb -P
+
+##################################
+# Start iceccd (Icecream daemon) #
+##################################
+
+fdmove -c 2 1
+s6-envdir env
+multisubstitute {
+  importas -u CMD CMD
+  importas -usCd" " CMD_OPTS CMD_OPTS
+}
+# If ICECC_NETWORK is set to "SYSTEM", then we have to replace
+# ICECC_NETWORK value with the system's DNS domain name.
+backtick -n ICECC_NETWORK {
+  importas -u ICECC_NETWORK ICECC_NETWORK
+  ifelse { [ $ICECC_NETWORK != SYSTEM ] } { echo $ICECC_NETWORK }
+  cut -d. -f2 /etc/HOSTNAME
+}
+# Get the final value of ICECCD_JOBS by substituting every occurence of
+# "$NPROC" in its value with the number of threads the CPU can handle
+# and then evaluate them with `expr`
+backtick -n ICECCD_JOBS {
+  backtick -n NPROC { nproc }
+  importas -usCd" " ICECCD_JOBS ICECCD_JOBS
+  importas -u NPROC NPROC
+  expr $ICECCD_JOBS
+}
+multisubstitute {
+  importas -u ICECC_NETWORK ICECC_NETWORK
+  importas -u ICECCD_JOBS ICECCD_JOBS
+  importas -u ICECCD_NICENESS ICECCD_NICENESS
+  importas -usCd" " ICECCD_EXTRA_OPTIONS ICECCD_EXTRA_OPTIONS
+}
+exec -c $CMD $CMD_OPTS

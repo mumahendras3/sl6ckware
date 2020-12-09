@@ -1,0 +1,4 @@
+$NPROC + 1
+# Maximum number of compile jobs started in parallel on machine running the
+# daemon. The default set above is the number of threads the CPU can handle,
+# plus one.

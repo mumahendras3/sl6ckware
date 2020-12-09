@@ -1,0 +1,24 @@
+#!/bin/execlineb -P
+
+##############################################
+# Start icecc-scheduler (Icecream scheduler) #
+##############################################
+
+fdmove -c 2 1
+s6-envdir env
+multisubstitute {
+  importas -u CMD CMD
+  importas -usCd" " CMD_OPTS CMD_OPTS
+}
+# If ICECC_NETWORK is set to "SYSTEM", then we have to replace
+# ICECC_NETWORK value with the system's DNS domain name.
+backtick -n ICECC_NETWORK {
+  importas -u ICECC_NETWORK ICECC_NETWORK
+  ifelse { [ $ICECC_NETWORK != SYSTEM ] } { echo $ICECC_NETWORK }
+  cut -d. -f2 /etc/HOSTNAME
+}
+multisubstitute {
+  importas -u ICECC_NETWORK ICECC_NETWORK
+  importas -usCd" " ICECC_SCHEDULER_EXTRA_OPTIONS ICECC_SCHEDULER_EXTRA_OPTIONS
+}
+exec -c $CMD $CMD_OPTS

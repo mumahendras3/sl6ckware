@@ -88,7 +88,5 @@ Below rc scripts are not yet converted to s6-rc service definition:
 - rc.alsa
 - rc.mysqld
 - rc.httpd
-- rc.icecc-scheduler
-- rc.iceccd
 - rc.yp
 - rc.6 (genpowerd, pppd, accton, quota)

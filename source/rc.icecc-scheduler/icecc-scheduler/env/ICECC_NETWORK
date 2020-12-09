@@ -1,0 +1,4 @@
+SYSTEM
+# Defines the network name used to determine which nodes can be used for
+# the compile processes. That way you can have several icecream clusters
+# in the same network. Use "SYSTEM" to use the system's DNS domain name.

@@ -133,12 +133,10 @@ atd
 #gpm
 
 # From rc.icecc-scheduler
-#This is just a placeholder since it has not been
-#converted to s6-rc service definition style yet
+#icecc-scheduler
 
 # From rc.iceccd
-#This is just a placeholder since it has not been
-#converted to s6-rc service definition style yet
+#iceccd
 
 # Run local system initialization script
 local

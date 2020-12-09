@@ -1,0 +1,1 @@
+-n $ICECC_NETWORK -b /var/cache/icecream -m $ICECCD_JOBS --nice $ICECCD_NICENESS $ICECCD_EXTRA_OPTIONS
