@@ -10,4 +10,6 @@ multisubstitute {
   importas -u CMD CMD
   importas -usCd" " CMD_OPTS CMD_OPTS
 }
+# Using /var/run/httpd.pid existence as readiness indicator
+s6-notifyoncheck -dn0 -c "[ -r /var/run/httpd.pid ]"
 exec -c $CMD $CMD_OPTS

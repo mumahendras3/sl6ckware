@@ -1,1 +1,1 @@
--D FOREGROUND
+-D NO_DETACH -E /var/log/httpd/startup_log
