@@ -87,6 +87,5 @@ Below rc scripts are not yet converted to s6-rc service definition:
 - rc.autofs
 - rc.alsa
 - rc.mysqld
-- rc.httpd
 - rc.yp
 - rc.6 (genpowerd, pppd, accton, quota)
