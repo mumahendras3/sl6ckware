@@ -1,0 +1,30 @@
+#!/bin/execlineb -P
+
+#####################################################################
+# Monitor user logins/logouts to start/stop each user's supervision #
+# subtree automatically. This uses elogind's D-Bus interface.       #
+#####################################################################
+
+fdmove -c 2 1
+pipeline -w {
+  pipeline { sed -uE "1,4d;/object/d;s/.*member=//;N;s/\\n.*uint32//;/ [0-9]{1,3}$/d" }
+  forstdin -pd"\n" LINE
+  importas -u LINE LINE
+  multidefine -d" " $LINE { signal uid }
+  pipeline { grep $uid /etc/passwd }
+  pipeline { cut -d: -f1 }
+  withstdinas -n USER importas -u USER USER
+  ifelse { [ $signal = UserNew ] }
+  {
+    if { pipeline { s6-rc -ad list } grep -q ^${USER}-subtree$ }
+    s6-rc -b change ${USER}-subtree
+  }
+  if { pipeline { s6-rc -a list } grep -q ^${USER}-subtree$ }
+  s6-rc -bd change ${USER}-subtree ${USER}-subtree-log
+}
+s6-envdir env
+multisubstitute {
+  importas -u CMD CMD
+  importas -usCd" " CMD_OPTS CMD_OPTS
+}
+exec -c $CMD $CMD_OPTS

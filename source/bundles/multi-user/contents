@@ -138,3 +138,6 @@ atd
 
 # Run local system initialization script
 local
+
+# Start per-user supervision subtree manager
+#user-subtree-manager
