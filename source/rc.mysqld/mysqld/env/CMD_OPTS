@@ -1,0 +1,6 @@
+--datadir=/var/lib/mysql --user=mysql --skip-networking
+# To allow outside connections to the database, delete "--skip-networking"
+# option above. If you don't need incoming network connections, then leave
+# that option there to improve system security.
+#
+# To use TokuDB, add "--plugin-load=ha_tokudb" option to above.

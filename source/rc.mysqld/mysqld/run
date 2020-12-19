@@ -1,0 +1,43 @@
+#!/bin/execlineb -P
+
+###########################################################################
+# Start mysqld (the MariaDB server)                                       #
+#                                                                         #
+# Before you can run MariaDB, you must have a database. To install an     #
+# initial database, do this as root:                                      #
+#                                                                         #
+#   mysql_install_db --user=mysql                                         #
+#                                                                         #
+# Note that the mysql user must exist in /etc/passwd, and the created     #
+# files will be owned by this dedicated user. This is important, or else  #
+# mysql (which runs as user "mysql") will not be able to write to the     #
+# database later. This can be fixed with                                  #
+#                                                                         #
+#   chown -R mysql:mysql /var/lib/mysql                                   #
+#                                                                         #
+# To increase system security, consider using "mysql_secure_installation" #
+# as well. For more information on this tool, please read:                #
+#                                                                         #
+#   man mysql_secure_installation                                         #
+#                                                                         #
+###########################################################################
+
+fdmove -c 2 1
+if { install -dm755 -o mysql -g mysql /var/run/mysql }
+foreground {
+  if {
+    pipeline { head -n1 env/CMD_OPTS }
+    grep -qe --plugin-load=ha_tokudb
+  }
+  cd /sys/kernel/mm/transparent_hugepage
+  heredoc 0 never redirfd -w 1 /dev/null tee enabled defrag
+}
+unexport ?
+s6-envdir env
+multisubstitute {
+  importas -u CMD CMD
+  importas -usCd" " CMD_OPTS CMD_OPTS
+}
+backtick BASENAME { basename -z $CMD }
+importas -u BASENAME BASENAME
+exec -ca $BASENAME $CMD $CMD_OPTS
