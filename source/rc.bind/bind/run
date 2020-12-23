@@ -1,0 +1,26 @@
+#!/bin/execlineb -P
+
+#############################################
+# Start the BIND name server daemon (named) #
+#############################################
+
+fdmove -c 2 1
+s6-envdir env
+multisubstitute {
+  importas -u CMD CMD
+  importas -usCd" " CMD_OPTS CMD_OPTS
+}
+ifelse { [ -r /etc/rndc.conf -o -r /etc/rndc.key ] }
+{
+  s6-notifyoncheck -dn0
+  exec -c $CMD $CMD_OPTS
+}
+# We can't use rndc to poll the named server readiness so we'll announce
+# this service's readiness after some fixed period of time
+background -d {
+  if { sleep 1 }
+  fdmove 1 3
+  echo
+}
+unexport ! fdclose 3
+exec -c $CMD $CMD_OPTS

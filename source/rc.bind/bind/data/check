@@ -1,0 +1,5 @@
+#!/bin/execlineb -P
+
+redirfd -w 2 /dev/null
+pipeline { rndc -s localhost status }
+grep -q "server is up and running"
