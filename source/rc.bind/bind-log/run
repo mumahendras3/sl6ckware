@@ -1,8 +1,8 @@
 #!/bin/execlineb -P
 
-##############################################
-# Start a logging daemon for the bind daemon #
-##############################################
+###############################################
+# Start a logging daemon for the named daemon #
+###############################################
 
 s6-envdir env
 multisubstitute {
