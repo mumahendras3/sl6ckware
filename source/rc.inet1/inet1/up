@@ -1,0 +1,8 @@
+#####################################################################
+# Bring up the various network interfaces using the rc.inet1 script #
+#####################################################################
+
+# Prepend every output with the service's name
+pipeline -w { sed -u "s/^/inet1: /" }
+fdmove -c 2 1
+bash /etc/rc.d/rc.inet1 start
