@@ -1,6 +1,6 @@
 bind-run
 sysfs
-networkmanager
+network
 # Comment out "remount-root" and uncomment "filesystems-local"
 # if you use separate partition for /var
 remount-root

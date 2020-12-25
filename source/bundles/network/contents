@@ -1,0 +1,9 @@
+#############################################################
+# Choose which network configurator that you want to use by #
+# uncommenting (only) one of two services below.            #
+#############################################################
+
+# Use the rc.inet1 script
+#inet1
+# Use NetworkManager
+networkmanager

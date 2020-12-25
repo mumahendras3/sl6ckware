@@ -1,4 +1,4 @@
 utmp
 filesystems-local
 #filesystems-remote
-#networkmanager
+#network
