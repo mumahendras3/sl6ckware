@@ -9,6 +9,6 @@ multisubstitute {
   importas -u CMD CMD
   importas -usCd" " CMD_OPTS CMD_OPTS
 }
-# Using /dev/log socket availability as syslogd readiness indicator
-s6-notifyoncheck -dn0 -c "[ -S /dev/log ]"
+# Using syslog's PID file availability as syslogd's readiness indicator
+s6-notifyoncheck -dn0 -c "[ -r /var/run/syslogd.pid ]"
 exec -c $CMD $CMD_OPTS
