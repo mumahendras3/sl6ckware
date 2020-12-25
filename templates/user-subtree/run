@@ -1,0 +1,42 @@
+#!/bin/execlineb -P
+
+#################################################
+# Start a supervision subtree for user username #
+#################################################
+
+fdmove -c 2 1
+emptyenv -p
+s6-envdir env
+multisubstitute {
+  importas -u USERNAME USERNAME
+  importas -u XDG_CACHE_HOME XDG_CACHE_HOME
+  importas -u XDG_CONFIG_HOME XDG_CONFIG_HOME
+  importas -u XDG_DATA_HOME XDG_DATA_HOME
+  importas -u XDG_RUNTIME_DIR XDG_RUNTIME_DIR
+  importas -u DBDIR DBDIR
+  importas -u SCANDIR SCANDIR
+  importas -u CMD CMD
+  importas -usCd" " CMD_OPTS CMD_OPTS
+}
+backtick -n HOME { homeof $USERNAME }
+s6-envuidgid -u $USERNAME
+multisubstitute {
+  importas HOME HOME
+  importas -u UID UID
+}
+export XDG_CACHE_HOME $XDG_CACHE_HOME
+export XDG_CONFIG_HOME $XDG_CONFIG_HOME
+export XDG_DATA_HOME $XDG_DATA_HOME
+export XDG_RUNTIME_DIR $XDG_RUNTIME_DIR
+background {
+  if { [ $DBDIR != NONE ] }
+  if { s6-svwait -U . }
+  s6-setuidgid $USERNAME
+  s6-rc-init -dc $DBDIR -l /run/${USERNAME}-subtree/rc /run/${USERNAME}-subtree/service
+}
+unexport !
+if { rm -rf /run/${USERNAME}-subtree }
+if { install -dm700 -o $UID /run/${USERNAME}-subtree }
+s6-setuidgid $USERNAME
+if { cp -a $SCANDIR /run/${USERNAME}-subtree/service }
+emptyenv -c $CMD $CMD_OPTS -- /run/${USERNAME}-subtree/service

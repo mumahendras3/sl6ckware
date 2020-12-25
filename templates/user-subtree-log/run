@@ -1,8 +1,8 @@
 #!/bin/execlineb -P
 
-################################################
-# Start a logging daemon for the svname daemon #
-################################################
+#############################################################
+# Start a catch-all logger for username supervision subtree #
+#############################################################
 
 s6-envdir env
 multisubstitute {
