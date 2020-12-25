@@ -36,8 +36,7 @@ background {
 }
 unexport !
 if { rm -rf /run/${USERNAME}-subtree }
-if { mkdir -m700 /run/${USERNAME}-subtree }
-if { chown $UID /run/${USERNAME}-subtree }
+if { install -dm700 -o $UID /run/${USERNAME}-subtree }
 s6-setuidgid $USERNAME
 if { cp -a $SCANDIR /run/${USERNAME}-subtree/service }
 emptyenv -c $CMD $CMD_OPTS -- /run/${USERNAME}-subtree/service

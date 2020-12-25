@@ -5,8 +5,7 @@
 #########################################
 
 fdmove -c 2 1
-if { mkdir -p /var/run/openldap }
-if { chown ldap:ldap /var/run/openldap }
+if { install -do ldap -g ldap /var/run/openldap }
 emptyenv -p
 s6-envdir env
 multisubstitute {

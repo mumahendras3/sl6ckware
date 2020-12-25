@@ -21,7 +21,6 @@ multisubstitute {
 }
 backtick -n HOME { homeof $LOGDIR_OWNER }
 importas -u HOME HOME
-if { mkdir -pm $LOGDIR_PERMS $LOGDIR_PATH }
-if { chown ${UID}:${GID} $LOGDIR_PATH }
+if { install -dm $LOGDIR_PERMS -o $UID -g $GID $LOGDIR_PATH }
 s6-setuidgid ${UID}:${GID}
 exec -c $CMD $CMD_OPTS -- $LOG_SCRIPT
