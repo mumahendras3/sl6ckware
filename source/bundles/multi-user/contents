@@ -41,10 +41,6 @@ syslog
 # From rc.haveged
 haveged
 
-# From rc.inet1
-#This is just a placeholder since it has not been
-#converted to s6-rc service definition style yet
-
 # From rc.messagebus
 messagebus
 
@@ -60,7 +56,50 @@ elogind
 # Network configurator service (either inet1 or networkmanager)
 network
 
-# From rc.inet2
+# From rc.firewall
+#This is just a placeholder since it has not been
+#converted to s6-rc service definition style yet
+
+# From rc.ip_forward
+#This is just a placeholder since it has not been
+#converted to s6-rc service definition style yet
+
+# From rc.krb5kdc
+#This is just a placeholder since it has not been
+#converted to s6-rc service definition style yet
+
+# From rc.kadmind
+#This is just a placeholder since it has not been
+#converted to s6-rc service definition style yet
+
+# From rc.kpropd
+#This is just a placeholder since it has not been
+#converted to s6-rc service definition style yet
+
+# From rc.rpc
+#This is just a placeholder since it has not been
+#converted to s6-rc service definition style yet
+
+# From rc.inetd
+#This is just a placeholder since it has not been
+#converted to s6-rc service definition style yet
+
+# From rc.sshd
+#This is just a placeholder since it has not been
+#converted to s6-rc service definition style yet
+
+# From rc.bind
+bind
+
+# From rc.yp
+#This is just a placeholder since it has not been
+#converted to s6-rc service definition style yet
+
+# From rc.openvpn
+#This is just a placeholder since it has not been
+#converted to s6-rc service definition style yet
+
+# From rc.nfsd
 #This is just a placeholder since it has not been
 #converted to s6-rc service definition style yet
 
