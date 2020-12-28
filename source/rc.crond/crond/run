@@ -6,9 +6,10 @@
 
 fdmove -c 2 1
 if { mkdir -p /var/run/cron }
+emptyenv -p
 s6-envdir env
 multisubstitute {
   importas -u CMD CMD
   importas -usCd" " CMD_OPTS CMD_OPTS
 }
-exec -c $CMD $CMD_OPTS
+emptyenv -c $CMD $CMD_OPTS
