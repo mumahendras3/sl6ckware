@@ -84,7 +84,17 @@ Below rc scripts are not yet converted to s6-rc service definition:
 - rc.pcmcia
 - rc.inet1
 - rc.inet2
+    - rc.firewall
+    - rc.ip_forward
+    - rc.krb5kdc
+    - rc.kadmind
+    - rc.kpropd
+    - rc.rpc
+    - rc.inetd
+    - rc.sshd
+    - rc.yp
+    - rc.openvpn
+    - rc.nfsd
 - rc.autofs
 - rc.alsa
-- rc.yp
 - rc.6 (genpowerd, pppd, accton, quota)
