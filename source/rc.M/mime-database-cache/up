@@ -4,8 +4,7 @@
 
 ifelse { [ ! -d /usr/share/mime ] }
 {
-  if { echo mime-database-cache: No MIME database directory found! Aborting... }
-  exit 1
+  echo mime-database-cache: /usr/share/mime doesn't exist! Skipping...
 }
 if { echo mime-database-cache: Updating MIME database: update-mime-database /usr/share/mime }
 update-mime-database /usr/share/mime

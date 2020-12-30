@@ -2,5 +2,5 @@
 # Ensure basic filesystem permissions sanity #
 ##############################################
 
-foreground { chmod 755 / }
+if { chmod 755 / }
 chmod 1777 /tmp /var/tmp

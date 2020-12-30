@@ -5,8 +5,7 @@
 elglob -0 dir /usr/share/icons/*
 ifelse { redirfd -w 2 /dev/null [ -z $dir ] }
 {
-  if { echo gtk-icon-caches: No icon theme directories found! Aborting... }
-  exit 1
+  echo gtk-icon-caches: No icon theme directories found under /usr/share/icons! Skipping...
 }
 forx -p THEME_DIR { $dir }
 importas -u THEME_DIR THEME_DIR
