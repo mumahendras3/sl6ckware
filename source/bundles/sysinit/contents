@@ -35,6 +35,7 @@ X11-socketdir
 utmp
 update-motd
 random-seed
+hostname
 
 # From rc.loop
 #module-loop
@@ -50,6 +51,9 @@ depmod
 # From rc.serial
 #This is just a placeholder since it has not been
 #converted to s6-rc service definition style yet
+
+# From rc.setterm
+setterm
 
 # Set console font
 #font

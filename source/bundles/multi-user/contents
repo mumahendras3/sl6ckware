@@ -11,7 +11,6 @@
 ######################################################################
 
 shared-library-links
-hostname
 save-dmesg
 font-information-caches
 #filesystems-remote
@@ -27,9 +26,6 @@ glib-schemas
 
 # From rc.cgmanager
 #cgmanager
-
-# From rc.setterm
-setterm
 
 # From rc.pcmcia
 #This is just a placeholder since it has not been
