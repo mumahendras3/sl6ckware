@@ -85,11 +85,10 @@ network
 #converted to s6-rc service definition style yet
 
 # From rc.sshd
-#This is just a placeholder since it has not been
-#converted to s6-rc service definition style yet
+#sshd
 
 # From rc.bind
-bind
+#bind
 
 # From rc.yp
 #This is just a placeholder since it has not been

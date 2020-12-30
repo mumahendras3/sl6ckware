@@ -82,7 +82,6 @@ Below rc scripts are not yet converted to s6-rc service definition:
 - rc.serial
 - rc.M (genpowerd, accton, quota)
 - rc.pcmcia
-- rc.inet1
 - rc.inet2
     - rc.firewall
     - rc.ip_forward
@@ -91,7 +90,6 @@ Below rc scripts are not yet converted to s6-rc service definition:
     - rc.kpropd
     - rc.rpc
     - rc.inetd
-    - rc.sshd
     - rc.yp
     - rc.openvpn
     - rc.nfsd

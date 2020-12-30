@@ -1,0 +1,15 @@
+#!/bin/execlineb -P
+
+###############################
+# Start sshd (OpenSSH daemon) #
+###############################
+
+fdmove -c 2 1
+# Create host keys if needed
+if { ssh-keygen -A }
+s6-envdir env
+multisubstitute {
+  importas -u CMD CMD
+  importas -usCd" " CMD_OPTS CMD_OPTS
+}
+exec -c $CMD $CMD_OPTS

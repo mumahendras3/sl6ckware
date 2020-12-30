@@ -1,0 +1,11 @@
+-D -e
+# Additional optional arguments to start sshd with.
+#
+# Note that using the -p flag causes any Port directives
+# in sshd_config(5) to be ignored.
+#
+# If you want to run sshd on non-standard port(s), use:
+#   -p 12345 -p 6789
+#
+# If you want to use non-standard sshd_config, use:
+#   -f /some/other/sshd_config
