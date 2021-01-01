@@ -33,7 +33,7 @@ importas -u ? ?
 # An error code of 2 or higher will require a reboot
 if -t { [ $? -ge 2 ] }
 if { echo Aborting all s6-rc longrun transitions... }
-if { pkill s6-rc }
+if { killall s6-rc }
 ifthenelse { [ $? -lt 4 ] }
 {
   # With an error code of 2 or 3, reboot the machine automatically
@@ -59,7 +59,13 @@ ifthenelse { [ $? -lt 4 ] }
 Once you exit the single-user shell, the system will reboot.
 "
   }
-  export PS1 "(Repair filesystem) \#" sulogin /dev/tty0
+  if { sleep 2 }
+  cd /root
+  export TERM linux
+  sulogin /dev/console
 }
+unexport ?
+if { echo Unmounting filesystems... }
+foreground { s6-linux-init-umountall } unexport ?
 if { echo Rebooting system... }
-reboot -d
+s6-linux-init-hpr -fr
