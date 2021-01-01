@@ -56,6 +56,7 @@ ifthenelse { [ $SCALING_DRIVER = intel_pstate ] }
   }
   heredoc 0 ondemand redirfd -w 1 /dev/null tee $file
 }
+unexport ?
 # Report what CPU scaling governor is in use after applying the setting
 backtick -n NEW_SCALING_GOVERNOR { cat /sys/devices/system/cpu/cpu0/cpufreq/scaling_governor }
 importas -u NEW_SCALING_GOVERNOR NEW_SCALING_GOVERNOR

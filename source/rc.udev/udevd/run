@@ -10,6 +10,7 @@ foreground {
   redirfd -w 1 /proc/sys/kernel/hotplug
   echo ""
 }
+unexport ?
 s6-envdir env
 multisubstitute {
   importas -u CMD CMD
