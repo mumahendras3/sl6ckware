@@ -1,2 +1,2 @@
-${HOME}/.local/share/s6/log/uncaught-logs
+${HOME}/.local/share/s6/uncaught-logs
 # Logging directory path
