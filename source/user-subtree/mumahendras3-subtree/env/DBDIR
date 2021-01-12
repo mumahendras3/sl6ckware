@@ -1,2 +1,0 @@
-${HOME}/.local/share/s6/rc/compiled
-# Path to user's compiled s6-rc database. Use "NONE" to not use s6-rc.
