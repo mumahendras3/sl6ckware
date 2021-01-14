@@ -6,6 +6,7 @@
 
 fdmove -c 2 1
 emptyenv -p
+getpid PID
 s6-envdir env
 multisubstitute {
   importas -u USERNAME USERNAME
@@ -13,15 +14,20 @@ multisubstitute {
   importas -u XDG_CONFIG_HOME XDG_CONFIG_HOME
   importas -u XDG_DATA_HOME XDG_DATA_HOME
   importas -u XDG_RUNTIME_DIR XDG_RUNTIME_DIR
+  importas -u PID PID
   importas -u DBDIR DBDIR
   importas -u SCANDIR SCANDIR
   importas -u DEF_PATH DEF_PATH
   importas -u CMD CMD
   importas -usCd" " CMD_OPTS CMD_OPTS
 }
+backtick -n SESSION {
+  loginctl --no-legend --value -p Sessions show-user $USERNAME
+}
 backtick -n HOME { homeof $USERNAME }
 s6-envuidgid -u $USERNAME
 multisubstitute {
+  importas -u SESSION SESSION
   importas -u HOME HOME
   importas -u UID UID
 }
@@ -29,6 +35,10 @@ export XDG_CACHE_HOME $XDG_CACHE_HOME
 export XDG_CONFIG_HOME $XDG_CONFIG_HOME
 export XDG_DATA_HOME $XDG_DATA_HOME
 export XDG_RUNTIME_DIR $XDG_RUNTIME_DIR
+if {
+  redirfd -w 1 /sys/fs/cgroup/elogind/${SESSION}/cgroup.procs
+  echo $PID
+}
 background -d {
   if { [ $DBDIR != NONE ] }
   if { s6-svwait -U . }
