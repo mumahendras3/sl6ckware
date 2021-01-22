@@ -5,7 +5,7 @@
 # Don't print ignored filesystems
 # Also prepend every output with the service's name
 pipeline -w {
-  sed -u "/ignored/d; s/^/filesystems-remote: /;"
+  sed -u "/ignored/d; s/^/remote-fs: /;"
 }
 fdmove -c 2 1
 if { echo Mounting non-root remote filesystems... }

@@ -4,7 +4,7 @@
 ##############################################################
 
 # Prepend every output with the service's name
-pipeline -w { sed -u "s/^/filesystems-local: /" }
+pipeline -w { sed -u "s/^/local-fs: /" }
 fdmove -c 2 1
 if { echo Unmounting non-root local filesystems... }
 pipeline { findmnt --real -knrt nonfs,nfs4,smbfs,cifs -o TARGET }

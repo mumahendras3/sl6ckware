@@ -26,7 +26,7 @@ system-time
 fsck-root
 fsck-all
 remount-root
-filesystems-local
+local-fs
 cleanup-etc
 cleanup-tmp
 cleanup-var

@@ -8,7 +8,7 @@
 # Also don't print /dev/shm (since it's already mounted)
 # Lastly, prepend every output with the service's name
 pipeline -w {
-  sed -u "/ignored/d; \\|/dev/shm|d; s/^/filesystems-local: /;"
+  sed -u "/ignored/d; \\|/dev/shm|d; s/^/local-fs: /;"
 }
 fdmove -c 2 1
 if { echo Mounting non-root local filesystems... }

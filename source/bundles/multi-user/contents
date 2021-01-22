@@ -13,7 +13,7 @@
 shared-library-links
 save-dmesg
 font-information-caches
-#filesystems-remote
+#remote-fs
 ensure-permissions
 gtk-icon-caches
 mime-database-cache
