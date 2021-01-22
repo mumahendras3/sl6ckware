@@ -12,4 +12,14 @@ multisubstitute {
   importas -u CMD CMD
   importas -usCd" " CMD_OPTS CMD_OPTS
 }
+# Workaround the "setpgid: Operation not permitted" error
+trap {
+  default {
+    multisubstitute {
+      importas -u ! !
+      importas -u SIGNAL SIGNAL
+    }
+    kill -$SIGNAL $!
+  }
+}
 emptyenv -c $CMD $CMD_OPTS
