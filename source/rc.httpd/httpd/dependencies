@@ -1,5 +1,5 @@
 bind-run
-# Comment out "remount-root" and uncomment "filesystems-local"
+# Comment out "remount-root" and uncomment "local-fs"
 # if you use separate partition for /var
 remount-root
-#filesystems-local
+#local-fs

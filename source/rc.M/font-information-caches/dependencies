@@ -2,4 +2,4 @@ remount-root
 # Uncomment below if you have system-wide font directories that are located in non-root
 # partitions and you want fontconfig to cache them at boot time (e.g. caching windows
 # fonts that are located in windows partition)
-#filesystems-local
+#local-fs

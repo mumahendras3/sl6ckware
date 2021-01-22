@@ -1,5 +1,5 @@
 messagebus
-# Comment out "udev-add" and uncomment "filesystems-local"
+# Comment out "udev-add" and uncomment "local-fs"
 # if you use separate partition for /var
 udev-add
-#filesystems-local
+#local-fs

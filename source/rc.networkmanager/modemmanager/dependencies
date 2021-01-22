@@ -1,4 +1,4 @@
 messagebus
 udev-add
-# Uncomment "filesystems-local" if you use separate partition for /var
-#filesystems-local
+# Uncomment "local-fs" if you use separate partition for /var
+#local-fs
