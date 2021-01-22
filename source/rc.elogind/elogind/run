@@ -11,6 +11,7 @@ foreground {
   if { mkdir -p /run/elogind }
   ln -s elogind /run/systemd
 }
+emptyenv -p
 s6-envdir env
 multisubstitute {
   importas -u CMD CMD
@@ -18,4 +19,5 @@ multisubstitute {
 }
 backtick BASENAME { basename -z $CMD }
 importas -u BASENAME BASENAME
-exec -ca $BASENAME $CMD $CMD_OPTS
+emptyenv -c
+exec -a $BASENAME $CMD $CMD_OPTS

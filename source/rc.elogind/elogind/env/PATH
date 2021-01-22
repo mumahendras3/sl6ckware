@@ -1,0 +1,2 @@
+/usr/sbin:/sbin:/usr/bin:/bin
+# Scripts in hook directories (see man loginctl) will also use this PATH

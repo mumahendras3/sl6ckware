@@ -1,0 +1,2 @@
+console
+# Direct elogind logs to stderr instead of syslog or kmsg
