@@ -2,4 +2,4 @@
 # These are just the barebones.
 sysinit
 #network
-#filesystems-remote
+#remote-fs

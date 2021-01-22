@@ -1,4 +1,4 @@
 utmp
 local-fs
-#filesystems-remote
+#remote-fs
 #network
