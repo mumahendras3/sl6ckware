@@ -1,0 +1,24 @@
+#!/bin/execlineb -P
+
+##################################################
+# Start a logging daemon for the virtlogd daemon #
+##################################################
+
+s6-envdir env
+multisubstitute {
+  importas -u LOGDIR_OWNER LOGDIR_OWNER
+  importas -u LOGDIR_GROUP LOGDIR_GROUP
+  importas -u LOGDIR_PERMS LOGDIR_PERMS
+  importas -u CMD CMD
+  importas -usCd" " CMD_OPTS CMD_OPTS
+  importas -usCd" " LOG_SCRIPT LOG_SCRIPT
+}
+s6-envuidgid -B ${LOGDIR_OWNER}:${LOGDIR_GROUP}
+multisubstitute {
+  importas -u LOGDIR_PATH LOGDIR_PATH
+  importas -u UID UID
+  importas -u GID GID
+}
+if { install -dm $LOGDIR_PERMS -o $UID -g $GID $LOGDIR_PATH }
+s6-setuidgid ${UID}:${GID}
+exec -c $CMD $CMD_OPTS -- $LOG_SCRIPT

@@ -1,0 +1,23 @@
+#!/bin/execlineb -P
+
+##############################################
+# Start libvirtd (libvirt management daemon) #
+##############################################
+
+fdmove -c 2 1
+s6-envdir env
+multisubstitute {
+  importas -u CMD CMD
+  importas -usCd" " CMD_OPTS CMD_OPTS
+  importas -usCd" " MODULES MODULES
+}
+ifthenelse { grep -wq vmx /proc/cpuinfo }
+{
+  modprobe -a kvm_intel $MODULES
+}
+{
+  ifelse { grep -wq svm /proc/cpuinfo } { modprobe -a kvm_amd $MODULES }
+  if { echo Your system does not support KVM! }
+  modprobe -a $MODULES
+}
+emptyenv -p $CMD $CMD_OPTS
