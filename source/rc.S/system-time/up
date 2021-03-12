@@ -7,7 +7,7 @@ pipeline -w { sed -u "s/^/system-time: /" }
 fdmove -c 2 1
 # Check for a broken motherboard RTC clock (where ioports for rtc are
 # unknown) to prevent hwclock causing a hang
-backtick -I CLOCK_OPT {
+backtick -x CLOCK_OPT {
   if -n { grep -q " : rtc" /proc/ioports }
   printf --directisa
 }
