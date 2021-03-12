@@ -53,8 +53,7 @@ elogind
 network
 
 # From rc.firewall
-#This is just a placeholder since it has not been
-#converted to s6-rc service definition style yet
+#firewall
 
 # From rc.ip_forward
 #This is just a placeholder since it has not been

@@ -1,0 +1,8 @@
+####################################################################
+# Run /etc/rc.d/rc.firewall script                                 #
+#                                                                  #
+# See the HOWTOs on http://www.netfilter.org/ for documentation on #
+# setting up a firewall or NAT on Linux                            #
+####################################################################
+
+/etc/rc.d/rc.firewall start

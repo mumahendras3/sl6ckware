@@ -85,7 +85,6 @@ Below rc scripts are not yet converted to s6-rc service definition:
 - rc.M (genpowerd, accton, quota)
 - rc.pcmcia
 - rc.inet2
-    - rc.firewall
     - rc.ip_forward
     - rc.krb5kdc
     - rc.kadmind
