@@ -5,4 +5,7 @@
 # setting up a firewall or NAT on Linux                            #
 ####################################################################
 
+# Prepend every output with the service's name
+pipeline -w { sed -u "s/^/firewall: /" }
+fdmove -c 2 1
 /etc/rc.d/rc.firewall start
