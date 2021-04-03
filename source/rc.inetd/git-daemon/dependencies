@@ -1,0 +1,5 @@
+bind-run
+# Comment out "remount-root" and uncomment "local-fs"
+# if you use separate partition for /srv
+remount-root
+#local-fs

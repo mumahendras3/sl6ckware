@@ -1,0 +1,15 @@
+#!/bin/execlineb -P
+
+########################
+# Start the git daemon #
+########################
+
+fdmove -c 2 1
+s6-setuidgid git
+emptyenv -p
+s6-envdir env
+multisubstitute {
+  importas -u CMD CMD
+  importas -usCd" " CMD_OPTS CMD_OPTS
+}
+emptyenv -c $CMD $CMD_OPTS
