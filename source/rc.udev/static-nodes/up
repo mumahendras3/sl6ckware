@@ -2,7 +2,8 @@
 # Create static nodes in /dev #
 ###############################
 
-pipeline { kmod static-nodes -f tmpfiles }
+# /dev/stdout may not exist at this point
+pipeline { kmod static-nodes -f tmpfiles --output /proc/self/fd/1 }
 pipeline { sort -r }
 pipeline { uniq }
 pipeline { sed "s/!//" }
