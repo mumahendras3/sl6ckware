@@ -6,13 +6,12 @@ udev-add
 # 'grpquota' to the appropriate partitions as listed in /etc/fstab.
 # Here's an example:
 #
-# /dev/hda2      /home      ext3     defaults,usrquota      1   1
+#   /dev/hda2      /home      ext3     defaults,usrquota      1   1
 #
 # You'll then need to setup initial quota files at the top of the
 # partitions to support quota, like this:
 #
-# touch /home/aquota.user /home/aquota.group
-# chmod 600 /home/aquota.user /home/aquota.group
+#   quotacheck -cug /home
 #
 # Then, uncomment the service below and reboot to activate the system.
 #quotaon-all
