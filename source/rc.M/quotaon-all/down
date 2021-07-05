@@ -8,10 +8,10 @@ fdmove -c 2 1
 if { echo "Deactivating non-root non-NFS filesystems quotas: quotaoff -avug" }
 # quotaoff does not have an option to exclude the root filesystem so we
 # have to do it manually
-pipeline { findmnt -snrt nonfs,nfs4 -O nonoauto -o OPTIONS,TARGET }
+pipeline { findmnt --real -knrt nonfs,nfs4 -o OPTIONS,TARGET }
 pipeline { awk "$1 ~ /quota/ && $2 != \"/\" { print $2 }" }
-forstdin -Eo0 quotafs
+forstdin -E quotafs
 if { quotaoff -vug $quotafs }
-# Run umount here since local-fs skips unmounting quota-enabled
+# Run umount here since local-fs does not unmount quota-enabled
 # filesystems
 umount -v $quotafs
