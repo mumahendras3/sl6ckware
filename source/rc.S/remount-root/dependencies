@@ -1,2 +1,20 @@
 fsck-root
 system-time
+# Slackware-Mini-Quota-HOWTO:
+# To really activate quotas, you'll need to add 'usrquota' and/or
+# 'grpquota' to the appropriate partitions as listed in /etc/fstab.
+# Here's an example:
+#
+# /dev/hda2      /home      ext3     defaults,usrquota      1   1
+#
+# You'll then need to setup initial quota files at the top of the
+# partitions to support quota, like this:
+#
+# touch /home/aquota.user /home/aquota.group
+# chmod 600 /home/aquota.user /home/aquota.group
+#
+# Then, uncomment the service below and reboot to activate the system.
+#quotaon-root
+# To edit user quotas, use 'edquota'. See 'man edquota'. Also, the
+# official Quota Mini-HOWTO has lots of useful information. That can be
+# found here: /usr/doc/Linux-HOWTOs/Quota

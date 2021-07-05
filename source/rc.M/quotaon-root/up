@@ -1,0 +1,9 @@
+#######################################
+# Activate the root filesystem quotas #
+#######################################
+
+# Prepend every output with the service's name
+pipeline -w { sed -u "s/^/quotaon-root: /" }
+fdmove -c 2 1
+if { echo "Activating the root filesystem quotas: quotaon -vug /" }
+quotaon -vug /

@@ -1,0 +1,12 @@
+#########################################
+# Run quotacheck on the root filesystem #
+#########################################
+
+# Prepend every output with the service's name
+pipeline -w { sed -u "s/^/quotacheck-root: /" }
+fdmove -c 2 1
+if { mount -wvno remount / }
+elglob -0 quotafile /*quota.*.new
+if { rm -f $quotafile }
+if { echo "Checking the root filesystem quotas: quotacheck -ug /" }
+quotacheck -ug /

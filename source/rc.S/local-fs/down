@@ -1,15 +1,15 @@
-##############################################################
-# Unmount all non-root local filesystems found in /etc/fstab #
-# except devpts, swap, and tmpfs                             #
-##############################################################
+#####################################################################
+# Unmount all non-root local filesystems found in /etc/fstab except #
+# devpts, swap, tmpfs, and quota-enabled filesystems (quota-enabled #
+# filesystems will be unmounted separately).                        #
+#####################################################################
 
 # Prepend every output with the service's name
 pipeline -w { sed -u "s/^/local-fs: /" }
 fdmove -c 2 1
 if { echo Unmounting non-root local filesystems... }
-pipeline { findmnt --real -knrt nonfs,nfs4,smbfs,cifs -o TARGET }
-pipeline { sed \\|^/$|d }
+pipeline { findmnt --real -knrt nonfs,nfs4,smbfs,cifs -o OPTIONS,TARGET }
+pipeline { awk "$1 !~ /quota/ && $2 != \"/\" { print $2 }" }
 pipeline { tac }
-forstdin -d"\n" TARGET
-importas -u TARGET TARGET
-umount -v $TARGET
+forstdin -E target
+umount -v $target

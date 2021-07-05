@@ -1,0 +1,18 @@
+###############################################################
+# Run quotacheck on all non-root non-NFS filesystems found in #
+# /etc/fstab                                                  #
+###############################################################
+
+# Prepend every output with the service's name
+pipeline -w { sed -u "s/^/quotacheck-all: /" }
+fdmove -c 2 1
+if {
+  pipeline { findmnt -snrt nonfs,nfs4 -O nonoauto -o OPTIONS,TARGET }
+  pipeline { awk "$1 ~ /quota/ && $2 != \"/\" { print $2 }" }
+  forstdin -Eo0 quotafs
+  if { mount -v $quotafs }
+  elglob -0 quotafile ${quotafs}/*quota.*.new
+  rm -f $quotafile
+}
+if { echo "Checking non-root non-NFS filesystems quotas: quotacheck -augR" }
+quotacheck -augR

@@ -78,8 +78,8 @@ All of them are available on [SBo](https://slackbuilds.org/).
 
 ## SERVICES NOT YET CONVERTED
 Below rc scripts are not yet converted to s6-rc service definition:
-- rc.M (accton, quota)
-- rc.6 (pppd, accton, quota)
+- rc.M (accton)
+- rc.6 (pppd, accton)
 
 ## NOTICE OF NON-AFFILIATION AND DISCLAIMER
 Sl6ckware is not affiliated, associated, endorsed by, or in any way officially connected with Slackware. The official Slackware website can be found at http://www.slackware.com/.
