@@ -21,8 +21,6 @@ gtk-immodules
 gdk-pixbuf-loaders
 #pango-querymodules
 glib-schemas
-#Placeholder for process accounting (pacct)
-#Placeholder for turning on/off quota
 
 # From rc.cgmanager
 #cgmanager
@@ -113,6 +111,11 @@ acpid
 #       sleep 15
 #     fi
 #   fi
+
+# Turn on process accounting. To enable process accounting, uncomment below and
+# make sure the option for BSD process accounting is enabled in your kernel. By
+# default, process accounting is disabled since the log file can get VERY large.
+#pacct
 
 # From rc.crond
 crond

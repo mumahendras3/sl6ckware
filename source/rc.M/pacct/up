@@ -1,0 +1,18 @@
+###########################################################################
+# Turn on process accounting                                              #
+#                                                                         #
+# To enable process accounting, make sure the option for BSD process      #
+# accounting is enabled in your kernel. By default, process accounting is #
+# disabled since the log file can get VERY large.                         #
+###########################################################################
+
+# Prepend every output with the service's name
+pipeline -w { sed -u "s/^/pacct: /" }
+fdmove -c 2 1
+foreground {
+  if { [ ! -r /var/log/pacct ] }
+  if { touch /var/log/pacct }
+  chmod 640 /var/log/pacct
+}
+unexport ?
+accton on

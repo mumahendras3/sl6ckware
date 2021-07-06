@@ -1,0 +1,8 @@
+###############################
+# Turn off process accounting #
+###############################
+
+# Prepend every output with the service's name
+pipeline -w { sed -u "s/^/pacct: /" }
+fdmove -c 2 1
+accton off
