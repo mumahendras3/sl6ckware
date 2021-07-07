@@ -1,1 +1,3 @@
-../agetty-tty1/dependencies
+utmp
+hostname
+local-fs
