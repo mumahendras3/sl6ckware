@@ -1,8 +1,8 @@
 #!/bin/execlineb -P
 
-###########################
-# Start the svname daemon #
-###########################
+#####################################
+# <insert service description here> #
+#####################################
 
 fdmove -c 2 1
 s6-envdir env
