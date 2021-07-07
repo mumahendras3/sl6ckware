@@ -14,9 +14,9 @@ pipeline -w {
   pipeline { grep $uid /etc/passwd }
   pipeline { cut -d: -f1 }
   withstdinas -n USER importas -u USER USER
-  if { pipeline { s6-rc-db -b list longruns } grep -q ^${USER}-subtree$ }
+  if { pipeline { s6-rc-db -b list bundles } grep -q ^${USER}-subtree$ }
   ifelse { [ $signal = UserNew ] } { s6-rc -bv2 change ${USER}-subtree }
-  s6-rc -bdv2 change ${USER}-subtree-log
+  s6-rc -bdv2 change ${USER}-subtree
 }
 s6-envdir env
 multisubstitute {
