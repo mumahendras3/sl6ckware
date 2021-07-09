@@ -78,6 +78,8 @@ All of them are available on [SBo](https://slackbuilds.org/).
 
 ## SERVICES NOT YET CONVERTED
 Below rc scripts are not yet converted to s6-rc service definition:
+- rc.sendmail
+- rc.nss-pam-ldapd
 - rc.6 (pppd)
 
 ## NOTICE OF NON-AFFILIATION AND DISCLAIMER
