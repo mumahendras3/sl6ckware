@@ -1,71 +1,96 @@
-######################################################################
-# Services that should be started to prepare the system before       #
-# going into the desired runlevel.                                   #
-# You can add your own services here if you want it to be            #
-# started on every runlevel.                                         #
-# You can also disable some of the services here by commenting       #
-# them out. Note that if you disable a service that is a dependency  #
-# of other services, it will still be started automatically by s6-rc #
-# to satisfy the dependency chain.                                   #
-# This bundle is analogous to the rc.S script in Slackware.          #
-######################################################################
+##################################
+# System initialization services #
+##################################
 
-sysctl-system
+# Mount /proc if it is not already mounted
 procfs
+
+# Mount /sys if it is not already mounted
 sysfs
-cgroupfs
+
+# Mount a tmpfs on /run (unless the initrd has already done so) and make sure
+# that mounts below /run are visible in both /run and /var/run
 tmpfs-run
-bind-run
-#module-dm-mod
-#luks
+
+# Initialize udev to manage /dev entries and hotplugging
+udev
+
+# Mount Control Groups filesystem interface
+cgroupfs
+
+# Initialize the Logical Volume Manager
 #lvm
+
+# Open any volumes created by cryptsetup
+#luks
+
+# Enable swapping
 swap-partitions
 #swap-files
+
+# Set the tick and frequency for the system clock
 adjtimex
+
+# Set the system time from the hardware clock using hwclock --hctosys
 system-time
+
+# Check the root filesystem
 fsck-root
-fsck-all
+
+# Remount the root filesystem in read-write mode
 remount-root
+
+# Update kernel module dependencies and run rc.modules.local
+modules
+
+# Configure kernel parameters
+sysctl-system
+
+# Check all the non-root filesystems
+fsck-all
+
+# Mount non-root local filesystems found in /etc/fstab
 local-fs
+
+# Bind mount /run to /var/run
+bind-run
+
+# Start libcgroup services
+#cgconfig
+#cgred
+
+# Clean up some temporary files
 cleanup-etc
 cleanup-tmp
 cleanup-var
+
+# Create /tmp/{.ICE-unix,.X11-unix} if they are not present
 ICE-socketdir
 X11-socketdir
+
+# Create a fresh utmp file
 utmp
-faillock
+
+# Create pam_faillock(8) tally directory
+#faillock
+
+# Update the current kernel level in the /etc/motd (Message Of The Day) file
 update-motd
-random-seed
-hostname
 
-# From rc.pcmcia
-#pcmcia
-
-# Start libcgroup services
-# From rc.cgconfig
-#cgconfig
-# From rc.cgred
-#cgred
-
-# From rc.loop
-#module-loop
-
-# From rc.udev
-udev
-
-# From rc.modules
-depmod
-#modules-local
-#modules-versioned
-
-# From rc.serial
+# Run serial port setup script
 #serial
 
-# From rc.setterm
-setterm
+# Carry an entropy pool between reboots to improve randomness
+random-seed
 
-# Set console font
+# Set the hostname (moved from bundles/M)
+hostname
+
+# Initialize PCMCIA devices (moved from bundles/M)
+#pcmcia
+
+# Load a custom screen font (moved from bundles/M)
 #font
 
-# Set console keymap
+# Load a custom keymap (moved from bundles/M)
 #keymap

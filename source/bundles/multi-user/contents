@@ -1,82 +1,87 @@
-######################################################################
-# Services that should be started when the system is entering the    #
-# multi-user mode.                                                   #
-# You can add your own services here if you want it to be started on #
-# every multi user runlevel (e.g. 3 and 4).                          #
-# You can also disable some of the services here by commenting       #
-# them out. Note that if you disable a service that is a dependency  #
-# of other services, it will still be started automatically by s6-rc #
-# to satisfy the dependency chain.                                   #
-# This bundle is analogous to the rc.M script in Slackware.          #
-######################################################################
+###########################
+# Multiuser mode services #
+###########################
 
+# Update all the shared library links
 shared-library-links
+
+# Set screen blanking and power management defaults
+setterm
+
+# Save the contents of dmesg
 save-dmesg
+
+# Start the system logger
+syslog
+
+# Update the X font indexes
 font-information-caches
-#remote-fs
+
+# Start the haveged entropy daemon
+haveged
+
+# Initialize the networking hardware using either the rc.inet1 script or
+# NetworkManager (see bundles/network for more details)
+network
+
+# Start D-Bus
+messagebus
+
+# Start the session/seat daemon
+elogind
+#consolekit
+
+# Start Bluetooth
+#bluetooth
+
+# Start networking daemons
+inet2
+
+# Start the automounter service
+#autofs
+
+# Start the Network Time Protocol daemon
+#ntpd
+
+# Ensure basic filesystem permissions sanity
 ensure-permissions
+
+# Start ACPI daemon
+acpid
+
+# Enable CPU frequency scaling
+#cpufreq
+
+# Update any existing icon cache files
 gtk-icon-caches
+
+# Update mime database
 mime-database-cache
+
+# Start system-wide PulseAudio daemon (not recommended and not required in
+# order to use PulseAudio - see rc.pulseaudio/pulseaudio-srv for details)
+#pulseaudio
+
+# Some GTK+/pango files need to be kept up to date for proper functions
 gtk-immodules
 gdk-pixbuf-loaders
 #pango-querymodules
 glib-schemas
 
-# From rc.cgmanager
-#cgmanager
-
-# From rc.syslog
-syslog
-
-# From rc.haveged
-haveged
-
-# From rc.messagebus
-messagebus
-
-# From rc.elogind
-elogind
-
-# From rc.consolekit
-#consolekit
-
-# From rc.bluetooth
-#bluetooth
-
-# Network configurator service (either inet1 or networkmanager)
-network
-
-# From rc.inet2
-inet2
-
-# From rc.autofs
-#autofs
-
-# From rc.ntpd
-#ntpd
-
-# From rc.acpid
-acpid
-
-# From rc.cpufreq
-#cpufreq
-
-# From rc.pulseaudio
-#pulseaudio
-
-# From rc.dnsmasq
+# Start dnsmasq (a simple DHCP/DNS server)
 #dnsmasq
 
-# From rc.snmpd
+# Start snmpd
 #snmpd
 
-# From rc.cups
+# Start CUPS
 #cups
 
-# From rc.atalk
+# Start netatalk (a file/print server for Macs using Appletalk)
 #atalk
 
-# From rc.smartd
+# Start smartd (monitors the status of S.M.A.R.T. compatible hard drives and
+# reports any problems)
 #smartd
 
 # Monitor the UPS with genpowerd
@@ -95,6 +100,7 @@ acpid
 # information, see "man genpowerd" or the extensive documentation in the
 # /usr/doc/genpower-*/ directory.
 #genpowerd
+#
 # Lastly, you'll also need to add below code snippet to
 # basedir/scripts/rc.shutdown.final if you want support for stopping the
 # UPS's inverter after the machine halts.
@@ -112,52 +118,54 @@ acpid
 #     fi
 #   fi
 
-# Turn on process accounting. To enable process accounting, uncomment below and
-# make sure the option for BSD process accounting is enabled in your kernel. By
-# default, process accounting is disabled since the log file can get VERY large.
+# Turn on process accounting
 #pacct
 
-# From rc.crond
+# Start crond (Dillon's crond)
 crond
 
-# From rc.atd
+# Start atd (manages jobs scheduled with at)
 atd
 
-# From rc.saslauthd
+# Start the SASL authentication server (provides SASL authentication services
+# for sendmail/postfix)
 #saslauthd
 
-# From rc.postfix
+# Start the mail server (either sendmail or postfix)
+#sendmail <rc script not yet converted>
 #postfix
 
-# From rc.alsa
+# Load ALSA (sound) defaults
 #alsa
 
-# From rc.mysqld
+# Start the MySQL database
 #mysqld
 
-# From rc.httpd
+# Start Apache web server
 #httpd
 
-# From rc.openldap
+# Start OpenLDAP
 #openldap
 
-# From rc.dovecot
+# Start local LDAP name service daemon (from nss-pam-ldapd)
+#nss-pam-ldapd <rc script not yet converted>
+
+# Start Dovecot
 #dovecot
 
-# From rc.samba
+# Start Samba (a file/print server for Win95/NT machines)
 #samba
 
-# From rc.gpm
+# Start the GPM mouse server
 #gpm
 
-# From rc.icecc-scheduler
+# Start the Icecream scheduler (this needs to run on only one machine that is
+# part of the compile cluster)
 #icecc-scheduler
 
-# From rc.iceccd
+# Start the Icecream daemon (this needs to run on every machine that will be
+# part of the compile cluster - including the machine running the scheduler)
 #iceccd
 
-# Run local system initialization script
+# Start the local setup procedure
 local
-
-# Start per-user supervision subtree manager
-#user-subtree-manager

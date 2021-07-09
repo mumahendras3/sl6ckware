@@ -1,0 +1,13 @@
+###################################
+# Kernel modules related services #
+###################################
+
+# Update kernel module dependencies
+depmod
+
+# Run rc.modules-$(uname -r) (this is used if you have specific modules which
+# should only be loaded for specific kernel versions)
+#modules-versioned
+
+# Run a local (sysadmin-version) of rc.modules
+modules-local
