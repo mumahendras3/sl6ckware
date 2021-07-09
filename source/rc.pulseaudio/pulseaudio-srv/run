@@ -1,8 +1,19 @@
 #!/bin/execlineb -P
 
-#######################################
-# Start system-wide pulseaudio daemon #
-#######################################
+###############################################################################
+# Start pulseaudio (the PulseAudio Sound System) in system mode               #
+#                                                                             #
+# In this mode, a single system instance of PulseAudio will be shared by      #
+# multiple local users.                                                       #
+#                                                                             #
+# Please note: this is not generally the best way to use PulseAudio!          #
+# Normally pulseaudio will start automatically as-needed with an instance per #
+# audio user. Unless you really need to use system mode you should leave this #
+# service disabled.                                                           #
+#                                                                             #
+# For more information, see:                                                  #
+# freedesktop.org/wiki/Software/PulseAudio/Documentation/User/SystemWide      #
+###############################################################################
 
 fdmove -c 2 1
 s6-envdir env
