@@ -1,35 +1,48 @@
-# From rc.firewall
+#######################
+# Networking services #
+#######################
+
+# Run the rc.firewall script
 #firewall
 
-# From rc.ip_forward
+# Turn on IPv4 packet forwarding support
 #ip_forward
 
-# From rc.krb5kdc
+# Start the Kerberos version 5 Authentication Service and Key Distribution
+# Center (AS/KDC) (this needs to run first on both master and secondary KDCs)
 #krb5kdc
 
-# From rc.kadmind
+# Start the Kerberos administration server (this typically runs on the master
+# Kerberos server that stores the KDC database)
 #kadmind
 
-# From rc.kpropd
+# Start the Kerberos V5 slave KDC update server (this runs on a slave/secondary
+# KDC server - it allows the master Kerberos server to use kprop(8) to
+# propagate its database to the slave servers)
 #kpropd
 
-# From rc.rpc
+# Start RPC daemons needed to use NFS
 #rpc
 
-# From rc.inetd
+# Mount non-root remote filesystems found in /etc/fstab (see
+# rc.M/remote-fs/dependencies for mounting NFS volumes through fstab)
+#remote-fs
+
+# Start the inetd server
 #inetd
 
-# From rc.sshd
+# Start the OpenSSH SSH daemon
 #sshd
 
-# From rc.bind
+# Start the BIND name server daemon
 #bind
 
-# From rc.yp
+# Start NIS (the Network Information Service)
 #yp
 
-# From rc.openvpn
+# Start OpenVPN
 #openvpn
 
-# From rc.nfsd
+# Start the NFS server (you'll need to set up some shares in /etc/exports before
+# starting this service)
 #nfsd
