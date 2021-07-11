@@ -148,7 +148,7 @@ atd
 #openldap
 
 # Start local LDAP name service daemon (from nss-pam-ldapd)
-#nss-pam-ldapd <rc script not yet converted>
+#nss-pam-ldapd
 
 # Start Dovecot
 #dovecot
