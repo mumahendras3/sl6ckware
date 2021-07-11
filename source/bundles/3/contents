@@ -8,9 +8,9 @@
 # to satisfy the dependency chain.                                   #
 ######################################################################
 
-# For system initialization (see bundles/sysinit)
-sysinit
-# For entering multi-user mode (see bundles/multi-user)
-multi-user
+# For system initialization (see bundles/S)
+S
+# For entering multiuser mode (see bundles/M)
+M
 # For sysvinit compatibility
 #sysvinit-rl3

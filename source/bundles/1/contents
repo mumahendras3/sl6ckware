@@ -8,7 +8,7 @@
 # to satisfy the dependency chain.                                   #
 ######################################################################
 
-# For system initialization (see bundles/sysinit)
-sysinit
+# For system initialization (see bundles/S)
+S
 # For sysvinit compatibility
 #sysvinit-rl1

@@ -6,10 +6,10 @@
 # enable IP packet forwarding in your kernel.                         #
 #                                                                     #
 # To activate IP packet forwarding at boot time, enable this service  #
-# by uncommenting "ip_forward" in bundles/multi-user/contents.        #
+# by uncommenting "ip_forward" in bundles/M/contents.        #
 #                                                                     #
 # To disable IP packet forwarding at boot time, disable this service  #
-# by commenting out "ip_forward" in bundles/multi-user/contents.      #
+# by commenting out "ip_forward" in bundles/M/contents.      #
 #######################################################################
 
 # Prepend every output with the service's name
