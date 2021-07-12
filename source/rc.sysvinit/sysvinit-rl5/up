@@ -1,30 +1,27 @@
-#########################################################################
-# This service provides basic compatibility with SystemV style startup  #
-# scripts for runlevel 5. There are some binary packages that install   #
-# SystemV init scripts. With this service in place, most well-written   #
-# startup scripts will work. This is primarily intended to support      #
-# commercial software, though, and probably shouldn't be considered bug #
-# free.                                                                 #
-#########################################################################
+##############################################################################
+# Provide basic compatibility with SystemV style init scripts for runlevel 5 #
+##############################################################################
 
-backtick -D 1 -nE runlevel {
-  if { [ -r /run/runlevel ] } cat /run/runlevel
-}
-ifthenelse { [ $runlevel -gt 5 ] }
-{
-  elglob -s0 file /etc/rc.d/rc${runlevel}.d/K*
-  forx -Eo 0 script { $file } if -t { [ -x $script ] }
+backtick -D"" PREVLEVEL { if { [ -r /run/runlevel ] } cat /run/runlevel }
+export RUNLEVEL 5
+importas RUNLEVEL RUNLEVEL
+if { redirfd -w 1 /run/runlevel echo $RUNLEVEL }
+# Run the kill scripts
+foreground {
+  elglob -s0 scripts /etc/rc.d/rc${RUNLEVEL}.d/K*
+  forx -E script { $scripts }
+  if { [ -x $script ] }
   # Prepend every output with the service's name
-  pipeline -w { sed -u "s/^/sysvinit-rl${runlevel}: ${script}: /" }
-  fdmove -c 2 1 $script
+  pipeline -w { sed -u "s/^/sysvinit-rl${RUNLEVEL}: ${script}: /" }
+  fdmove -c 2 1
+  emptyenv -c $script
 }
-{
-  elglob -s0 file /etc/rc.d/rc5.d/S*
-  forx -Eo 0 script { $file } if -t { [ -x $script ] }
-  # Prepend every output with the service's name
-  pipeline -w { sed -u "s/^/sysvinit-rl5: ${script}: /" }
-  fdmove -c 2 1 $script
-}
-importas -ui ? ?
-ifelse { [ $? -ne 0 ] } { exit $? }
-redirfd -w 1 /run/runlevel echo 5
+unexport ?
+# Now do the startup scripts
+elglob -s0 scripts /etc/rc.d/rc${RUNLEVEL}.d/S*
+forx -E script { $scripts }
+if { [ -x $script ] }
+# Prepend every output with the service's name
+pipeline -w { sed -u "s/^/sysvinit-rl${RUNLEVEL}: ${script}: /" }
+fdmove -c 2 1
+emptyenv -c $script

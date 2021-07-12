@@ -1,14 +1,9 @@
-######################################################################
-# Services that should be started at runlevel 1.                     #
-# You can add your own services here if you want to include them in  #
-# this runlevel.                                                     #
-# You can also disable some of the services here by commenting       #
-# them out. Note that if you disable a service that is a dependency  #
-# of other services, it will still be started automatically by s6-rc #
-# to satisfy the dependency chain.                                   #
-######################################################################
+#######################
+# Runlevel 1 services #
+#######################
 
-# For system initialization (see bundles/S)
+# Initialize the system
 S
-# For sysvinit compatibility
+
+# Provide basic compatibility with SystemV style init scripts
 #sysvinit-rl1
