@@ -20,8 +20,8 @@ All of them are available on [SBo](https://slackbuilds.org/).
 2. Create a copy of the `source` directory from this repo and put it somewhere else in your system (e.g. `/etc/s6/rc/source`).
 
 3. Edit these two files (all paths below are relative to the `source` directory that you just copied):
-    1. `bundles/sysinit/contents`: this file contains a list of services that are needed to initialize the system, just like the `rc.S` script. In this file you can (for example) uncomment `font` service to load a custom screen font for the virtual console (see `rc.font/font/up` for instructions on how to load your desired custom screen font).
-    2. `bundles/multi-user/contents`: this file contains a list of services that will be started when entering one of the multi user runlevels (runlevel 2, 3, 4, and 5 by default), just like the `rc.M` script. In this file you can (for example) uncomment `cpufreq` and `bluetooth` service to set the default cpu governor and enable bluetooth support, respectively, at boot time.
+    1. `bundles/S/contents`: this file contains a list of services that are needed to initialize the system, just like the `rc.S` script. In this file you can (for example) uncomment `font` service to load a custom screen font for the virtual console (see `rc.font/font/up` for instructions on how to load your desired custom screen font).
+    2. `bundles/M/contents`: this file contains a list of services that will be started when entering one of the multi user runlevels (runlevel 2, 3, 4, and 5 by default), just like the `rc.M` script. In this file you can (for example) uncomment `cpufreq` and `bluetooth` service to set the default cpu governor and enable bluetooth support, respectively, at boot time.
 
 4. Feel free to edit all other files inside the `source` directory beside those two files above.
 
