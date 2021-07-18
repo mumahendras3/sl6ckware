@@ -1,6 +1,15 @@
-################################################################
-# Load the ALSA OSS kernel modules to support OSS applications #
-################################################################
+################################################################################
+# Load the ALSA OSS kernel modules to support OSS applications                 #
+#                                                                              #
+# Unless you know that something requires OSS support, it is better to leave   #
+# this service disabled. Some applications will try OSS first even though they #
+# also support ALSA, and will block other applications from using audio I/O.   #
+#                                                                              #
+# Many programs that use OSS can be run using the aoss wrapper script and will #
+# then use ALSA in a non-blocking way (and will not require loading these      #
+# kernel modules). Consider trying that before enabling these modules. (See    #
+# "man aoss")                                                                  #
+################################################################################
 
 # Prepend every output with the service's name
 pipeline -w { sed -u "s/^/alsa-oss: /" }

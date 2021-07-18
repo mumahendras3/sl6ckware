@@ -1,12 +1,12 @@
+############################################################################
+# Load the mixer settings and OSS compatibility (if enabled) for ALSA (the #
+# Advanced Linux Sound Architecture)                                       #
+############################################################################
+
+# Load the ALSA mixer settings
 alsa-mixer
-# Uncomment below to load the ALSA OSS kernel modules to support OSS
-# applications. Unless you know that something requires OSS support, it
-# is better to leave it disabled. Some applications will try OSS first
-# even though they also support ALSA, and will block other applications
-# from using audio I/O.
-#
-# Many programs that use OSS can be run using the aoss wrapper and will
-# then use ALSA in a non-blocking way (and will not require loading
-# these kernel modules). Consider trying that before enabling these
-# modules. (See "man aoss")
+
+# Load the ALSA OSS kernel modules to support OSS applications (better leave
+# this service disabled and use the aoss wrapper script instead - see
+# rc.alsa-oss/alsa-oss for details)
 #alsa-oss
