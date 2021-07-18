@@ -1,4 +1,16 @@
+##############################
+# Bluetooth related services #
+##############################
+
+# Start the bluetooth daemon
 bluetoothd
+
+# Attach serial devices via UART HCI to BlueZ stack at boot time
 #hciattach
+
+# Start HCI devices listed in /etc/default/bluetooth at boot time
 #hciconfig
+
+# Run a set of SDP (Service Discovery Protocol) operations for bluetooth
+# devices at boot time
 #sdptool
