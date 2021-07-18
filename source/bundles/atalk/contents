@@ -1,2 +1,9 @@
+#####################################
+# Start Netatalk AFP server daemons #
+#####################################
+
+# Start the AFP daemon
 afpd
+
+# Start the CNID daemon
 cnid_metad

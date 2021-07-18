@@ -77,7 +77,7 @@ glib-schemas
 # Start CUPS
 #cups
 
-# Start netatalk (a file/print server for Macs using Appletalk)
+# Start Netatalk AFP server (a file/print server for Macs using Appletalk)
 #atalk
 
 # Start smartd (monitors the status of S.M.A.R.T. compatible hard drives and
