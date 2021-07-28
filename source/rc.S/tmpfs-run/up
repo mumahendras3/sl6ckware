@@ -2,14 +2,10 @@
 # Mount a tmpfs filesystem on /run #
 ####################################
 
+# Check if a tmpfs filesystem is already mounted on /run
+backtick -E fstype { stat -fc%T /run }
+if -t { [ $fstype != tmpfs ] }
 # Prepend every output with the service's name
 pipeline -w { sed -u "s/^/tmpfs-run: /" }
 fdmove -c 2 1
-# Check if a tmpfs filesystem is already mounted on /run
-backtick -E fstype { stat -fc%T /run }
-ifelse { [ $fstype = tmpfs ] }
-{
-  # Make sure that mounts below /run are visible in both /run and /var/run
-  mount -v --make-shared /run
-}
-mount -vnt tmpfs -o mode=0755,size=32M,nodev,nosuid --make-shared tmpfs /run
+mount -vnt tmpfs -o mode=0755,size=32M,nodev,nosuid tmpfs /run

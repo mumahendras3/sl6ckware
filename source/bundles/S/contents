@@ -52,9 +52,6 @@ fsck-all
 # Mount non-root local filesystems found in /etc/fstab
 local-fs
 
-# Bind mount /run to /var/run
-bind-run
-
 # Start libcgroup services
 #cgconfig
 #cgred
