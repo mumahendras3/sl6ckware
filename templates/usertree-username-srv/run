@@ -44,19 +44,23 @@ if {
   echo $PID
 }
 background -d {
-  if { [ $DBDIR != NONE ] } s6-applyuidgid -zU
+  if { [ $DBDIR != NONE ] }
+  s6-applyuidgid -zU
   if { s6-svwait -U . }
-  if { s6-rc-init -dc $DBDIR -l /run/${USER}-subtree/rc /run/${USER}-subtree/service }
-  backtick -nE SESSION_TYPE { loginctl --no-legend --value -p Type show-session $SESSION }
+  if { s6-rc-init -dc $DBDIR -l /run/usertree-${USER}/rc /run/usertree-${USER}/service }
+  backtick -E SESSION_TYPE {
+    loginctl --no-legend --value -p Type show-session $SESSION
+  }
   ifelse { [ $SESSION_TYPE = tty ] }
   {
-    exec -c s6-rc -l /run/${USER}-subtree/rc -upv2 change console-login
+    exec -c s6-rc -l /run/usertree-${USER}/rc -upv2 change console-login
   }
-  exec -c s6-rc -l /run/${USER}-subtree/rc -upv2 change graphical-login
+  exec -c s6-rc -l /run/usertree-${USER}/rc -upv2 change graphical-login
 }
 unexport !
-if { rm -rf /run/${USER}-subtree }
-if { install -dm700 -o $USER /run/${USER}-subtree }
-if { cp -a $SCANDIR /run/${USER}-subtree/service }
-emptyenv -c export PATH $DEF_PATH
-s6-applyuidgid -U $CMD $CMD_OPTS -- /run/${USER}-subtree/service
+if { rm -rf /run/usertree-$USER }
+if { install -dm700 -o$UID -g$GID /run/usertree-$USER }
+if { cp -a $SCANDIR /run/usertree-${USER}/service }
+s6-applyuidgid -U
+export PATH $DEF_PATH
+emptyenv -c $CMD $CMD_OPTS -- /run/usertree-${USER}/service
