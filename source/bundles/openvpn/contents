@@ -1,5 +1,5 @@
-####################################################################
-# OpenVPN services that should be started at boot time             #
-#                                                                  #
-# See rc.openvpn/README.md for details on what is this bundle for. #
-####################################################################
+#############################################################
+# OpenVPN services that should be started at boot time (see #
+# rc.openvpn/README.md for more details)                    #
+#############################################################
+
