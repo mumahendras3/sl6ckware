@@ -8,8 +8,7 @@ procfs
 # Mount /sys if it is not already mounted
 sysfs
 
-# Mount a tmpfs on /run (unless the initrd has already done so) and make sure
-# that mounts below /run are visible in both /run and /var/run
+# Mount a tmpfs on /run (unless the initrd has already done so)
 tmpfs-run
 
 # Initialize udev to manage /dev entries and hotplugging
@@ -74,7 +73,7 @@ utmp
 # Update the current kernel level in the /etc/motd (Message Of The Day) file
 update-motd
 
-# Run serial port setup script
+# Run serial port setup service
 #serial
 
 # Carry an entropy pool between reboots to improve randomness
