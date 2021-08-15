@@ -84,39 +84,9 @@ glib-schemas
 # reports any problems)
 #smartd
 
-# Monitor the UPS with genpowerd
-# To use this, replace "s6-linux-init-shutdown -a -p -- now" in
-# basedir/run-image/service/.s6-svscan/SIGPWR with below code snippet.
-#
-#   # See if this is a powerfail situation
-#   ifelse { grep -wq FAIL /etc/powerstatus }
-#   {
-#     genpowerfail start
-#   }
-#   genpowerfail stop
-#
-# Then, uncomment the service below and edit your settings in
-# /etc/genpowerd.conf (serial device, UPS type, etc). For more
-# information, see "man genpowerd" or the extensive documentation in the
-# /usr/doc/genpower-*/ directory.
+# Monitor the UPS with genpowerd (see rc.M/genpowerd-srv first before enabling
+# this service)
 #genpowerd
-#
-# Lastly, you'll also need to add below code snippet to
-# basedir/scripts/rc.shutdown.final if you want support for stopping the
-# UPS's inverter after the machine halts.
-#
-#   # See if this is a powerfail situation
-#   if grep -Eq "FAIL|SCRAM" /etc/upsstatus; then
-#     # Signal UPS to shut off the inverter
-#     if ! genpowerd -k; then
-#       echo
-#       echo "There was an error signaling the UPS."
-#       echo "Perhaps you need to edit /etc/genpowerd.conf to configure"
-#       echo "the serial line and UPS type."
-#       # Wasting 15 seconds of precious power
-#       sleep 15
-#     fi
-#   fi
 
 # Turn on process accounting
 #pacct
