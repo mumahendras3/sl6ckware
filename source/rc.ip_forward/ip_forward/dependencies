@@ -1,3 +1,3 @@
 procfs
 sysfs
-udev-add
+udev-coldplug

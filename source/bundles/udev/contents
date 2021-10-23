@@ -6,4 +6,4 @@ static-nodes
 #local-nodes
 udevd
 udev-hwdb
-udev-add
+udev-coldplug

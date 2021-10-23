@@ -1,2 +1,2 @@
 syslog
-udev-add
+udev-coldplug

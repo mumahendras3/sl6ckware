@@ -1,6 +1,6 @@
 fsck-all
 system-time
-udev-add
+udev-coldplug
 # Slackware-Mini-Quota-HOWTO:
 # To really activate quotas, you'll need to add 'usrquota' and/or
 # 'grpquota' to the appropriate partitions as listed in /etc/fstab.

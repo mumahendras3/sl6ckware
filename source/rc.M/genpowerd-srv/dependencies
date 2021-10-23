@@ -1,2 +1,2 @@
 remount-root
-udev-add
+udev-coldplug

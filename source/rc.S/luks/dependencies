@@ -1,4 +1,4 @@
-# If you use the symbolic links in /dev/disk inside your /etc/crypttab,
-# comment out devtmpfs and uncomment udev-add instead
-#udev-add
+# If you use the symbolic links in /dev/disk inside your /etc/crypttab, comment
+# out "devtmpfs" and uncomment "udev-coldplug" instead
+#udev-coldplug
 devtmpfs
