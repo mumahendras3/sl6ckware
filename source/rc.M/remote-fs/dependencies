@@ -1,6 +1,7 @@
 network
 system-time
 # Uncomment below if you have NFS volumes defined in /etc/fstab. Failing to do
-# so will cause mount to hang when attempting to mount an NFS partition, or at
-# least will result in unreliable operation.
+# so will cause mount/umount to hang when attempting to mount/unmount an NFS
+# partition, or at least will result in unreliable operation.
 #rpc
+#messagebus
