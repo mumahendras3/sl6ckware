@@ -7,18 +7,31 @@
 fdmove -c 2 1
 s6-envdir env
 multisubstitute {
+  importas -u NAMED_GROUP NAMED_GROUP
   importas -u CMD CMD
   importas -usCd" " CMD_OPTS CMD_OPTS
 }
-ifelse { [ -r /etc/rndc.conf -o -r /etc/rndc.key ] }
+importas -u NAMED_USER NAMED_USER
+# Make sure that /var/run/named exists and has correct ownership
+if { install -do $NAMED_USER -g $NAMED_GROUP /var/run/named }
+# Make sure that /var/named has correct ownership
+if { chown -R ${NAMED_USER}:${NAMED_GROUP} /var/named }
+ifelse { [ -r /etc/rndc.conf ] }
 {
+  s6-notifyoncheck -dn0
+  exec -c $CMD $CMD_OPTS
+}
+ifelse { [ -r /etc/rndc.key ] }
+{
+  # Make sure that /etc/rndc.key has correct ownership
+  if { chown ${NAMED_USER}:${NAMED_GROUP} /etc/rndc.key }
   s6-notifyoncheck -dn0
   exec -c $CMD $CMD_OPTS
 }
 # We can't use rndc to poll the named server readiness so we'll announce
 # this service's readiness after some fixed period of time
 background -d {
-  if { sleep 1 }
+  if { sleep 5 }
   fdmove 1 3
   echo
 }

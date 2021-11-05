@@ -1,1 +1,1 @@
--f -L /proc/self/fd/2
+-fu $NAMED_USER

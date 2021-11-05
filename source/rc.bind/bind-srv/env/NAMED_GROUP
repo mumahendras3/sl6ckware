@@ -1,0 +1,5 @@
+named
+# Group to use for chowning named related files and directories. By default,
+# named will also run as the primary group of $NAMED_USER, which will usually
+# be the same as what's listed above, but not necessarily if something other
+# than the default of "named" is used.
