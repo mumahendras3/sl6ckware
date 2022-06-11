@@ -1,10 +1,8 @@
 # Sl6ckware - Using s6 + s6-rc + s6-linux-init as the init system on Slackware
 
 ## Note
-* This repo is intended to be used on Slackware-current (for now) so
-  some adjustments need to be done to some of the s6-rc service
-  definition source directories in order to make it work on Slackware
-  14.2.
+* This repo is intended to be used on Slackware-current ("current"
+  branch) and Slackware 15.0 ("15.0" branch).
 * Before using this repo, read the
   [s6](https://skarnet.org/software/s6/),
   [s6-rc](https://skarnet.org/software/s6-rc/), and
