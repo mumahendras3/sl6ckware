@@ -1,16 +1,48 @@
-###################################################
-# Use /etc/random-seed to initialize /dev/urandom #
-###################################################
+################################################################################
+# Carry an entropy pool between reboots to improve randomness.                 #
+# To do this properly, we need to utilize the "seedrng" utility, since that    #
+# supports the ioctls in recent kernels that allow the RNG to be initialized   #
+# after seeding. Otherwise using the script methods that were previously       #
+# recommended in the kernel source, it could take a long time for entropy      #
+# written to /dev/urandom to actually add to the entropy, and the new seed     #
+# that's output immediately afterward might actually have less entropy. This   #
+# would only be an issue in case a power failure occured before a proper       #
+# shutdown, or if a proper shutdown happened before enough time had gone by to #
+# generate good entropy. We'll favor using seedrng, but if it's missing        #
+# (shouldn't be) then we'll fall back on using the script method.              #
+################################################################################
 
-ifelse { [ -f /etc/random-seed ] }
-{
-  if { echo random-seed: Using /etc/random-seed to initialize /dev/urandom... }
-  redirfd -w 1 /dev/urandom
-  cat /etc/random-seed
+# Prepend every output with the service's name
+pipeline -w { sed -u "s/^/random-seed: /" }
+fdmove -c 2 1
+# Using the seedrng utility to initialize the RNG
+tryexec { seedrng }
+# Falling back on the old method when seedrng is not available
+if { mkdir -pm700 /var/lib/seedrng }
+umask 377
+if {
+  echo "The SeedRNG utility was not found. Seeding the RNG with an inferior \
+method..."
 }
-# Wait until there are enough entropies
-if { echo random-seed: Feeding the entropy... }
-loopwhilex -x 0
-backtick -n ENTROPY { cat /proc/sys/kernel/random/entropy_avail }
-importas -u ENTROPY ENTROPY
-[ $ENTROPY -ge 1000 ]
+elglob seeds /var/lib/seedrng/seed.*
+backtick -E SEED { pipeline { redirfd -w 2 /dev/null cat $seeds } base64 }
+if { rm -f $seeds }
+if { sync /var/lib/seedrng }
+if { pipeline { echo $SEED } redirfd -w 1 /dev/urandom base64 -d }
+# The seed saved below isn't going to be as large as the pool size.
+# Nevertheless we'll try to get a little entropy saved from our previous seed(s)
+# plus some bits from /dev/urandom (which *might* have some additional entropy
+# in it). It's probably better than nothing.
+if {
+  echo "Saving a new non-creditable seed in /var/lib/seedrng/seed.no-credit..."
+}
+backtick -D 4096 POOLSIZE {
+  redirfd -w 2 /dev/null cat /proc/sys/kernel/random/poolsize
+}
+backtick -E POOLSIZE { importas -ui POOLSIZE POOLSIZE expr $POOLSIZE / 8 }
+pipeline {
+  if { head -c $POOLSIZE /dev/urandom }
+  pipeline { echo $SEED } base64 -d
+}
+pipeline { sha512sum }
+redirfd -w 1 /var/lib/seedrng/seed.no-credit cut -d" " -f1

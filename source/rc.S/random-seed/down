@@ -1,17 +1,30 @@
-###############################################################
-# Carry an entropy pool between reboots to improve randomness #
-# by saving random seed from /dev/urandom in /etc/random-seed #
-###############################################################
+#######################################
+# Carry a random seed between reboots #
+#######################################
 
-foreground { echo "random-seed: Saving random seed from /dev/urandom in /etc/random-seed..." }
-# Use the pool size from /proc, or 4096 bits
-ifthenelse { [ -r /proc/sys/kernel/random/poolsize ] }
-{
-  backtick -n POOLSIZE { cat /proc/sys/kernel/random/poolsize }
-  importas -u poolsize POOLSIZE
-  backtick -n BS { expr $poolsize / 8 }
-  importas -u bs BS
-  dd if=/dev/urandom of=/etc/random-seed count=1 bs=${bs} status=none
+# Prepend every output with the service's name
+pipeline -w { sed -u "s/^/random-seed: /" }
+fdmove -c 2 1
+# Doing this properly requires the seedrng utility
+tryexec { seedrng }
+# Falling back on the old method when seedrng is not available
+if { mkdir -pm700 /var/lib/seedrng }
+umask 377
+if {
+  echo "The SeedRNG utility was not found. Saving a non-creditable and \
+inferior RNG seed in /var/lib/seedrng/seed.no-credit..."
 }
-{ dd if=/dev/urandom of=/etc/random-seed count=1 bs=512 status=none }
-chmod 600 /etc/random-seed
+elglob seeds /var/lib/seedrng/seed.*
+backtick -E SEED { pipeline { redirfd -w 2 /dev/null cat $seeds } base64 }
+if { rm -f $seeds }
+if { sync /var/lib/seedrng }
+backtick -D 4096 POOLSIZE {
+  redirfd -w 2 /dev/null cat /proc/sys/kernel/random/poolsize
+}
+backtick -E POOLSIZE { importas -ui POOLSIZE POOLSIZE expr $POOLSIZE / 8 }
+pipeline {
+  if { head -c $POOLSIZE /dev/urandom }
+  pipeline { echo $SEED } base64 -d
+}
+pipeline { sha512sum }
+redirfd -w 1 /var/lib/seedrng/seed.no-credit cut -d" " -f1
