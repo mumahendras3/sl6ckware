@@ -208,6 +208,298 @@ All of them are available on [SBo](https://slackbuilds.org/).
 * Switch to another compiled service database: `s6-rc-update
   another_compiled_database_absolute_path`
 
+## Per-user supervision tree
+
+To have a per-user supervision tree running under the system's
+supervision tree, we need to create a dedicated system service that runs
+an instance of `s6-svscan` as a normal user. Each user wanting to have a
+personal supervision tree will need to have this kind of service created
+for them. Luckily, there is the `s6-usertree-maker` program that we can
+use to easily create it.
+
+### Creating your user services
+
+Before creating a per-user supervision tree service (using
+`s6-usertree-maker`) that will run as a system service, you need to
+create your own user services first and test them. If you don't need
+dependencies handling between your services, you don't need s6-rc. Just
+create a new scan directory containing the service directories that you
+have made and put it somewhere accessible by your user, like
+`/home/<your_username>/.config/s6/service`. Try running `s6-svscan
+<your_scan_directory>` directly on your terminal to test out the
+services you have made. If everything is working correctly, continue to
+the next section. Personally, I use s6-rc to manage all my user services
+and I don't create a scan directory myself. Rather, I let the per-user
+supervision tree service creates an empty scan directory
+`/run/user/${UID}/s6/service` at runtime, as you will see later in the
+next section. Some of the programs that I run under this per-user
+supervision tree are `ssh-agent`, `dbus-daemon`, `pipewire`,
+`pipewire-media-session`, and `pipewire-pulse`. See my s6-rc source
+definition directories for these programs
+[here](https://github.com/mumahendras3/configs-scripts/tree/master/s6/rc/source).
+
+### Creating the per-user supervision tree service
+
+The `s6-usertree-maker` program provides many options that you can use
+to customize the generated per-user supervision tree service, see
+`/usr/doc/s6-<version>/doc/s6-usertree-maker.html` for more details. As
+an example, this is what I use on my system:
+
+```sh
+s6-usertree-maker \
+    -d '/run/user/${UID}/s6/service' \
+    -p '/usr/local/bin:/usr/bin:/bin' \
+    -E env \
+    -e XDG_CACHE_HOME \
+    -e XDG_CONFIG_HOME \
+    -e XDG_DATA_HOME \
+    -e XDG_RUNTIME_DIR \
+    -e XDG_STATE_HOME \
+    -r usertree-${USER}-srv/usertree-${USER}-log/usertree-${USER} \
+    -n 4 \
+    -s 500000 \
+    -t 2 \
+    $USER /var/log/usertree-${USER} /etc/s6/rc/source/usertrees
+```
+
+Explanation:
+- `-d '/run/user/${UID}/s6/service'`: the per-user supervision tree will
+  be run on the directory `/run/user/${UID}/s6/service`, which is
+  subject to variable substitution (notice that I use single quote here
+  to prevent `${UID}` from being substituted by the shell).
+- `-p '/usr/local/bin:/usr/bin:/bin'`: the per-user supervision tree
+  will be run with a PATH environment variable set to
+  `/usr/local/bin:/usr/bin:/bin`, which is also subject to variable
+  substitution (although, in this case, no variable is actually being
+  used). You might want to add something like `${HOME}/.local/bin` to
+  that list if you have some programs in your home directory.
+- `-E env`: the per-user supervision tree will be run with the
+  environment variables defined in the directory `env`, which will be
+  read via s6-envdir without options. Since it's not using an absolute
+  path, this `env` directory will need to be located inside the
+  generated service directory. If you have more than one user
+  supervision trees, you might want to set it to something like
+  `/etc/user-env` so all of them can share the same set of environment
+  variables.
+- `-e XDG_CACHE_HOME`, `-e XDG_CONFIG_HOME`, `-e XDG_DATA_HOME`, `-e
+  XDG_RUNTIME_DIR`, `-e XDG_STATE_HOME`: perform variable substitution
+  on `XDG_CACHE_HOME`, `XDG_CONFIG_HOME`, `XDG_DATA_HOME`,
+  `XDG_RUNTIME_DIR`, and `XDG_STATE_HOME`. That is, if these environment
+  variables contain `${USER}`, `${HOME}`, `${UID}`, `${GID}`, and
+  `${GIDLIST}`, they will be substituted with their respective values.
+- `-r usertree-${USER}-srv/usertree-${USER}-log/usertree-${USER}`:
+  create s6-rc source definition directories instead of a regular s6
+  service directory, where the per-user supervision tree service will be
+  named `usertree-<your_username>-srv`, its logger will be named
+  `usertree-<your_username>-log`, and a bundle containing both of them
+  will be named `usertree-<your_username>`.
+- `-n 4`, `-s 500000`, `-t 2`: use `n4 s500000 T` as the control
+  directives for the `s6-log` instance that will log the per-user
+  supervision tree service.
+- `$USER`: the per-user supervision tree will be run as the user
+  `<your_username>`.
+- `/var/log/usertree-${USER}`: the per-user supervision tree logs will
+  be saved in the directory `/var/log/usertree-<your_username>`.
+- `/etc/s6/rc/source/usertrees`: put the generated s6-rc source
+  definition directories in the directory `/etc/s6/rc/source/usertrees`.
+
+After running that command, you can inspect the generated s6-rc source
+definition directories and modify them if necessary. As an example, on
+my system I have to add this small change to the generated
+`usertree-<your_username>-srv/run` script:
+
+```
+--- a/usertree-<your_username>-srv/run     2022-08-18 00:18:42.986512403 +0700
++++ b/usertree-<your_username>-srv/run     2022-08-18 01:35:12.639851358 +0700
+@@ -28,4 +28,6 @@
+ export "XDG_RUNTIME_DIR" ${"XDG_RUNTIME_DIR"}
+ export "XDG_STATE_HOME" ${"XDG_STATE_HOME"}
+ export PATH "/usr/local/bin:/usr/bin:/bin"
++# Creating an empty scan directory since all services will be handled by s6-rc
++if { mkdir -p "/run/user/${UID}/s6/service" }
+ s6-svscan -d3 -- "/run/user/${UID}/s6/service"
+```
+
+Lastly, recompile your system's s6-rc service database to include these
+new services.
+
+### Starting the per-user supervision tree service
+
+Probably the best way to start this service is by dynamically starting
+it upon the user's first log-in and stopping it upon the user's last
+log-out. To achieve this, I use the PAM module `pam_exec` that executes
+two scripts: `pam-start-usertree` when a user logs in and
+`pam-stop-usertree` when a user logs out. Here are the diffs that I have
+applied to `/etc/pam.d/login` and `/etc/pam.d/sddm` on my system:
+
+- `/etc/pam.d/login`:
+
+```
+--- a/etc/pam.d/login   2020-06-19 04:01:47.000000000 +0700
++++ b/etc/pam.d/login   2022-08-17 16:58:49.716526301 +0700
+@@ -17,4 +17,18 @@
+ session         include         postlogin
+ session         required        pam_loginuid.so
+ -session        optional        pam_ck_connector.so nox11
++# Skip the pam-stop-usertree script for non-regular users
++session         [success=ok default=1] pam_succeed_if.so quiet uid >= 1000 \
++                                                         uid <= 60000
++# Running the pam-stop-usertree script before $XDG_RUNTIME_DIR is deleted by
++# pam_elogind
++session         optional        pam_exec.so type=close_session \
++                                            /usr/local/sbin/pam-stop-usertree
+ -session        optional        pam_elogind.so
++# Skip the pam-start-usertree script for non-regular users
++session         [success=ok default=1] pam_succeed_if.so quiet uid >= 1000 \
++                                                         uid <= 60000
++# Running the pam-start-usertree script after $XDG_RUNTIME_DIR is set and
++# created by pam_elogind
++session         optional        pam_exec.so type=open_session \
++                                            /usr/local/sbin/pam-start-usertree
+```
+
+- `/etc/pam.d/sddm`:
+
+```
+--- a/etc/pam.d/sddm    2022-01-16 12:12:19.000000000 +0700
++++ b/etc/pam.d/sddm    2022-08-17 16:58:49.716526301 +0700
+@@ -20,7 +20,21 @@
+ session    substack     system-auth
+ session    required     pam_loginuid.so
+ -session   optional     pam_ck_connector.so      nox11
++# Skip the pam-stop-usertree script for non-regular users
++session    [success=ok default=1] pam_succeed_if.so quiet uid >= 1000 \
++                                                    uid <= 60000
++# Running the pam-stop-usertree script before $XDG_RUNTIME_DIR is deleted by
++# pam_elogind
++session    optional     pam_exec.so type=close_session \
++                                    /usr/local/sbin/pam-stop-usertree
+ -session   optional     pam_elogind.so
++# Skip the pam-start-usertree script for non-regular users
++session    [success=ok default=1] pam_succeed_if.so quiet uid >= 1000 \
++                                                    uid <= 60000
++# Running the pam-start-usertree script after $XDG_RUNTIME_DIR is set and
++# created by pam_elogind
++session    optional     pam_exec.so type=open_session \
++                                    /usr/local/sbin/pam-start-usertree
+ -session   optional     pam_gnome_keyring.so     auto_start
+ -session   optional     pam_kwallet5.so          auto_start
+ session    include      postlogin
+```
+
+As for the scripts themselves, here are what I use:
+
+- `pam-start-usertree`:
+
+```
+#!/bin/sh -e
+#
+# Start s6-based user services upon first login
+#
+
+# Setting $PATH first since it's probably undefined
+export PATH="/usr/bin:/bin:/usr/sbin:/sbin"
+
+# Defining some important constants that will be used later
+SYSTEM_SCANDIR="$(xargs -0a /proc/1/cmdline | grep -o ' /.*$' | cut -c 2-)"
+USERTREE_SVNAME="usertree-$PAM_USER"
+USERTREE_SVDIR="${SYSTEM_SCANDIR}/${USERTREE_SVNAME}-srv"
+S6RC_TIMEOUT="5000"
+USER_SCANDIR="${XDG_RUNTIME_DIR}/s6/service"
+USER_S6RC_LIVE="${XDG_RUNTIME_DIR}/s6/rc"
+USER_S6RC_BUNDLE="${XDG_SESSION_TYPE}-session" # unspecified/tty/x11/wayland/mir
+USER_S6RC_COMPILED="/home/${PAM_USER}/.config/s6/rc/compiled"
+
+# Aborting execution when not invoked by pam_exec
+if [ -z "$PAM_SERVICE" ]; then
+    echo "We are not invoked by pam_exec, aborting..."
+    exit 1
+fi
+
+# Exiting immediately if PID 1 is not s6-svscan
+grep -Fqwz s6-svscan /proc/1/cmdline || exit 0
+
+# Exiting immediately if the user doesn't have a supervision tree configured
+[ -d "$USERTREE_SVDIR" ] || exit 0
+
+# Checking if this is not the user's first session
+if [ $(loginctl -p Sessions --value show-user "$PAM_USER" | wc -w) -gt 1 ]; then
+    # Exiting immediately if the user doesn't use s6-rc
+    [ -d "$USER_S6RC_LIVE" ] || exit 0
+    # Starting the appropriate user configured bundle (based on this session's
+    # type) again in case the current and last sessions' type are different
+    exec s6-setuidgid "$PAM_USER" \
+        s6-rc -bl "$USER_S6RC_LIVE" -t "$S6RC_TIMEOUT" \
+            change "$USER_S6RC_BUNDLE"
+fi
+
+# Starting the user's supervision tree
+s6-rc -bt "$S6RC_TIMEOUT" change "$USERTREE_SVNAME"
+
+# No need to continue further if the user doesn't use s6-rc
+[ -d "$USER_S6RC_COMPILED" ] || exit 0
+
+# Initializing s6-rc for the user's supervision tree
+s6-setuidgid "$PAM_USER" \
+    s6-rc-init -dc "$USER_S6RC_COMPILED" -l "$USER_S6RC_LIVE" \
+        -t "$S6RC_TIMEOUT" "$USER_SCANDIR"
+
+# Starting the appropriate user configured bundle (based on this session's type)
+exec s6-setuidgid "$PAM_USER" \
+    s6-rc -l "$USER_S6RC_LIVE" -t "$S6RC_TIMEOUT" change "$USER_S6RC_BUNDLE"
+```
+
+- `pam-stop-usertree`:
+
+```
+#!/bin/sh
+#
+# Stop s6-based user services upon last logout
+#
+
+# Setting $PATH first since it's probably undefined
+export PATH="/usr/bin:/bin:/usr/sbin:/sbin"
+
+# Defining some important constants that will be used later
+SYSTEM_SCANDIR="$(xargs -0a /proc/1/cmdline | grep -o ' /.*$' | cut -c 2-)"
+USERTREE_SVNAME="usertree-$PAM_USER"
+USERTREE_SVDIR="${SYSTEM_SCANDIR}/${USERTREE_SVNAME}-srv"
+S6RC_TIMEOUT="5000"
+USER_S6RC_LIVE="${XDG_RUNTIME_DIR}/s6/rc"
+
+# Aborting execution when not invoked by pam_exec
+if [ -z "$PAM_SERVICE" ]; then
+    echo "We are not invoked by pam_exec, aborting..."
+    exit 1
+fi
+
+# Exiting immediately if PID 1 is not s6-svscan
+grep -Fqwz s6-svscan /proc/1/cmdline || exit 0
+
+# Exiting immediately if the user doesn't have a supervision tree configured
+[ -d "$USERTREE_SVDIR" ] || exit 0
+
+# Exiting immediately if this is not the user's last session
+[ $(loginctl -p Sessions --value show-user "$PAM_USER" | wc -w) -gt 1 ] && \
+    exit 0
+
+# Using s6-rc to bring down all the user's services (if applicable)
+[ -d "$USER_S6RC_LIVE" ] && s6-setuidgid "$PAM_USER" \
+    s6-rc -Dal "$USER_S6RC_LIVE" -t "$S6RC_TIMEOUT" change
+
+# Stopping the user's supervision tree
+exec s6-rc -bdt "$S6RC_TIMEOUT" change "$USERTREE_SVNAME"
+```
+
+These scripts might be overkill for most people, since they also handle
+more than just starting and stopping the per-user supervision tree
+service. The `pam-start-usertree` script handles initializing s6-rc for
+the user (if it's used) and starting different user s6-rc bundles
+depending on the session type (logging in to a graphical or TTY session
+will start a different set of services). Then, upon the user's last
+log-out, the `pam-stop-usertree` script handles stopping all s6-rc
+managed user services that are still active.
+
 ## Services not yet converted
 Below rc scripts are not yet converted to s6-rc service definition:
 - rc.sendmail
