@@ -1,4 +1,0 @@
-messagebus
-udev-coldplug
-# Uncomment "local-fs" if you use separate partition for /var
-#local-fs
