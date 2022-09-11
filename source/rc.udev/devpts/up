@@ -1,7 +1,9 @@
-############################
-# Mount devpts on /dev/pts #
-############################
+###########################################
+# Mount the devpts filesystem on /dev/pts #
+###########################################
 
-if -tn { mountpoint -q /dev/pts }
-if { mkdir -p /dev/pts }
-mount -n /dev/pts
+# Prepend every output with the service's name
+pipeline -w { sed -u "s/^/devpts: /" }
+fdmove -c 2 1
+if { mkdir /dev/pts }
+mount -vn /dev/pts
