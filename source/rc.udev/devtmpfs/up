@@ -1,8 +1,10 @@
-##########################
-# Mount devtmpfs on /dev #
-##########################
+#########################################
+# Mount the devtmpfs filesystem on /dev #
+#########################################
 
-if -nt { mountpoint -q /dev }
+# Check if the devtmpfs filesystem is already mounted on /dev
+backtick -E fstype { stat -fc%T /dev }
+if -t { [ $fstype != tmpfs ] } # devtmpfs is considered as tmpfs by stat
 # Prepend every output with the service's name
 pipeline -w { sed -u "s/^/devtmpfs: /" }
 fdmove -c 2 1
