@@ -1,7 +1,9 @@
-#############################
-# Mount a tmpfs on /dev/shm #
-#############################
+##########################################
+# Mount the tmpfs filesystem on /dev/shm #
+##########################################
 
-if -tn { mountpoint -q /dev/shm }
-if { mkdir -p /dev/shm }
-mount -n /dev/shm
+# Prepend every output with the service's name
+pipeline -w { sed -u "s/^/tmpfs-shm: /" }
+fdmove -c 2 1
+if { mkdir /dev/shm }
+mount -vn /dev/shm
