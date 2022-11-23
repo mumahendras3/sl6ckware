@@ -1,4 +1,4 @@
-messagebus
+messagebus-srv
 # Comment out "udev-coldplug" and uncomment "local-fs"
 # if you use separate partition for /var
 udev-coldplug

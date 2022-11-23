@@ -4,4 +4,4 @@ system-time
 # so will cause mount/umount to hang when attempting to mount/unmount an NFS
 # partition, or at least will result in unreliable operation.
 #rpc
-#messagebus
+#messagebus-srv

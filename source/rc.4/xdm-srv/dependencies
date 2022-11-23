@@ -1,3 +1,3 @@
 utmp
 local-fs
-elogind
+elogind-srv
