@@ -1,9 +1,9 @@
-#######################################
-# Run the rc.firewall_shutdown script #
-#######################################
+######################################################
+# Run the rc.firewall_shutdown script (if it exists) #
+######################################################
 
 if -t { [ -x /etc/rc.d/rc.firewall_shutdown ] }
 # Prepend every output with the service's name
 pipeline -w { sed -u "s/^/firewall: /" }
 fdmove -c 2 1
-/etc/rc.d/rc.firewall_shutdown stop
+emptyenv -c /etc/rc.d/rc.firewall_shutdown stop
