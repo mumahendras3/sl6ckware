@@ -1,8 +1,8 @@
-###############################################################
-# Run local system initialization script (/etc/rc.d/rc.local) #
-###############################################################
+###########################
+# Run the rc.local script #
+###########################
 
 # Prepend every output with the service's name
 pipeline -w { sed -u "s/^/local: /" }
 fdmove -c 2 1
-exec -c /etc/rc.d/rc.local
+emptyenv -c /etc/rc.d/rc.local
