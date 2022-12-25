@@ -8,4 +8,4 @@ if -nt { grep -qE " / nfs|nfs4" /proc/mounts }
 # Prepend every output with the service's name
 pipeline -w { sed -u "s/^/inet1: /" }
 fdmove -c 2 1
-bash /etc/rc.d/rc.inet1 stop
+emptyenv -c bash /etc/rc.d/rc.inet1 stop
