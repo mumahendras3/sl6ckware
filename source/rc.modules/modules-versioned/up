@@ -7,4 +7,4 @@
 pipeline -w { sed -u "s/^/modules-versioned: /" }
 fdmove -c 2 1
 backtick -E release { uname -r }
-/etc/rc.d/rc.modules-$release
+emptyenv -c /etc/rc.d/rc.modules-$release
