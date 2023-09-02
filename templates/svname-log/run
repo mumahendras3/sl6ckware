@@ -6,18 +6,18 @@
 
 s6-envdir env
 multisubstitute {
-  importas -u LOGDIR_OWNER LOGDIR_OWNER
-  importas -u LOGDIR_GROUP LOGDIR_GROUP
-  importas -u LOGDIR_PERMS LOGDIR_PERMS
-  importas -u CMD CMD
+  importas -iu LOGDIR_OWNER LOGDIR_OWNER
+  importas -iu LOGDIR_GROUP LOGDIR_GROUP
+  importas -iu LOGDIR_PERMS LOGDIR_PERMS
+  importas -iu CMD CMD
   importas -usCd" " CMD_OPTS CMD_OPTS
-  importas -usCd" " LOG_SCRIPT LOG_SCRIPT
+  importas -iusCd" " LOG_SCRIPT LOG_SCRIPT
 }
-s6-envuidgid -B ${LOGDIR_OWNER}:${LOGDIR_GROUP}
+s6-envuidgid -Bi ${LOGDIR_OWNER}:${LOGDIR_GROUP}
 multisubstitute {
-  importas -u LOGDIR_PATH LOGDIR_PATH
-  importas -u UID UID
-  importas -u GID GID
+  importas -iu LOGDIR_PATH LOGDIR_PATH
+  importas -iu UID UID
+  importas -iu GID GID
 }
 if { install -dm $LOGDIR_PERMS -o $UID -g $GID $LOGDIR_PATH }
 s6-setuidgid ${UID}:${GID}

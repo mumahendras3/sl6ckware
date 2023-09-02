@@ -8,8 +8,8 @@
 fdmove -c 2 1
 s6-envdir env
 multisubstitute {
-  importas -u CONF_PATH CONF_PATH
-  importas -u CMD CMD
+  importas -iu CONF_PATH CONF_PATH
+  importas -iu CMD CMD
   importas -usCd" " CMD_OPTS CMD_OPTS
 }
 exec -c $CMD $CMD_OPTS --config $CONF_PATH
