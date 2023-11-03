@@ -1,0 +1,4 @@
+nordvpn
+# Group to run nordvpnd as
+#
+# Only users inside this group can start a NordVPN VPN connection
