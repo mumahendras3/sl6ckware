@@ -11,5 +11,7 @@ multisubstitute {
   elglob -0 file5 /tmp/plugtmp*
   elglob -0 file6 /tmp/.X*lock
   elglob -0 file7 /tmp/hunt*
+  elglob -0 file8 /tmp/.ICE-unix/*
+  elglob -0 file9 /tmp/.X11-unix/*
 }
-rm -rf $file1 $file2 $file3 $file4 $file5 $file6 $file7
+rm -rf $file1 $file2 $file3 $file4 $file5 $file6 $file7 $file8 $file9
