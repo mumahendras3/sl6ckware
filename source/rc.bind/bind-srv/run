@@ -7,15 +7,19 @@
 fdmove -c 2 1
 s6-envdir env
 multisubstitute {
-  importas -u NAMED_GROUP NAMED_GROUP
-  importas -u CMD CMD
+  importas -iu NAMED_GROUP NAMED_GROUP
+  importas -uD "NO" NAMED_CHOWN NAMED_CHOWN
+  importas -iu CMD CMD
   importas -usCd" " CMD_OPTS CMD_OPTS
 }
-importas -u NAMED_USER NAMED_USER
+importas -iu NAMED_USER NAMED_USER
 # Make sure that /var/run/named exists and has correct ownership
 if { install -do $NAMED_USER -g $NAMED_GROUP /var/run/named }
-# Make sure that /var/named has correct ownership
-if { chown -R ${NAMED_USER}:${NAMED_GROUP} /var/named }
+if {
+  if -t { [ $NAMED_CHOWN = YES ] }
+  # Make sure that /var/named has correct ownership
+  chown -R ${NAMED_USER}:${NAMED_GROUP} /var/named
+}
 ifelse { [ -r /etc/rndc.conf ] }
 {
   s6-notifyoncheck -dn0
@@ -23,8 +27,11 @@ ifelse { [ -r /etc/rndc.conf ] }
 }
 ifelse { [ -r /etc/rndc.key ] }
 {
-  # Make sure that /etc/rndc.key has correct ownership
-  if { chown ${NAMED_USER}:${NAMED_GROUP} /etc/rndc.key }
+  if {
+    if -t { [ $NAMED_CHOWN = YES ] }
+    # Make sure that /etc/rndc.key has correct ownership
+    chown ${NAMED_USER}:${NAMED_GROUP} /etc/rndc.key
+  }
   s6-notifyoncheck -dn0
   exec -c $CMD $CMD_OPTS
 }
