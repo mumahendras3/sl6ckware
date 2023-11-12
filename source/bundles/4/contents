@@ -8,6 +8,9 @@ S
 # Enable multiuser mode
 M
 
+# Start console login gettys
+gettys
+
 # Start the display manager
 #xdm
 #sddm

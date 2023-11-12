@@ -1,0 +1,24 @@
+#!/bin/execlineb -P
+
+####################################################################
+# Start a logging daemon for the serial agetty instance supervisor #
+####################################################################
+
+s6-envdir env
+multisubstitute {
+  importas -iu LOGDIR_OWNER LOGDIR_OWNER
+  importas -iu LOGDIR_GROUP LOGDIR_GROUP
+  importas -iu LOGDIR_PERMS LOGDIR_PERMS
+  importas -iu CMD CMD
+  importas -usCd" " CMD_OPTS CMD_OPTS
+  importas -iusCd" " LOG_SCRIPT LOG_SCRIPT
+}
+s6-envuidgid -Bi ${LOGDIR_OWNER}:${LOGDIR_GROUP}
+multisubstitute {
+  importas -iu LOGDIR_PATH LOGDIR_PATH
+  importas -iu UID UID
+  importas -iu GID GID
+}
+if { install -dm $LOGDIR_PERMS -o $UID -g $GID $LOGDIR_PATH }
+s6-setuidgid ${UID}:${GID}
+exec -c $CMD $CMD_OPTS -- $LOG_SCRIPT

@@ -8,5 +8,8 @@ S
 # Enable multiuser mode
 M
 
+# Start console login gettys
+gettys
+
 # Provide basic compatibility with SystemV style init scripts
 #sysvinit-rl5

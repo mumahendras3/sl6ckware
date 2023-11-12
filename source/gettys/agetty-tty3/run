@@ -1,7 +1,0 @@
-#!/bin/execlineb -P
-
-##########################################
-# Start agetty for console login on tty3 #
-##########################################
-
-agetty 38400 tty3 linux
