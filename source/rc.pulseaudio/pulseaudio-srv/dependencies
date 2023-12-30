@@ -1,4 +1,4 @@
 tmpfs-run
-messagebus
+messagebus-srv
 # Uncomment "local-fs" if you use separate partition for /var
 #local-fs

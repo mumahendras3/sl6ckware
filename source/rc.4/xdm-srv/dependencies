@@ -1,3 +1,5 @@
+ICE-socketdir
+X11-socketdir
 utmp
 local-fs
-elogind
+elogind-srv

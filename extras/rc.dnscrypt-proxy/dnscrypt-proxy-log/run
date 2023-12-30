@@ -1,8 +1,8 @@
 #!/bin/execlineb -P
 
-######################################################
-# Start a logging daemon for the ModemManager daemon #
-######################################################
+########################################################
+# Start a logging daemon for the dnscrypt-proxy daemon #
+########################################################
 
 s6-envdir env
 multisubstitute {
