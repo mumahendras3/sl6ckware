@@ -1,9 +1,9 @@
-##################################################################
-# Run local system shutdown script (/etc/rc.d/rc.local_shutdown) #
-##################################################################
+###################################################
+# Run the rc.local_shutdown script (if it exists) #
+###################################################
 
 if -t { [ -x /etc/rc.d/rc.local_shutdown ] }
 # Prepend every output with the service's name
 pipeline -w { sed -u "s/^/local: /" }
 fdmove -c 2 1
-exec -c /etc/rc.d/rc.local_shutdown
+emptyenv -c /etc/rc.d/rc.local_shutdown

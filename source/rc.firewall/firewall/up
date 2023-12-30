@@ -1,5 +1,5 @@
 ####################################################################
-# Run /etc/rc.d/rc.firewall script                                 #
+# Run the rc.firewall script                                       #
 #                                                                  #
 # See the HOWTOs on http://www.netfilter.org/ for documentation on #
 # setting up a firewall or NAT on Linux                            #
@@ -8,4 +8,4 @@
 # Prepend every output with the service's name
 pipeline -w { sed -u "s/^/firewall: /" }
 fdmove -c 2 1
-/etc/rc.d/rc.firewall start
+emptyenv -c /etc/rc.d/rc.firewall start

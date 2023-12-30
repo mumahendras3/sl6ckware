@@ -6,12 +6,12 @@
 
 s6-envdir env
 multisubstitute {
-  importas -u LOGDIR_PERMS LOGDIR_PERMS
-  importas -u CMD CMD
+  importas -iu LOGDIR_PERMS LOGDIR_PERMS
+  importas -iu CMD CMD
   importas -usCd" " CMD_OPTS CMD_OPTS
-  importas -usCd" " LOG_SCRIPT LOG_SCRIPT
+  importas -iusCd" " LOG_SCRIPT LOG_SCRIPT
 }
-importas -u LOGDIR_PATH LOGDIR_PATH
-importas -u XDG_DATA_HOME XDG_DATA_HOME
+importas -iu LOGDIR_PATH LOGDIR_PATH
+importas -iu XDG_DATA_HOME XDG_DATA_HOME
 if { install -dm $LOGDIR_PERMS $LOGDIR_PATH }
 exec -c $CMD $CMD_OPTS -- $LOG_SCRIPT

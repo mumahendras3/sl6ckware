@@ -1,0 +1,22 @@
+#!/bin/execlineb -P
+
+#############################
+# Start the nordvpnd daemon #
+#############################
+
+fdmove -c 2 1
+s6-envdir env
+multisubstitute {
+  importas -iu NORDVPND_USER NORDVPND_USER
+  importas -iu NORDVPND_GROUP NORDVPND_GROUP
+  importas -iu CMD CMD
+  importas -usCd" " CMD_OPTS CMD_OPTS
+}
+s6-envuidgid -B ${NORDVPND_USER}:$NORDVPND_GROUP
+multisubstitute {
+  importas -iu UID UID
+  importas -iu GID GID
+}
+if { install -dm 0750 -o $UID -g $GID /run/nordvpn }
+s6-setuidgid ${UID}:$GID
+exec -c $CMD $CMD_OPTS
