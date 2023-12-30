@@ -1,10 +1,16 @@
-###############################################################
-# Console login gettys that will be started at system startup #
-###############################################################
+###############################################################################
+# Getty services for console logins                                           #
+#                                                                             #
+# By default, we only start agetty instance supervisors, not agettys          #
+# themselves, and rely on s6-linux-init's rc.init script to dynamically       #
+# instantiate gettys on desired ttys.                                         #
+#                                                                             #
+# If you need some special gettys to be started at boot time, put your custom #
+# getty services here.                                                        #
+###############################################################################
 
-agetty-tty1
-agetty-tty2
-agetty-tty3
-agetty-tty4
-agetty-tty5
-agetty-tty6
+# Start agetty instance supervisor
+agetty
+
+# Start serial agetty instance supervisor
+#serial-agetty

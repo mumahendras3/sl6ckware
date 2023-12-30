@@ -5,5 +5,8 @@
 # Initialize the system
 S
 
+# Start console login gettys
+gettys
+
 # Provide basic compatibility with SystemV style init scripts
 #sysvinit-rl1

@@ -1,0 +1,15 @@
+#!/bin/execlineb -WS1
+
+##########################################################
+# Start agetty for console login on the given serial tty #
+##########################################################
+
+fdmove -c 2 1
+s6-envdir env
+multisubstitute {
+  importas -iu CMD CMD
+  importas -usCd" " CMD_OPTS CMD_OPTS
+}
+# CMD_OPTS contains $tty, so we have to put this here.
+define tty $1
+exec -c $CMD $CMD_OPTS
