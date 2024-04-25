@@ -86,7 +86,7 @@ All of them are available on [SBo][sbo].
 
    ```sh
    s6-linux-init-maker \
-       -f ~/Documents/sl6ckware \
+       -f ~/Documents/sl6ckware/skel \
        -c /etc/s6/init/current \
        -u adm \
        -G "agetty 38400 tty12 linux" \
