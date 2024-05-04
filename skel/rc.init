@@ -24,7 +24,7 @@ shift
 
 ### If your services are managed by s6-rc:
 ### (replace /run/service with your scandir)
-s6-rc-init -dc /etc/s6/rc/compiled /run/s6/service
+s6-rc-init -dc /etc/s6/rc/compiled /run/service
 
 
 ### 2. Starting the wanted set of services
@@ -39,11 +39,11 @@ s6-rc-init -dc /etc/s6/rc/compiled /run/s6/service
 "$(dirname "$0")/runlevel" "$rl" || :
 # If we managed to get the instanced service `agetty` up and ready, instantiate
 # agettys for the ttys on the physical console.
-if s6-svstat -o ready /run/s6/service/agetty-srv | grep -q '^true$'; then
+if s6-svstat -o ready /run/service/agetty-srv | grep -q '^true$'; then
     grep -Eo '^tty[0-9]+' /etc/securetty | while read -r tty; do
         (
             if [ "$(lsof -t "/dev/$tty" | wc -l)" -lt 1 ]; then
-                exec s6-instance-create /run/s6/service/agetty-srv "$tty"
+                exec s6-instance-create /run/service/agetty-srv "$tty"
             fi
         ) &
     done
