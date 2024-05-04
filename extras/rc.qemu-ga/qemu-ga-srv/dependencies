@@ -1,0 +1,6 @@
+devpts
+tmpfs-run
+# Comment out "remount-root" and uncomment "local-fs"
+# if you use separate partition for /var
+remount-root
+#local-fs
