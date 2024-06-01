@@ -1,0 +1,15 @@
+#!/bin/execlineb -P
+
+######################################
+# Start nginx (http/imap/pop3 proxy) #
+######################################
+
+fdmove -c 2 1
+s6-envdir env
+multisubstitute {
+  importas -u CMD CMD
+  importas -usCd" " CMD_OPTS CMD_OPTS
+}
+# Using /var/run/nginx.pid existence as readiness indicator
+s6-notifyoncheck -dn0 -c "[ -r /var/run/nginx.pid ]"
+exec -c $CMD $CMD_OPTS -g "daemon off;"
