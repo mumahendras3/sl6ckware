@@ -4,6 +4,10 @@
 # modify the rest of the file as you see fit.                                   #
 #################################################################################
 
-backtick -n VERSION { uname -sr }
-importas -u version VERSION
-sed -i "1s/^Linux.*/${version}./" /etc/motd
+backtick -EN MOTD_HEAD { head -n 1 /etc/motd }
+if -t { heredoc -d 0 $MOTD_HEAD grep -q "^Linux" }
+# Replace the kernel version if it is not correct:
+backtick -E UNAME_OUTPUT { uname -sr }
+multidefine -C $UNAME_OUTPUT { "" version }
+if -nt { heredoc -d 0 $MOTD_HEAD grep -Fqw "${version}." }
+sed -i "1s/^Linux.*/${UNAME_OUTPUT}./" /etc/motd
