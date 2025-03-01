@@ -2,14 +2,23 @@
 # Update/generate icon cache files for system-wide icon themes #
 ################################################################
 
-elglob -0 dir /usr/share/icons/*
-ifelse { redirfd -w 2 /dev/null [ -z $dir ] }
+# Prepend every output with the service's name
+pipeline -w { sed -u "s/^/gtk-icon-caches: /" }
+fdmove -c 2 1
+elglob dir /usr/share/icons/*
+forx -Epo 0 theme_dir { $dir }
+ifelse { [ $theme_dir = /usr/share/icons/* ] }
 {
-  echo gtk-icon-caches: No icon theme directories found under /usr/share/icons! Skipping...
+  echo "The directory '/usr/share/icons' is empty, skipping..."
 }
-forx -p THEME_DIR { $dir }
-importas -u THEME_DIR THEME_DIR
-if { echo gtk-icon-caches: Updating icon-theme.cache in ${THEME_DIR}: gtk-update-icon-cache -t $THEME_DIR }
-redirfd -w 1 /dev/null
-redirfd -w 2 /dev/null
-gtk-update-icon-cache -t $THEME_DIR
+ifelse { [ -r ${theme_dir}/index.theme ] }
+{
+  if { echo "Updating icon-theme.cache in ${theme_dir}..." }
+  gtk-update-icon-cache -fqt $theme_dir
+}
+# Remove icon-theme.cache from directories that don't appear to be the top-level
+# directory of an icon theme
+if -t { [ -r ${theme_dir}/icon-theme.cache ] }
+if { rm ${theme_dir}/icon-theme.cache }
+# Remove $theme_dir if it only contains icon-theme.cache
+rmdir -p --ignore-fail-on-non-empty $theme_dir
