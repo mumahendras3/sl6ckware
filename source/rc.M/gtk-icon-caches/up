@@ -14,7 +14,7 @@ ifelse { [ $theme_dir = /usr/share/icons/* ] }
 ifelse { [ -r ${theme_dir}/index.theme ] }
 {
   if { echo "Updating icon-theme.cache in ${theme_dir}..." }
-  gtk-update-icon-cache -fqt $theme_dir
+  gtk-update-icon-cache -qt $theme_dir
 }
 # Remove icon-theme.cache from directories that don't appear to be the top-level
 # directory of an icon theme
