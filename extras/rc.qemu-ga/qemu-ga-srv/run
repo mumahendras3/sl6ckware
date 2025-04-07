@@ -1,0 +1,10 @@
+#!/bin/execlineb -P
+
+##########################
+# Start qemu guest agent #
+##########################
+
+fdmove -c 2 1
+s6-envdir env
+importas -u CMD CMD
+exec -c $CMD
