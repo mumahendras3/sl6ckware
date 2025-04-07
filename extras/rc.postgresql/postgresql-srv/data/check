@@ -1,0 +1,7 @@
+#!/bin/execlineb -P
+
+s6-envdir env
+importas -u PG_VERSION PG_VERSION
+pipeline { tail -n1 /var/lib/pgsql/${PG_VERSION}/data/postmaster.pid }
+pipeline { tr -d " \n" }
+xargs test ready =
